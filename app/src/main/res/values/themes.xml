@@ -3,9 +3,13 @@
 
     <style name="Theme.TMDb" parent="android:Theme.Material.Light.NoActionBar" />
 
-    <style name="Theme.LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
+    <style name="Theme.LaunchTheme" parent="Theme.SplashScreen">
         <!-- Show a splash screen on the activity. Automatically removed when
              Flutter draws its first frame -->
+<!--        <item name="windowSplashScreenBackground">@color/...</item>-->
+<!--        <item name="windowSplashScreenAnimatedIcon">@drawable/tmdb_logo</item>-->
+        <item name="postSplashScreenTheme">@style/Theme.TMDb</item>
         <item name="android:windowBackground">@drawable/launch_background</item>
     </style>
+
 </resources>
