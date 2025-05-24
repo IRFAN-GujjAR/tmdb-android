@@ -26,6 +26,8 @@ class MainActivity : ComponentActivity() {
         val splashScreen=installSplashScreen()
         super.onCreate(savedInstanceState)
         val statusBarStyle= SystemBarStyle.dark(Color.Transparent.toArgb())
+        //if you to make the  status bar icons color dark, then use
+        //val statusBarStyle= SystemBarStyle.light(Color.Transparent.toArgb(),Color.White.toArgb())
         enableEdgeToEdge(
             statusBarStyle = statusBarStyle
         )
