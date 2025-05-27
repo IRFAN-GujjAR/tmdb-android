@@ -6,7 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.irfangujjar.tmdb.features.login.presentation.ui.screens.LoginScreen
-import com.irfangujjar.tmdb.features.main.MainScreen
+import com.irfangujjar.tmdb.features.main.home.presentation.screens.MainScreen
 
 @Composable
 fun TMDbNavGraph(

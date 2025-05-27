@@ -29,10 +29,10 @@ class AppStartupViewModel @Inject constructor(
             val appData = useCaseLoadData.invoke()
             _userTheme.value = appData.userTheme
             _isAppStartedFirstTime.value = appData.isAppStartedFirstTime
-            if (userSession.sessionId != null && userSession.userId != null) {
+            if (appData.sessionId != null && appData.userId != null) {
                 userSession.updateSession(
-                    sessionId = appData.sessionId!!,
-                    userId = appData.userId!!
+                    sessionId = appData.sessionId,
+                    userId = appData.userId
                 )
             }
             _isLoading.value = false
