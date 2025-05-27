@@ -62,7 +62,6 @@ object AppModule {
             scope = CoroutineScope(Dispatchers.IO + SupervisorJob()),
             produceFile = { context.preferencesDataStoreFile(DataStoreUtil.DATA_STORE_NAME) }
         )
-
     }
 
 }

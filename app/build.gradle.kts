@@ -74,9 +74,14 @@ dependencies {
     // Extended Material Icons
     implementation(libs.androidx.material.icons.extended)
 
+    //Navigation
+    implementation(libs.androidx.navigation.compose)
+
     // Hilt Dependency
     implementation(libs.hilt.android)
+    implementation(libs.androidx.constraintlayout)
     ksp(libs.hilt.android.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
 
     //Retrofit
     implementation(libs.retrofit)
@@ -88,7 +93,6 @@ dependencies {
 
     //DataStore
     implementation(libs.androidx.datastore.preferences)
-
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

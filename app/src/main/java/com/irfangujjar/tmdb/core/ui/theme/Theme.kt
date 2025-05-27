@@ -5,6 +5,22 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
 
+enum class UserTheme(val id: Int) {
+    SYSTEM(0),
+    LIGHT(1),
+    DARK(2);
+
+    companion object {
+        fun fromId(value: Int): UserTheme = when (value) {
+            0 -> SYSTEM
+            1 -> LIGHT
+            2 -> DARK
+            else -> SYSTEM
+        }
+    }
+}
+
+
 private val DarkColorScheme = darkColorScheme(
     primary = PRIMARY_COLOR_DARK,
     secondary = SECONDARY_COLOR_DARK,
@@ -36,18 +52,22 @@ private val LightColorScheme = darkColorScheme(
 
 @Composable
 fun TMDbTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    userTheme: UserTheme = UserTheme.SYSTEM,
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
+    var isDarkTheme = userTheme == UserTheme.DARK
+    if (userTheme == UserTheme.SYSTEM) {
+        isDarkTheme = isSystemInDarkTheme()
+    }
+
     val colorScheme = when {
 //        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
 //            val context = LocalContext.current
 //            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
 //        }
-
-        darkTheme -> DarkColorScheme
+        isDarkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
 

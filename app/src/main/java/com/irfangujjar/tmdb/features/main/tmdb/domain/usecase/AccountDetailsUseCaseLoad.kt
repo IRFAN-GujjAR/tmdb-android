@@ -11,5 +11,5 @@ class AccountDetailsUseCaseLoad(
 
 
     override suspend fun invoke(params: AccountDetailsParams): AccountDetailsEntity =
-        repo.getAccountDetails(params.sessionId)
+        repo.loadDetails(params.sessionId)
 }

@@ -3,10 +3,8 @@ package com.irfangujjar.tmdb.features.main.tmdb.data.data_source.local
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.intPreferencesKey
-import androidx.datastore.preferences.core.stringPreferencesKey
 import com.irfangujjar.tmdb.core.data_store.DataStoreUtil
-import com.irfangujjar.tmdb.features.main.tmdb.domain.entities.AccountDetailsEntity
+import com.irfangujjar.tmdb.features.main.tmdb.data.data_source.local.dto.AccountDetailsWithoutIdDSModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -15,46 +13,60 @@ interface AccountDetailsLocalDataSource {
     suspend fun saveAccountDetails(
         userId: Int,
         username: String,
-        avatarPath: String?
+        profilePath: String?
     )
 
-    suspend fun watchAccountDetails(): Flow<AccountDetailsEntity?>
+    suspend fun saveAccountDetailsWithoutId(
+        username: String,
+        profilePath: String?
+    )
+
+    suspend fun watchAccountDetails(): Flow<AccountDetailsWithoutIdDSModel?>
 }
 
 class AccountDetailsLocalDataSourceImpl(
     private val dataStore: DataStore<Preferences>
 ) : AccountDetailsLocalDataSource {
-    private val userIdKey = intPreferencesKey(DataStoreUtil.PreferenceKeys.USER_ID)
-    private val usernameKey = stringPreferencesKey(DataStoreUtil.PreferenceKeys.USER_NAME)
-    private val avatarUrl = stringPreferencesKey(DataStoreUtil.PreferenceKeys.ACCOUNT_AVATAR_URL)
 
 
     override suspend fun saveAccountDetails(
         userId: Int,
         username: String,
-        avatarPath: String?
+        profilePath: String?
     ) {
         dataStore.edit { pref ->
-            pref[userIdKey] = userId
-            pref[usernameKey] = username
-            if (avatarPath != null) {
-                pref[avatarUrl] = avatarPath
+            pref[DataStoreUtil.PreferenceKeys.USER_ID] = userId
+            pref[DataStoreUtil.PreferenceKeys.USER_NAME] = username
+            if (profilePath != null) {
+                pref[DataStoreUtil.PreferenceKeys.ACCOUNT_AVATAR_URL] = profilePath
             }
         }
     }
 
-    override suspend fun watchAccountDetails(): Flow<AccountDetailsEntity?> = dataStore.data
-        .map { pref ->
-            if (pref.contains(userIdKey) && pref.contains(usernameKey)) {
-                AccountDetailsEntity(
-                    id = pref[userIdKey]!!,
-                    username = pref[usernameKey]!!,
-                    avatarPath = pref[avatarUrl]
-                )
-            } else {
-                null
+    override suspend fun saveAccountDetailsWithoutId(
+        username: String,
+        profilePath: String?
+    ) {
+        dataStore.edit { pref ->
+            pref[DataStoreUtil.PreferenceKeys.USER_NAME] = username
+            if (profilePath != null) {
+                pref[DataStoreUtil.PreferenceKeys.ACCOUNT_AVATAR_URL] = profilePath
             }
         }
+    }
+
+    override suspend fun watchAccountDetails(): Flow<AccountDetailsWithoutIdDSModel?> =
+        dataStore.data
+            .map { pref ->
+                if (pref.contains(DataStoreUtil.PreferenceKeys.USER_NAME)) {
+                    AccountDetailsWithoutIdDSModel(
+                        username = pref[DataStoreUtil.PreferenceKeys.USER_NAME]!!,
+                        profilePath = pref[DataStoreUtil.PreferenceKeys.ACCOUNT_AVATAR_URL]
+                    )
+                } else {
+                    null
+                }
+            }
 
 }
 

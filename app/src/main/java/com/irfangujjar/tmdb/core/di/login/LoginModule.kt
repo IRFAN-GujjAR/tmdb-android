@@ -19,7 +19,7 @@ import retrofit2.Retrofit
 class LoginModule {
     @Provides
     @ViewModelScoped
-    fun providesLoginRepo(retrofit: Retrofit, dataSource: DataStore<Preferences>): LoginUseCase =
+    fun providesLoginUseCase(retrofit: Retrofit, dataSource: DataStore<Preferences>): LoginUseCase =
         LoginUseCase(
             repo = LoginRepositoryImpl(
                 remoteDataSource = LoginRemoteDataSourceImpl(

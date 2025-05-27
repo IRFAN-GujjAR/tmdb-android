@@ -38,87 +38,100 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.irfangujjar.tmdb.R
 import com.irfangujjar.tmdb.core.ui.components.CustomDialogBox
-import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
 import com.irfangujjar.tmdb.features.login.presentation.ui.screens.components.CustomTextField
 import com.irfangujjar.tmdb.features.login.presentation.ui.util.ScreenPadding
 import com.irfangujjar.tmdb.features.login.presentation.viewmodel.LoginViewModel
+import com.irfangujjar.tmdb.features.login.presentation.viewmodel.state.LoginContinueState
 import com.irfangujjar.tmdb.features.login.presentation.viewmodel.state.LoginState
 
 
 @Preview
 @Composable
 fun LoginScreen(
+    viewModel: LoginViewModel = hiltViewModel<LoginViewModel>(),
+    isAppStartedFirstTime: Boolean = false,
+    navigateToMainScreen: () -> Unit = {}
 ) {
-    val viewModel: LoginViewModel = viewModel()
     val loginState = viewModel.loginState.collectAsState()
-    val isLoading = loginState.value == LoginState.LoggingIn
+    val continueState = viewModel.continueState.collectAsState()
+    val isLoginLoading = loginState.value == LoginState.LoggingIn
+    val isContinueLoading = continueState.value == LoginContinueState.Loading
+    val isLoading =
+        isLoginLoading || isContinueLoading
     val scrollState = rememberScrollState()
     val context = LocalContext.current
 
-    TMDbTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize()
+    Surface(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Column(
+            modifier = Modifier
+                .verticalScroll(scrollState)
+                .statusBarsPadding()
+                .padding(
+                    top = ScreenPadding.TOP_PADDING + 24.dp,
+                    bottom = ScreenPadding.BOTTOM_PADDING + 8.dp,
+                    start = ScreenPadding.START_PADDING,
+                    end = ScreenPadding.END_PADDING
+                ),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(
-                modifier = Modifier
-                    .verticalScroll(scrollState)
-                    .statusBarsPadding()
-                    .padding(
-                        top = ScreenPadding.TOP_PADDING + 24.dp,
-                        bottom = ScreenPadding.BOTTOM_PADDING + 8.dp,
-                        start = ScreenPadding.START_PADDING,
-                        end = ScreenPadding.END_PADDING
-                    ),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.tmdb_logo),
-                    contentDescription = "TMDb Logo",
-                    modifier = Modifier.height(100.dp)
-                )
-                Spacer(modifier = Modifier.height(20.dp))
-                UsernameTextField(
-                    username = viewModel.username,
-                    onValueChanged = { viewModel.updateUsername(it) },
-                    onClearIconClick = { viewModel.updateUsername("") },
-                    isError = viewModel.userNameError,
-                    enabled = !isLoading
-                )
-                Spacer(modifier = Modifier.height(20.dp))
-                PasswordTextField(
-                    password = viewModel.password,
-                    onValueChanged = { viewModel.updatePassword(it) },
-                    showPassword = viewModel.showPassword,
-                    onToggleShowPassword = {
-                        viewModel.toggleShowPassword()
-                    },
-                    isError = viewModel.passwordError,
-                    enabled = !isLoading
-                )
-                Spacer(modifier = Modifier.height(24.dp))
-                LoginScreenButtons(
-                    onSignInClick = { viewModel.signIn() },
-                    onSignUpClick = { viewModel.signUp(context) },
-                    onContinueWithoutSignInClick = {},
-                    isLoading = isLoading
-                )
-            }
-
-        }
-        if (loginState.value is LoginState.Error) {
-            val loginStateValue = loginState.value as LoginState.Error
-            CustomDialogBox(
-                title = "Error",
-                message = loginStateValue.error.message,
-            ) {
-                viewModel.resetLoginState()
-            }
+            Image(
+                painter = painterResource(R.drawable.tmdb_logo),
+                contentDescription = "TMDb Logo",
+                modifier = Modifier.height(100.dp)
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            UsernameTextField(
+                username = viewModel.username,
+                onValueChanged = { viewModel.updateUsername(it) },
+                onClearIconClick = { viewModel.updateUsername("") },
+                isError = viewModel.userNameError,
+                enabled = !isLoading
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            PasswordTextField(
+                password = viewModel.password,
+                onValueChanged = { viewModel.updatePassword(it) },
+                showPassword = viewModel.showPassword,
+                onToggleShowPassword = {
+                    viewModel.toggleShowPassword()
+                },
+                isError = viewModel.passwordError,
+                enabled = !isLoading
+            )
+            Spacer(modifier = Modifier.height(24.dp))
+            LoginScreenButtons(
+                onSignInClick = {
+                    viewModel.signIn(
+                        isAppStartedFirstTime = isAppStartedFirstTime,
+                        navigateToMainScreen = navigateToMainScreen
+                    )
+                },
+                onSignUpClick = { viewModel.signUp(context) },
+                onContinueWithoutSignInClick = {
+                    viewModel.continueWithoutSignIn(navigateToMainScreen)
+                },
+                isLoading = isLoading,
+                isLoginLoading = isLoginLoading,
+                isContinueLoading = isContinueLoading
+            )
         }
 
     }
+    if (loginState.value is LoginState.Error) {
+        val loginStateValue = loginState.value as LoginState.Error
+        CustomDialogBox(
+            title = "Error",
+            message = loginStateValue.error.message,
+        ) {
+            viewModel.resetLoginState()
+        }
+    }
+
 }
 
 @Composable
@@ -126,7 +139,9 @@ private fun LoginScreenButtons(
     onSignInClick: () -> Unit,
     onSignUpClick: () -> Unit,
     onContinueWithoutSignInClick: () -> Unit,
-    isLoading: Boolean
+    isLoading: Boolean,
+    isLoginLoading: Boolean,
+    isContinueLoading: Boolean
 ) {
     Button(
         onClick = onSignInClick,
@@ -134,7 +149,7 @@ private fun LoginScreenButtons(
         contentPadding = PaddingValues(vertical = 14.dp),
         enabled = !isLoading
     ) {
-        if (isLoading)
+        if (isLoginLoading)
             CircularProgressIndicator()
         else
             Text("SIGN IN")
@@ -180,7 +195,10 @@ private fun LoginScreenButtons(
         contentPadding = PaddingValues(vertical = 14.dp),
         enabled = !isLoading
     ) {
-        Text("CONTINUE WITHOUT SIGN IN")
+        if (isContinueLoading)
+            CircularProgressIndicator()
+        else
+            Text("CONTINUE WITHOUT SIGN IN")
     }
 }
 

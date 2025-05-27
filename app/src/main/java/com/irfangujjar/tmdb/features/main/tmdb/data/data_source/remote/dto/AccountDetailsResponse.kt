@@ -2,6 +2,7 @@ package com.irfangujjar.tmdb.features.main.tmdb.data.data_source.remote.dto
 
 import com.google.gson.annotations.SerializedName
 import com.irfangujjar.tmdb.features.main.tmdb.domain.entities.AccountDetailsEntity
+import com.irfangujjar.tmdb.features.main.tmdb.domain.entities.AccountDetailsWithoutIdEntity
 
 data class AccountDetailsResponse(
     val id: Int,
@@ -20,8 +21,15 @@ data class AvatarPathModel(
 
 fun AccountDetailsResponse.toEntity(): AccountDetailsEntity {
     return AccountDetailsEntity(
-        id = id,
+        userId = id,
         username = username,
-        avatarPath = avatar.tmdb.avatarPath
+        profilePath = avatar.tmdb.avatarPath
+    )
+}
+
+fun AccountDetailsResponse.toEntityWithoutId(): AccountDetailsWithoutIdEntity {
+    return AccountDetailsWithoutIdEntity(
+        username = username,
+        profilePath = avatar.tmdb.avatarPath
     )
 }

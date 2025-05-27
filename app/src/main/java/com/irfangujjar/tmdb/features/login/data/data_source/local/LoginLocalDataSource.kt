@@ -3,7 +3,6 @@ package com.irfangujjar.tmdb.features.login.data.data_source.local
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
 import com.irfangujjar.tmdb.core.data_store.DataStoreUtil
 
 interface LoginLocalDataSource {
@@ -17,7 +16,7 @@ class LoginLocalDataSourceImpl(
 
     override suspend fun saveSessionId(sessionId: String) {
         dataSource.edit { pref ->
-            pref[stringPreferencesKey(DataStoreUtil.PreferenceKeys.SESSION_ID)] = sessionId
+            pref[DataStoreUtil.PreferenceKeys.SESSION_ID] = sessionId
         }
     }
 
