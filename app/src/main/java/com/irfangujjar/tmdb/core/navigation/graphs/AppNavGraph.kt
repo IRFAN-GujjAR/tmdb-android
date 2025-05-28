@@ -1,6 +1,6 @@
 package com.irfangujjar.tmdb.core.navigation.graphs
 
-import MainScreen
+import HomeScreen
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -32,7 +32,7 @@ fun AppNavGraph(
             )
         }
         composable(AppScreen.Main.route) {
-            MainScreen()
+            HomeScreen()
         }
     }
 }

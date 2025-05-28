@@ -40,9 +40,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.irfangujjar.tmdb.R
+import com.irfangujjar.tmdb.core.ui.ScreenPadding
 import com.irfangujjar.tmdb.core.ui.components.CustomDialogBox
 import com.irfangujjar.tmdb.features.login.presentation.ui.screens.components.CustomTextField
-import com.irfangujjar.tmdb.features.login.presentation.ui.util.ScreenPadding
 import com.irfangujjar.tmdb.features.login.presentation.viewmodel.LoginViewModel
 import com.irfangujjar.tmdb.features.login.presentation.viewmodel.state.LoginContinueState
 import com.irfangujjar.tmdb.features.login.presentation.viewmodel.state.LoginState
@@ -72,10 +72,7 @@ fun LoginScreen(
                 .verticalScroll(scrollState)
                 .statusBarsPadding()
                 .padding(
-                    top = ScreenPadding.TOP_PADDING + 24.dp,
-                    bottom = ScreenPadding.BOTTOM_PADDING + 8.dp,
-                    start = ScreenPadding.START_PADDING,
-                    end = ScreenPadding.END_PADDING
+                    ScreenPadding.getPadding()
                 ),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
