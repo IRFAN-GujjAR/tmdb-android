@@ -1,5 +1,6 @@
 import java.util.Properties
 
+
 val localProperties = Properties().apply {
     val localPropertiesFile = rootProject.file("local.properties")
     if (localPropertiesFile.exists()) {
@@ -93,6 +94,11 @@ dependencies {
 
     //DataStore
     implementation(libs.androidx.datastore.preferences)
+
+    //Material components such as navbar
+//    implementation(libs.androidx.material)
+//    implementation("androidx.compose.material:material-icons-extended:1.7.8")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.27.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

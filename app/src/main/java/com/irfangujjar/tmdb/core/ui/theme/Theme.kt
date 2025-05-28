@@ -21,18 +21,33 @@ enum class UserTheme(val id: Int) {
 }
 
 
+//surfaceContainer - BottomNavigation Container Color
+//onSecondaryContainer - BottomNavigation Item Active Icon Color
+//onSurface - BottomNavigation Item Text Color
+
 private val DarkColorScheme = darkColorScheme(
     primary = PRIMARY_COLOR_DARK,
     secondary = SECONDARY_COLOR_DARK,
-    background = BACKGROUND_COLOR_DARK,
-    surface = BACKGROUND_COLOR_DARK
+    background = NAV_BAR_COLOR_DARK,
+    surface = BACKGROUND_COLOR_DARK,
+    surfaceContainer = NAV_BAR_COLOR_DARK,
+    onSecondaryContainer = PRIMARY_COLOR_DARK,
+    onSurface = PRIMARY_COLOR_DARK
+//    onSurfaceVariant = Color.Red
+
 )
 
 private val LightColorScheme = darkColorScheme(
     primary = PRIMARY_COLOR,
     secondary = SECONDARY_COLOR,
-    background = BACKGROUND_COLOR,
+    background = NAV_BAR_COLOR,
     surface = BACKGROUND_COLOR,
+    surfaceContainer = NAV_BAR_COLOR, // BottomNavigation Container Color
+    onSecondaryContainer = PRIMARY_COLOR,
+    onSurface = PRIMARY_COLOR
+//    onSurfaceVariant = Color.Red,
+//    onSurface = Color.Blue
+
 //        onPrimary = Color.White,
 //    primary = Purple40,
 //    secondary = PurpleGrey40,

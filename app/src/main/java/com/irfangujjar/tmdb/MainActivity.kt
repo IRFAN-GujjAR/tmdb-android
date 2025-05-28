@@ -14,8 +14,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
-import com.irfangujjar.tmdb.core.navigation.Screen
-import com.irfangujjar.tmdb.core.navigation.TMDbNavGraph
+import com.irfangujjar.tmdb.core.navigation.graphs.AppNavGraph
+import com.irfangujjar.tmdb.core.navigation.screens.AppScreen
 import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
 import com.irfangujjar.tmdb.features.app_startup.presentation.viewmodel.AppStartupViewModel
 import com.irfangujjar.tmdb.features.login.presentation.ui.screens.LoginScreen
@@ -32,15 +32,17 @@ class MainActivity : ComponentActivity() {
             appStartupViewModel.isLoading.value
         }
         super.onCreate(savedInstanceState)
-        val statusBarStyle = SystemBarStyle.dark(Color.Transparent.toArgb())
+        val statusBarStyle =
+            SystemBarStyle.dark(Color.Transparent.toArgb())
         //if you to make the  status bar icons color dark, then use
-        //val statusBarStyle= SystemBarStyle.light(Color.Transparent.toArgb(),Color.White.toArgb())
+//        val statusBarStyle= SystemBarStyle.light(Color.Transparent.toArgb(),Color.White.toArgb())
 
         enableEdgeToEdge(
             statusBarStyle = statusBarStyle
         )
 
         setContent {
+
             if (!appStartupViewModel.isLoading.value) {
 
                 val userThemeViewModel = viewModel<UserThemeViewModel>()
@@ -52,11 +54,11 @@ class MainActivity : ComponentActivity() {
                 val isAppStartedFirstTime = appStartupViewModel.isAppStartedFirstTime.value
 
                 TMDbTheme(userTheme = userThemeValue) {
-                    TMDbNavGraph(
+                    AppNavGraph(
                         navController = navController,
                         startDestination = if (isAppStartedFirstTime)
-                            Screen.Login.route else
-                            Screen.Main.route,
+                            AppScreen.Login.route else
+                            AppScreen.Main.route,
                         isAppStartedFirstTime = isAppStartedFirstTime
                     )
                 }
