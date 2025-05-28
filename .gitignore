@@ -17,4 +17,3 @@ local.properties
 app/google-services.json
 
 app/release
-upload-keystore.jks
