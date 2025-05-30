@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.irfangujjar.tmdb.core.ui.ScreenPadding
+import com.irfangujjar.tmdb.core.ui.components.CustomDivider
 import com.irfangujjar.tmdb.core.ui.components.CustomTopAppBar
 import com.irfangujjar.tmdb.core.ui.components.list.MediaItemsHorizontal
 import com.irfangujjar.tmdb.core.ui.components.list.values.MediaItemsHorizontalValues
@@ -48,9 +49,10 @@ fun MoviesScreen(preview: Boolean = false, paddingValues: PaddingValues) {
                         isLandscape = false
                     ),
                     title = MoviesCategories.Popular.name
-                ){
+                ) {
 
                 }
+                CustomDivider()
                 MediaItemsHorizontal(
                     preview = preview,
                     values = MediaItemsHorizontalValues.dummyDataMovie(
@@ -59,9 +61,10 @@ fun MoviesScreen(preview: Boolean = false, paddingValues: PaddingValues) {
                         isLandscape = true
                     ),
                     title = MoviesCategories.InTheatres.name
-                ){
+                ) {
 
                 }
+                CustomDivider()
                 MediaItemsHorizontal(
                     preview = preview,
                     values = MediaItemsHorizontalValues.dummyDataMovie(
@@ -70,9 +73,10 @@ fun MoviesScreen(preview: Boolean = false, paddingValues: PaddingValues) {
                         isLandscape = false
                     ),
                     title = MoviesCategories.Trending.name
-                ){
+                ) {
 
                 }
+                CustomDivider()
                 MediaItemsHorizontal(
                     preview = preview,
                     values = MediaItemsHorizontalValues.dummyDataMovie(
@@ -81,7 +85,7 @@ fun MoviesScreen(preview: Boolean = false, paddingValues: PaddingValues) {
                         isLandscape = false
                     ),
                     title = MoviesCategories.Upcoming.name
-                ){
+                ) {
 
                 }
             }
