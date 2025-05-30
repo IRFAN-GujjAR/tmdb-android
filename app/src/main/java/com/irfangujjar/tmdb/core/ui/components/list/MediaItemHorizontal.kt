@@ -55,26 +55,23 @@ fun MediaItemHorizontal(preview: Boolean = false, values: MediaItemHorizontalVal
                 )
             }
             Text(
-                text = values.mediaTitle,
-                maxLines = 1,
+                text = "The Godfather : Origin of Godfather",
+                maxLines = if (values.isLandscape) 1 else 2,
                 fontWeight = FontWeight.W500,
                 fontSize = values.configValues.font,
                 textAlign = TextAlign.Start,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.padding(top = 2.dp, start = 1.dp)
+                modifier = Modifier.padding(top = 2.dp, start = 1.dp),
             )
-            val genreFont = if (values.isLandscape) 12.sp else 11.sp
-            val genreLineHeight = if (values.isLandscape) 15.sp else 14.sp
             Text(
                 text = if (values.mediaType.isMovie()) getMovieGenres(values.mediaGenre)
                 else getTvShowsGenres(values.mediaGenre),
-                maxLines = if (values.isLandscape) 1 else 2,
+                maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                fontSize = genreFont,
+                fontSize = if (values.isLandscape) 12.sp else 11.sp,
                 textAlign = TextAlign.Start,
                 color = Color.Gray,
                 modifier = Modifier.padding(start = 1.dp),
-                lineHeight = genreLineHeight
             )
         }
     }
