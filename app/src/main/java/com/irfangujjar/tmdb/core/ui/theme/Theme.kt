@@ -32,7 +32,7 @@ private val DarkColorScheme = darkColorScheme(
     surface = BACKGROUND_COLOR_DARK,
     surfaceContainer = NAV_BAR_COLOR_DARK,
     onSecondaryContainer = PRIMARY_COLOR_DARK,
-    onSurface = PRIMARY_COLOR_DARK
+//    onSurface = PRIMARY_COLOR_DARK
 //    onSurfaceVariant = Color.Red
 
 )
@@ -44,7 +44,7 @@ private val LightColorScheme = darkColorScheme(
     surface = BACKGROUND_COLOR,
     surfaceContainer = NAV_BAR_COLOR, // BottomNavigation Container Color
     onSecondaryContainer = PRIMARY_COLOR,
-    onSurface = PRIMARY_COLOR
+//    onSurface = PRIMARY_COLOR
 //    onSurfaceVariant = Color.Red,
 //    onSurface = Color.Blue
 

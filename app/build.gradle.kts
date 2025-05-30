@@ -95,10 +95,14 @@ dependencies {
     //DataStore
     implementation(libs.androidx.datastore.preferences)
 
+    //Coil for Network Image loading
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
+
     //Material components such as navbar
 //    implementation(libs.androidx.material)
 //    implementation("androidx.compose.material:material-icons-extended:1.7.8")
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.27.0")
+//    implementation("com.google.accompanist:accompanist-systemuicontroller:0.27.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
