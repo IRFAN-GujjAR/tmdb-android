@@ -1,0 +1,83 @@
+package com.irfangujjar.tmdb.core.ui.components.list
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.irfangujjar.tmdb.core.ui.components.TextRow
+import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
+import com.irfangujjar.tmdb.core.ui.util.MediaType
+import com.irfangujjar.tmdb.features.main.movies.domain.entities.MovieEntity
+import com.irfangujjar.tmdb.features.main.tv_shows.domain.entities.TvShowEntity
+
+
+@Composable
+fun MediaItemsHorizontalTopRated(
+    preview: Boolean = false,
+    mediaType: MediaType,
+    movies: List<MovieEntity>?,
+    tvShows: List<TvShowEntity>?
+) {
+    Column{
+        TextRow(title = "Top Rated") { }
+        LazyRow(
+            modifier = Modifier.padding(top = 4.dp),
+            contentPadding = PaddingValues(
+                start = 12.dp,
+                end = 12.dp
+            ),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            items(4) { outerIndex ->
+                Column(modifier = Modifier.width(300.dp)) {
+                    repeat(4) { innerIndex ->
+                        var itemIndex = innerIndex
+                        if (outerIndex != 0) {
+                            itemIndex = (outerIndex * 4) + innerIndex
+                        }
+                        var movie: MovieEntity? = null
+                        var tvShow: TvShowEntity? = null
+
+                        when (mediaType) {
+                            MediaType.Movie -> {
+                                movie = movies!![itemIndex]
+                            }
+
+                            MediaType.TvShow -> {
+                                tvShow = tvShows!![itemIndex]
+                            }
+                        }
+                        MediaItemHorizontalTopRated(
+                            preview = preview,
+                            type = mediaType,
+                            movie = movie,
+                            tvShow = tvShow
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun MediaItemsHorizontalTopRatedPreview() {
+    TMDbTheme {
+        Surface {
+            MediaItemsHorizontalTopRated(
+                preview = true,
+                mediaType = MediaType.Movie,
+                movies = List(20) { MovieEntity.dummyData() },
+                tvShows = null,
+            )
+        }
+    }
+}

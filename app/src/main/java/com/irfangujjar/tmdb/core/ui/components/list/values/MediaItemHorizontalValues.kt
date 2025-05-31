@@ -2,6 +2,7 @@ package com.irfangujjar.tmdb.core.ui.components.list.values
 
 import com.irfangujjar.tmdb.core.ui.util.MediaType
 import com.irfangujjar.tmdb.core.ui.util.MoviesCategories
+import com.irfangujjar.tmdb.core.ui.util.TvShowsCategories
 import com.irfangujjar.tmdb.features.main.movies.domain.entities.MovieEntity
 import com.irfangujjar.tmdb.features.main.tv_shows.domain.entities.TvShowEntity
 
@@ -13,12 +14,14 @@ data class MediaItemHorizontalValues(
     val posterPath: String?,
     val backdropPath: String?,
     val isLandscape: Boolean,
-    val configValues: MediaItemsHorizontalConfigValues
+    val configValues: MediaItemsHorizontalConfigValues,
+    val isTopRated: Boolean
 ) {
     companion object {
         fun fromListValues(
             listValues: MediaItemsHorizontalValues,
-            index: Int
+            index: Int,
+            isTopRated: Boolean
         ): MediaItemHorizontalValues = MediaItemHorizontalValues(
             mediaType = listValues.mediaType,
             mediaId = listValues.mediaIds[index],
@@ -27,7 +30,8 @@ data class MediaItemHorizontalValues(
             posterPath = listValues.posterPaths[index],
             backdropPath = listValues.backdropPaths[index],
             isLandscape = listValues.isLandscape,
-            configValues = listValues.configValues
+            configValues = listValues.configValues,
+            isTopRated = isTopRated
         )
 
         fun dummyDataMovie(
@@ -45,12 +49,13 @@ data class MediaItemHorizontalValues(
                 isLandscape = isLandscape,
                 configValues = MediaItemsHorizontalConfigValues.dummyDataMovie(
                     category
-                )
+                ),
+                isTopRated = category == MoviesCategories.TopRated
             )
         }
 
         fun dummyDataTv(
-            category: MoviesCategories,
+            category: TvShowsCategories,
             isLandscape: Boolean
         ): MediaItemHorizontalValues {
             val tvShow = TvShowEntity.dummyData()
@@ -62,9 +67,10 @@ data class MediaItemHorizontalValues(
                 posterPath = tvShow.posterPath,
                 backdropPath = tvShow.backdropPath,
                 isLandscape = isLandscape,
-                configValues = MediaItemsHorizontalConfigValues.dummyDataMovie(
+                configValues = MediaItemsHorizontalConfigValues.dummyDataTv(
                     category
-                )
+                ),
+                isTopRated = category == TvShowsCategories.TopRated
             )
         }
     }

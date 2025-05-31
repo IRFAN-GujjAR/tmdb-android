@@ -38,7 +38,7 @@ fun CustomNavBar(navController: NavHostController) {
                         contentDescription = screen.label
                     )
                 },
-                label = { Text(screen.label) }
+                label = { Text(screen.label) },
             )
         }
     }

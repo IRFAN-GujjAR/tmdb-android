@@ -3,7 +3,6 @@ package com.irfangujjar.tmdb.core.ui.components.list
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Surface
@@ -21,6 +20,7 @@ import com.irfangujjar.tmdb.core.ui.util.MoviesCategories
 @Composable
 fun MediaItemsHorizontal(
     preview: Boolean = false, values: MediaItemsHorizontalValues,
+    isTopRated: Boolean = false,
     title: String,
     onSeeAllClick: () -> Unit
 ) {
@@ -39,7 +39,8 @@ fun MediaItemsHorizontal(
                     preview = preview,
                     values = MediaItemHorizontalValues.fromListValues(
                         listValues = values,
-                        index = index
+                        index = index,
+                        isTopRated = isTopRated
                     )
                 )
             }
@@ -58,7 +59,8 @@ private fun MediaItemsHorizontalPreview() {
                     category = MoviesCategories.Popular,
                     isLandscape = false
                 ),
-                title = MoviesCategories.Popular.name
+                title = MoviesCategories.Popular.name,
+                isTopRated = false
             ) {}
         }
     }

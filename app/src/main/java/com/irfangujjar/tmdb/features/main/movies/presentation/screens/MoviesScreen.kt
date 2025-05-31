@@ -15,9 +15,12 @@ import com.irfangujjar.tmdb.core.ui.ScreenPadding
 import com.irfangujjar.tmdb.core.ui.components.CustomDivider
 import com.irfangujjar.tmdb.core.ui.components.CustomTopAppBar
 import com.irfangujjar.tmdb.core.ui.components.list.MediaItemsHorizontal
+import com.irfangujjar.tmdb.core.ui.components.list.MediaItemsHorizontalTopRated
 import com.irfangujjar.tmdb.core.ui.components.list.values.MediaItemsHorizontalValues
 import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
+import com.irfangujjar.tmdb.core.ui.util.MediaType
 import com.irfangujjar.tmdb.core.ui.util.MoviesCategories
+import com.irfangujjar.tmdb.features.main.movies.domain.entities.MovieEntity
 
 
 @Composable
@@ -48,7 +51,7 @@ fun MoviesScreen(preview: Boolean = false, paddingValues: PaddingValues) {
                             MoviesCategories.Popular,
                         isLandscape = false
                     ),
-                    title = MoviesCategories.Popular.name
+                    title = MoviesCategories.Popular.name,
                 ) {
 
                 }
@@ -76,6 +79,13 @@ fun MoviesScreen(preview: Boolean = false, paddingValues: PaddingValues) {
                 ) {
 
                 }
+                CustomDivider()
+                MediaItemsHorizontalTopRated(
+                    preview = preview,
+                    mediaType = MediaType.Movie,
+                    movies = List(20) { MovieEntity.dummyData() },
+                    tvShows = null
+                )
                 CustomDivider()
                 MediaItemsHorizontal(
                     preview = preview,

@@ -55,7 +55,7 @@ fun MediaItemHorizontal(preview: Boolean = false, values: MediaItemHorizontalVal
                 )
             }
             Text(
-                text = "The Godfather : Origin of Godfather",
+                text = values.mediaTitle,
                 maxLines = if (values.isLandscape) 1 else 2,
                 fontWeight = FontWeight.W500,
                 fontSize = values.configValues.font,
