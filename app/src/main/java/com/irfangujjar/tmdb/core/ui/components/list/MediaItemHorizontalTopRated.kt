@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
 import androidx.compose.material3.Icon
@@ -58,7 +59,7 @@ fun MediaItemHorizontalTopRated(
     }
 
     Row(
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         CustomNetworkImage(
             preview = preview,
@@ -73,7 +74,7 @@ fun MediaItemHorizontalTopRated(
             backdropSize = BackdropSizes.w300,
         )
         Column(
-            modifier = Modifier.padding(start = 8.dp),
+            modifier = Modifier.padding(start = 8.dp).width(210.dp),
             horizontalAlignment = Alignment.Start
         ) {
             Text(
