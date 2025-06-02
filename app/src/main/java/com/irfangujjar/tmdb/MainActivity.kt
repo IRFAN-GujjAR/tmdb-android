@@ -1,6 +1,7 @@
 package com.irfangujjar.tmdb
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
@@ -12,11 +13,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.irfangujjar.tmdb.core.navigation.graphs.AppNavGraph
 import com.irfangujjar.tmdb.core.navigation.screens.AppScreen
 import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
+import com.irfangujjar.tmdb.core.ui.theme.UserTheme
 import com.irfangujjar.tmdb.features.app_startup.presentation.viewmodel.AppStartupViewModel
 import com.irfangujjar.tmdb.features.login.presentation.ui.screens.LoginScreen
 import com.irfangujjar.tmdb.features.theme.presentation.viewmodel.UserThemeViewModel
@@ -45,7 +47,7 @@ class MainActivity : ComponentActivity() {
 
             if (!appStartupViewModel.isLoading.value) {
 
-                val userThemeViewModel = viewModel<UserThemeViewModel>()
+                val userThemeViewModel = hiltViewModel<UserThemeViewModel>()
                 val userTheme = userThemeViewModel.userTheme.collectAsState()
                 val userThemeValue = userTheme.value ?: appStartupViewModel.userTheme.value
 
@@ -59,7 +61,8 @@ class MainActivity : ComponentActivity() {
                         startDestination = if (isAppStartedFirstTime)
                             AppScreen.Login.route else
                             AppScreen.Main.route,
-                        isAppStartedFirstTime = isAppStartedFirstTime
+                        isAppStartedFirstTime = isAppStartedFirstTime,
+                        userTheme = userThemeValue
                     )
                 }
             }

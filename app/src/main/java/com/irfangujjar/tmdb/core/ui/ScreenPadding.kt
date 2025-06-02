@@ -50,7 +50,7 @@ object ScreenPadding {
         } else if (outerPaddingValues != null) {
             topPadding += outerPaddingValues.calculateTopPadding()
         }
-        
+
         return topPadding
     }
 
@@ -65,8 +65,7 @@ object ScreenPadding {
 
         if (outerPaddingValues != null) {
             bottomPadding += outerPaddingValues.calculateBottomPadding()
-        }
-        if (innerPaddingValues != null) {
+        } else if (innerPaddingValues != null) {
             bottomPadding += innerPaddingValues.calculateBottomPadding()
         }
         return bottomPadding

@@ -7,13 +7,15 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.irfangujjar.tmdb.core.navigation.screens.AppScreen
+import com.irfangujjar.tmdb.core.ui.theme.UserTheme
 import com.irfangujjar.tmdb.features.login.presentation.ui.screens.LoginScreen
 
 @Composable
 fun AppNavGraph(
     navController: NavHostController,
     startDestination: String,
-    isAppStartedFirstTime: Boolean
+    isAppStartedFirstTime: Boolean,
+    userTheme: UserTheme
 ) {
     NavHost(
         navController = navController,
@@ -32,7 +34,9 @@ fun AppNavGraph(
             )
         }
         composable(AppScreen.Main.route) {
-            HomeScreen()
+            HomeScreen(
+                userTheme = userTheme
+            )
         }
     }
 }

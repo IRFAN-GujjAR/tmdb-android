@@ -1,5 +1,6 @@
 package com.irfangujjar.tmdb.core.api
 
+import android.util.Log
 import com.irfangujjar.tmdb.core.error.ErrorEntity
 import com.irfangujjar.tmdb.core.error.ErrorType
 import java.net.SocketTimeoutException
@@ -18,12 +19,13 @@ suspend fun <T> safeApiCall(
         val response = apiCall()
         ResultWrapper.Success(response)
     } catch (e: Exception) {
+        Log.d("ApiUtil", "Exception :${e}")
         when (e) {
             is TimeoutException, is SocketTimeoutException,
             is UnknownHostException -> {
                 ResultWrapper.Error(
                     ErrorEntity(
-                        message = "Request timed out. Please try again.",
+                        message = "Please check your internet connection!",
                         type = ErrorType.Network
                     )
                 )

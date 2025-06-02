@@ -1,5 +1,8 @@
 package com.irfangujjar.tmdb.features.main.movies.presentation.viewmodels
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.irfangujjar.tmdb.core.api.ResultWrapper
@@ -9,6 +12,7 @@ import com.irfangujjar.tmdb.features.main.movies.domain.usecases.MoviesUseCaseWa
 import com.irfangujjar.tmdb.features.main.movies.presentation.viewstate.MoviesState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -22,6 +26,9 @@ class MoviesViewModel @Inject constructor(
 
     private val _state: MutableStateFlow<MoviesState> = MutableStateFlow(MoviesState.Loading)
     val state: StateFlow<MoviesState> = _state
+
+    var isRefreshing by mutableStateOf(false)
+        private set
 
     init {
         viewModelScope.launch {
@@ -56,6 +63,21 @@ class MoviesViewModel @Inject constructor(
             } else {
                 _state.value = MoviesState.Error(error = result.errorEntity)
             }
+        }
+    }
+
+    fun retry() {
+        viewModelScope.launch(Dispatchers.IO) {
+            loadMovies()
+        }
+    }
+
+    fun refresh() {
+        viewModelScope.launch {
+            isRefreshing = true
+            delay(4000L)
+//            loadMovies()
+            isRefreshing = false
         }
     }
 }
