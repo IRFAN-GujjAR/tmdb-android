@@ -1,6 +1,6 @@
 package com.irfangujjar.tmdb.core.entities
 
-interface MediaEntity {
+interface MediaModel {
     val id: Int
     val genreIds: List<Int>
     val posterPath: String?

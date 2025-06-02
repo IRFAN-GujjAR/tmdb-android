@@ -1,6 +1,6 @@
 package com.irfangujjar.tmdb.features.main.tv_shows.domain.entities
 
-import com.irfangujjar.tmdb.core.entities.MediaEntity
+import com.irfangujjar.tmdb.core.entities.MediaModel
 
 data class TvShowEntity(
     override val id: Int,
@@ -11,7 +11,7 @@ data class TvShowEntity(
     override val voteCount: Int,
     override val voteAverage: Double
 
-) : MediaEntity {
+) : MediaModel {
     companion object {
         fun dummyData(): TvShowEntity =
             TvShowEntity(

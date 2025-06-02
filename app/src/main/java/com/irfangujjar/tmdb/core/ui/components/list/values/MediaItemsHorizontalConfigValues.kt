@@ -28,7 +28,7 @@ data class MediaItemsHorizontalConfigValues(
             backdropSize = BackdropSizes.w300,
         )
 
-        fun dummyDataMovie(
+        fun movieConfig(
             category: MoviesCategories,
         ): MediaItemsHorizontalConfigValues {
             var font = 12.sp
@@ -79,7 +79,7 @@ data class MediaItemsHorizontalConfigValues(
         }
 
 
-        fun dummyDataTv(
+        fun tvConfig(
             category: TvShowsCategories
         ): MediaItemsHorizontalConfigValues {
             var font = 12.sp

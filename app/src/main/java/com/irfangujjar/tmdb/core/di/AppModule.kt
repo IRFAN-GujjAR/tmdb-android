@@ -7,9 +7,13 @@ import androidx.datastore.preferences.SharedPreferencesMigration
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStoreFile
+import androidx.room.Room
+import com.google.gson.Gson
 import com.irfangujjar.tmdb.BuildConfig
 import com.irfangujjar.tmdb.core.data_store.DataStoreUtil
+import com.irfangujjar.tmdb.core.db.AppDatabase
 import com.irfangujjar.tmdb.core.urls.URLS
+import com.irfangujjar.tmdb.features.main.movies.data.data_sources.remote.api.MovieApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -53,6 +57,10 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun providesMovieApi(retrofit: Retrofit): MovieApi = retrofit.create(MovieApi::class.java)
+
+    @Provides
+    @Singleton
     fun provideDataStore(@ApplicationContext context: Context): DataStore<androidx.datastore.preferences.core.Preferences> {
         return PreferenceDataStoreFactory.create(
             corruptionHandler = ReplaceFileCorruptionHandler(
@@ -64,4 +72,18 @@ object AppModule {
         )
     }
 
+    @Provides
+    @Singleton
+    fun providesGson(): Gson = Gson()
+
+    @Provides
+    @Singleton
+    fun providesDataBase(
+        @ApplicationContext context: Context,
+    ): AppDatabase =
+        Room.databaseBuilder(
+            context = context,
+            klass = AppDatabase::class.java,
+            name = "tmdb_db"
+        ).build()
 }

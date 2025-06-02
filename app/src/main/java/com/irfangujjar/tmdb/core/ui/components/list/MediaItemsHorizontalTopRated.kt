@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.irfangujjar.tmdb.core.ui.components.TextRow
 import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
 import com.irfangujjar.tmdb.core.ui.util.MediaType
-import com.irfangujjar.tmdb.features.main.movies.domain.entities.MovieEntity
+import com.irfangujjar.tmdb.features.main.movies.domain.models.MovieModel
 import com.irfangujjar.tmdb.features.main.tv_shows.domain.entities.TvShowEntity
 
 
@@ -22,10 +22,10 @@ import com.irfangujjar.tmdb.features.main.tv_shows.domain.entities.TvShowEntity
 fun MediaItemsHorizontalTopRated(
     preview: Boolean = false,
     mediaType: MediaType,
-    movies: List<MovieEntity>?,
+    movies: List<MovieModel>?,
     tvShows: List<TvShowEntity>?
 ) {
-    Column{
+    Column {
         TextRow(title = "Top Rated") { }
         LazyRow(
             modifier = Modifier.padding(top = 4.dp),
@@ -42,7 +42,7 @@ fun MediaItemsHorizontalTopRated(
                         if (outerIndex != 0) {
                             itemIndex = (outerIndex * 4) + innerIndex
                         }
-                        var movie: MovieEntity? = null
+                        var movie: MovieModel? = null
                         var tvShow: TvShowEntity? = null
 
                         when (mediaType) {
@@ -75,7 +75,7 @@ fun MediaItemsHorizontalTopRatedPreview() {
             MediaItemsHorizontalTopRated(
                 preview = true,
                 mediaType = MediaType.Movie,
-                movies = List(20) { MovieEntity.dummyData() },
+                movies = List(20) { MovieModel.dummyData() },
                 tvShows = null,
             )
         }

@@ -3,7 +3,7 @@ package com.irfangujjar.tmdb.core.ui.components.list.values
 import com.irfangujjar.tmdb.core.ui.util.MediaType
 import com.irfangujjar.tmdb.core.ui.util.MoviesCategories
 import com.irfangujjar.tmdb.core.ui.util.TvShowsCategories
-import com.irfangujjar.tmdb.features.main.movies.domain.entities.MovieEntity
+import com.irfangujjar.tmdb.features.main.movies.domain.models.MovieModel
 import com.irfangujjar.tmdb.features.main.tv_shows.domain.entities.TvShowEntity
 
 data class MediaItemsHorizontalValues(
@@ -18,7 +18,7 @@ data class MediaItemsHorizontalValues(
 ) {
     companion object {
         fun fromMovies(
-            movies: List<MovieEntity>,
+            movies: List<MovieModel>,
             isLandscape: Boolean,
             configValues: MediaItemsHorizontalConfigValues
         ): MediaItemsHorizontalValues = fromList(
@@ -45,13 +45,13 @@ data class MediaItemsHorizontalValues(
             category: MoviesCategories,
             isLandscape: Boolean,
         ): MediaItemsHorizontalValues {
-            val movies = List(20) { MovieEntity.dummyData() }
+            val movies = List(20) { MovieModel.dummyData() }
             return fromList(
                 mediaType = MediaType.Movie,
                 movies = movies,
                 tvShows = null,
                 isLandscape = isLandscape,
-                configValues = MediaItemsHorizontalConfigValues.dummyDataMovie(
+                configValues = MediaItemsHorizontalConfigValues.movieConfig(
                     category = category
                 )
             )
@@ -67,7 +67,7 @@ data class MediaItemsHorizontalValues(
                 movies = null,
                 tvShows = tvShows,
                 isLandscape = isLandscape,
-                configValues = MediaItemsHorizontalConfigValues.dummyDataTv(
+                configValues = MediaItemsHorizontalConfigValues.tvConfig(
                     category = category
                 )
             )
@@ -75,7 +75,7 @@ data class MediaItemsHorizontalValues(
 
         private fun fromList(
             mediaType: MediaType,
-            movies: List<MovieEntity>?,
+            movies: List<MovieModel>?,
             tvShows: List<TvShowEntity>?,
             isLandscape: Boolean,
             configValues: MediaItemsHorizontalConfigValues

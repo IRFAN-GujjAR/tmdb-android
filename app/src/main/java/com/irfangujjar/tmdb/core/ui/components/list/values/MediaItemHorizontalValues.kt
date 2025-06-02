@@ -3,7 +3,7 @@ package com.irfangujjar.tmdb.core.ui.components.list.values
 import com.irfangujjar.tmdb.core.ui.util.MediaType
 import com.irfangujjar.tmdb.core.ui.util.MoviesCategories
 import com.irfangujjar.tmdb.core.ui.util.TvShowsCategories
-import com.irfangujjar.tmdb.features.main.movies.domain.entities.MovieEntity
+import com.irfangujjar.tmdb.features.main.movies.domain.models.MovieModel
 import com.irfangujjar.tmdb.features.main.tv_shows.domain.entities.TvShowEntity
 
 data class MediaItemHorizontalValues(
@@ -38,7 +38,7 @@ data class MediaItemHorizontalValues(
             category: MoviesCategories,
             isLandscape: Boolean
         ): MediaItemHorizontalValues {
-            val movie = MovieEntity.dummyData()
+            val movie = MovieModel.dummyData()
             return MediaItemHorizontalValues(
                 mediaType = MediaType.Movie,
                 mediaId = movie.id,
@@ -47,7 +47,7 @@ data class MediaItemHorizontalValues(
                 posterPath = movie.posterPath,
                 backdropPath = movie.backdropPath,
                 isLandscape = isLandscape,
-                configValues = MediaItemsHorizontalConfigValues.dummyDataMovie(
+                configValues = MediaItemsHorizontalConfigValues.movieConfig(
                     category
                 ),
                 isTopRated = category == MoviesCategories.TopRated
@@ -67,7 +67,7 @@ data class MediaItemHorizontalValues(
                 posterPath = tvShow.posterPath,
                 backdropPath = tvShow.backdropPath,
                 isLandscape = isLandscape,
-                configValues = MediaItemsHorizontalConfigValues.dummyDataTv(
+                configValues = MediaItemsHorizontalConfigValues.tvConfig(
                     category
                 ),
                 isTopRated = category == TvShowsCategories.TopRated

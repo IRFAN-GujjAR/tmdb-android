@@ -31,30 +31,31 @@ import com.irfangujjar.tmdb.core.ui.util.getMovieGenres
 import com.irfangujjar.tmdb.core.ui.util.getTvShowsGenres
 import com.irfangujjar.tmdb.core.ui.util.imageType
 import com.irfangujjar.tmdb.core.ui.util.isMovie
-import com.irfangujjar.tmdb.features.main.movies.domain.entities.MovieEntity
+import com.irfangujjar.tmdb.features.main.movies.domain.models.MovieModel
 import com.irfangujjar.tmdb.features.main.tv_shows.domain.entities.TvShowEntity
 
 @Composable
 fun MediaItemHorizontalTopRated(
     preview: Boolean = false,
     type: MediaType,
-    movie: MovieEntity?,
+    movie: MovieModel?,
     tvShow: TvShowEntity?
 ) {
 
     val posterPath: String?
     val title: String
     val genreIds: List<Int>
-    when(type){
+    when (type) {
         MediaType.Movie -> {
-            posterPath=movie!!.posterPath
-            title=movie.title
-            genreIds=movie.genreIds
+            posterPath = movie!!.posterPath
+            title = movie.title
+            genreIds = movie.genreIds
         }
+
         MediaType.TvShow -> {
-            posterPath=tvShow!!.posterPath
-            title=tvShow.name
-            genreIds=tvShow.genreIds
+            posterPath = tvShow!!.posterPath
+            title = tvShow.name
+            genreIds = tvShow.genreIds
         }
     }
 
@@ -74,7 +75,9 @@ fun MediaItemHorizontalTopRated(
             backdropSize = BackdropSizes.w300,
         )
         Column(
-            modifier = Modifier.padding(start = 8.dp).width(210.dp),
+            modifier = Modifier
+                .padding(start = 8.dp)
+                .width(210.dp),
             horizontalAlignment = Alignment.Start
         ) {
             Text(
@@ -113,7 +116,7 @@ private fun MediaItemHorizontalTopRatedPreview() {
             MediaItemHorizontalTopRated(
                 preview = true,
                 type = MediaType.Movie,
-                movie = MovieEntity.dummyData(),
+                movie = MovieModel.dummyData(),
                 tvShow = null
             )
         }
