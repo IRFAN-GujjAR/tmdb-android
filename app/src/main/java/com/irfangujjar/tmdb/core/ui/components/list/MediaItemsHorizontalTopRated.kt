@@ -37,10 +37,10 @@ fun MediaItemsHorizontalTopRated(
         ) {
             items(4) { outerIndex ->
                 Column(modifier = Modifier.width(300.dp)) {
-                    repeat(4) { innerIndex ->
+                    repeat(5) { innerIndex ->
                         var itemIndex = innerIndex
                         if (outerIndex != 0) {
-                            itemIndex = (outerIndex * 4) + innerIndex
+                            itemIndex = (outerIndex * 5) + innerIndex
                         }
                         var movie: MovieModel? = null
                         var tvShow: TvShowModel? = null
