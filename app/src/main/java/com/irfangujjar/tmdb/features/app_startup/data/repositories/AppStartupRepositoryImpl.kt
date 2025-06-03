@@ -12,7 +12,7 @@ class AppStartupRepositoryImpl(
         val appStartupData = localDS.loadAppStartupData()
         var userTheme = UserTheme.SYSTEM
         if (appStartupData.userTheme != null) {
-            userTheme = UserTheme.fromId(appStartupData.userId!!)
+            userTheme = UserTheme.fromId(appStartupData.userTheme)
         }
         return AppStartupEntity(
             isAppStartedFirstTime = appStartupData.isAppStartedFirstTime,
