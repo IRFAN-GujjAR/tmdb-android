@@ -15,7 +15,7 @@ import com.irfangujjar.tmdb.core.api.safeApiCall
 import com.irfangujjar.tmdb.core.error.ErrorEntity
 import com.irfangujjar.tmdb.core.error.ErrorType
 import com.irfangujjar.tmdb.core.urls.URLS
-import com.irfangujjar.tmdb.features.app_startup.domain.usecase.AppStartupUseCaseSave
+import com.irfangujjar.tmdb.features.app_startup.domain.usecases.AppStartupUseCaseSave
 import com.irfangujjar.tmdb.features.login.domain.entities.SessionEntity
 import com.irfangujjar.tmdb.features.login.domain.usecase.LoginUseCase
 import com.irfangujjar.tmdb.features.login.domain.usecase.params.LoginParams

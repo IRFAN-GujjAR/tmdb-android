@@ -2,11 +2,11 @@ package com.irfangujjar.tmdb.core.di
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import com.irfangujjar.tmdb.features.app_startup.data.data_source.local.AppStartupLocalDataSourceImpl
-import com.irfangujjar.tmdb.features.app_startup.data.repositories.AppStartupRepositoryImpl
-import com.irfangujjar.tmdb.features.app_startup.domain.repositories.AppStartupRepository
-import com.irfangujjar.tmdb.features.app_startup.domain.usecase.AppStartupUseCaseLoadData
-import com.irfangujjar.tmdb.features.app_startup.domain.usecase.AppStartupUseCaseSave
+import com.irfangujjar.tmdb.features.app_startup.data.data_sources.local.AppStartupLocalDataSourceImpl
+import com.irfangujjar.tmdb.features.app_startup.data.repos.AppStartupRepoImpl
+import com.irfangujjar.tmdb.features.app_startup.domain.repos.AppStartupRepo
+import com.irfangujjar.tmdb.features.app_startup.domain.usecases.AppStartupUseCaseLoadData
+import com.irfangujjar.tmdb.features.app_startup.domain.usecases.AppStartupUseCaseSave
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,8 +19,8 @@ class AppStartupModule {
 
     @Provides
     @ViewModelScoped
-    fun providesRepo(dataStore: DataStore<Preferences>): AppStartupRepository =
-        AppStartupRepositoryImpl(
+    fun providesRepo(dataStore: DataStore<Preferences>): AppStartupRepo =
+        AppStartupRepoImpl(
             localDS = AppStartupLocalDataSourceImpl(
                 dataStore = dataStore
             )
@@ -28,14 +28,14 @@ class AppStartupModule {
 
     @Provides
     @ViewModelScoped
-    fun providesUseCaseLoadData(repo: AppStartupRepository): AppStartupUseCaseLoadData =
+    fun providesUseCaseLoadData(repo: AppStartupRepo): AppStartupUseCaseLoadData =
         AppStartupUseCaseLoadData(
             repo = repo
         )
 
     @Provides
     @ViewModelScoped
-    fun providesUseCaseSave(repo: AppStartupRepository): AppStartupUseCaseSave =
+    fun providesUseCaseSave(repo: AppStartupRepo): AppStartupUseCaseSave =
         AppStartupUseCaseSave(
             repo = repo
         )

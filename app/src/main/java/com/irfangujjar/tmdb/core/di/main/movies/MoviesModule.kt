@@ -4,8 +4,8 @@ import com.irfangujjar.tmdb.core.db.AppDatabase
 import com.irfangujjar.tmdb.features.main.movies.data.data_sources.local.MoviesLocalDataSourceImpl
 import com.irfangujjar.tmdb.features.main.movies.data.data_sources.remote.MoviesRemoteDataSourceImpl
 import com.irfangujjar.tmdb.features.main.movies.data.data_sources.remote.api.MovieApi
-import com.irfangujjar.tmdb.features.main.movies.data.repositories.MoviesRepositoryImpl
-import com.irfangujjar.tmdb.features.main.movies.domain.repositories.MoviesRepository
+import com.irfangujjar.tmdb.features.main.movies.data.repos.MoviesRepoImpl
+import com.irfangujjar.tmdb.features.main.movies.domain.repos.MoviesRepo
 import com.irfangujjar.tmdb.features.main.movies.domain.usecases.MoviesUseCaseLoad
 import com.irfangujjar.tmdb.features.main.movies.domain.usecases.MoviesUseCaseWatch
 import dagger.Module
@@ -23,19 +23,19 @@ class MoviesModule {
     fun providesRepo(
         db: AppDatabase,
         movieApi: MovieApi
-    ): MoviesRepository =
-        MoviesRepositoryImpl(
+    ): MoviesRepo =
+        MoviesRepoImpl(
             localDS = MoviesLocalDataSourceImpl(dao = db.moviesDao()),
             remoteDS = MoviesRemoteDataSourceImpl(api = movieApi)
         )
 
     @Provides
     @ViewModelScoped
-    fun providesUseCaseWatch(repo: MoviesRepository): MoviesUseCaseWatch =
+    fun providesUseCaseWatch(repo: MoviesRepo): MoviesUseCaseWatch =
         MoviesUseCaseWatch(repo = repo)
 
     @Provides
     @ViewModelScoped
-    fun providesUseCaseLoad(repo: MoviesRepository): MoviesUseCaseLoad =
+    fun providesUseCaseLoad(repo: MoviesRepo): MoviesUseCaseLoad =
         MoviesUseCaseLoad(repo = repo)
 }

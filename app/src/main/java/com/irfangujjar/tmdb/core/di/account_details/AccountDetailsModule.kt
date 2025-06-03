@@ -2,11 +2,11 @@ package com.irfangujjar.tmdb.core.di.account_details
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import com.irfangujjar.tmdb.features.main.tmdb.data.data_source.local.AccountDetailsLocalDataSourceImpl
-import com.irfangujjar.tmdb.features.main.tmdb.data.data_source.remote.AccountDetailsRemoteDataSourceImpl
-import com.irfangujjar.tmdb.features.main.tmdb.data.data_source.remote.api.AccountDetailsApi
-import com.irfangujjar.tmdb.features.main.tmdb.data.repository.AccountDetailsRepositoryImpl
-import com.irfangujjar.tmdb.features.main.tmdb.domain.repository.AccountDetailsRepository
+import com.irfangujjar.tmdb.features.main.tmdb.data.data_sources.local.AccountDetailsLocalDataSourceImpl
+import com.irfangujjar.tmdb.features.main.tmdb.data.data_sources.remote.AccountDetailsRemoteDataSourceImpl
+import com.irfangujjar.tmdb.features.main.tmdb.data.data_sources.remote.api.AccountDetailsApi
+import com.irfangujjar.tmdb.features.main.tmdb.data.repos.AccountDetailsRepoImpl
+import com.irfangujjar.tmdb.features.main.tmdb.domain.repos.AccountDetailsRepo
 import com.irfangujjar.tmdb.features.main.tmdb.domain.usecase.AccountDetailsUseCaseLoad
 import com.irfangujjar.tmdb.features.main.tmdb.domain.usecase.AccountDetailsUseCaseLoadWithoutId
 import com.irfangujjar.tmdb.features.main.tmdb.domain.usecase.AccountDetailsUseCaseWatch
@@ -26,8 +26,8 @@ class AccountDetailsModule {
     fun providesRepo(
         retrofit: Retrofit,
         dataStore: DataStore<Preferences>
-    ): AccountDetailsRepository =
-        AccountDetailsRepositoryImpl(
+    ): AccountDetailsRepo =
+        AccountDetailsRepoImpl(
             remoteDataSource = AccountDetailsRemoteDataSourceImpl(
                 api = retrofit.create(AccountDetailsApi::class.java)
             ),
@@ -40,7 +40,7 @@ class AccountDetailsModule {
     @Provides
     @ViewModelScoped
     fun providesUseCaseLoad(
-        repo: AccountDetailsRepository
+        repo: AccountDetailsRepo
     ): AccountDetailsUseCaseLoad =
         AccountDetailsUseCaseLoad(
             repo = repo
@@ -49,7 +49,7 @@ class AccountDetailsModule {
     @Provides
     @ViewModelScoped
     fun providesUseCaseLoadWithoutId(
-        repo: AccountDetailsRepository
+        repo: AccountDetailsRepo
     ): AccountDetailsUseCaseLoadWithoutId =
         AccountDetailsUseCaseLoadWithoutId(
             repo = repo
@@ -58,7 +58,7 @@ class AccountDetailsModule {
     @Provides
     @ViewModelScoped
     fun providesUseCaseWatch(
-        repo: AccountDetailsRepository
+        repo: AccountDetailsRepo
     ): AccountDetailsUseCaseWatch =
         AccountDetailsUseCaseWatch(
             repo = repo

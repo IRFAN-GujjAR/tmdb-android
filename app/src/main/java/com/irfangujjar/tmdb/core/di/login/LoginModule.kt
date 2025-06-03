@@ -2,10 +2,10 @@ package com.irfangujjar.tmdb.core.di.login
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import com.irfangujjar.tmdb.features.login.data.data_source.local.LoginLocalDataSourceImpl
-import com.irfangujjar.tmdb.features.login.data.data_source.remote.LoginRemoteDataSourceImpl
-import com.irfangujjar.tmdb.features.login.data.data_source.remote.api.LoginApi
-import com.irfangujjar.tmdb.features.login.data.repository.LoginRepositoryImpl
+import com.irfangujjar.tmdb.features.login.data.data_sources.local.LoginLocalDataSourceImpl
+import com.irfangujjar.tmdb.features.login.data.data_sources.remote.LoginRemoteDataSourceImpl
+import com.irfangujjar.tmdb.features.login.data.data_sources.remote.api.LoginApi
+import com.irfangujjar.tmdb.features.login.data.repos.LoginRepoImpl
 import com.irfangujjar.tmdb.features.login.domain.usecase.LoginUseCase
 import dagger.Module
 import dagger.Provides
@@ -21,7 +21,7 @@ class LoginModule {
     @ViewModelScoped
     fun providesLoginUseCase(retrofit: Retrofit, dataSource: DataStore<Preferences>): LoginUseCase =
         LoginUseCase(
-            repo = LoginRepositoryImpl(
+            repo = LoginRepoImpl(
                 remoteDataSource = LoginRemoteDataSourceImpl(
                     api = retrofit.create(LoginApi::class.java)
                 ),

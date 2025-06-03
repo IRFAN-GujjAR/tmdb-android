@@ -12,6 +12,7 @@ import com.irfangujjar.tmdb.BuildConfig
 import com.irfangujjar.tmdb.core.data_store.DataStoreUtil
 import com.irfangujjar.tmdb.core.db.AppDatabase
 import com.irfangujjar.tmdb.core.urls.URLS
+import com.irfangujjar.tmdb.features.main.celebs.data.data_sources.remote.api.CelebApi
 import com.irfangujjar.tmdb.features.main.movies.data.data_sources.remote.api.MovieApi
 import com.irfangujjar.tmdb.features.main.tv_shows.data.data_sources.remote.api.TvShowApi
 import dagger.Module
@@ -62,6 +63,10 @@ object AppModule {
     @Provides
     @Singleton
     fun providesTvShowApi(retrofit: Retrofit): TvShowApi = retrofit.create(TvShowApi::class.java)
+
+    @Provides
+    @Singleton
+    fun providesCelebApi(retrofit: Retrofit): CelebApi = retrofit.create(CelebApi::class.java)
 
     @Provides
     @Singleton

@@ -11,6 +11,7 @@ import com.irfangujjar.tmdb.features.main.tv_shows.domain.usecases.TvShowsUseCas
 import com.irfangujjar.tmdb.features.main.tv_shows.domain.usecases.TvShowsUseCaseWatch
 import com.irfangujjar.tmdb.features.main.tv_shows.presentation.viewstate.TvShowsState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,6 +29,8 @@ class TvShowsViewModel @Inject constructor(
     var isRefreshing by mutableStateOf(false)
         private set
 
+    private val firstEmissionDeferred = CompletableDeferred<Unit>()
+
     init {
         viewModelScope.launch(Dispatchers.IO) {
             watchTvShows()
@@ -42,6 +45,8 @@ class TvShowsViewModel @Inject constructor(
             if (tvShows != null) {
                 _state.value = TvShowsState.Loaded(tvShows = tvShows)
             }
+            if (!firstEmissionDeferred.isCompleted)
+                firstEmissionDeferred.complete(Unit)
         }
     }
 
@@ -52,6 +57,7 @@ class TvShowsViewModel @Inject constructor(
             }
             tvShowsUseCaseLoad.invoke()
         }
+        firstEmissionDeferred.await()
         if (result is ResultWrapper.Error) {
             if (state.value is TvShowsState.Loaded) {
                 _state.value = TvShowsState.ErrorWithCache(

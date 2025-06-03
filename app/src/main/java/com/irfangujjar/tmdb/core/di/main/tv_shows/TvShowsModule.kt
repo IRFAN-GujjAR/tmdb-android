@@ -4,8 +4,8 @@ import com.irfangujjar.tmdb.core.db.AppDatabase
 import com.irfangujjar.tmdb.features.main.tv_shows.data.data_sources.local.TvShowsLocalDataSourceImpl
 import com.irfangujjar.tmdb.features.main.tv_shows.data.data_sources.remote.TvShowsRemoteDataSourceImpl
 import com.irfangujjar.tmdb.features.main.tv_shows.data.data_sources.remote.api.TvShowApi
-import com.irfangujjar.tmdb.features.main.tv_shows.data.repositories.TvShowsRepositoryImpl
-import com.irfangujjar.tmdb.features.main.tv_shows.domain.repositories.TvShowsRepository
+import com.irfangujjar.tmdb.features.main.tv_shows.data.repos.TvShowsRepoImpl
+import com.irfangujjar.tmdb.features.main.tv_shows.domain.repos.TvShowsRepo
 import com.irfangujjar.tmdb.features.main.tv_shows.domain.usecases.TvShowsUseCaseLoad
 import com.irfangujjar.tmdb.features.main.tv_shows.domain.usecases.TvShowsUseCaseWatch
 import dagger.Module
@@ -20,19 +20,19 @@ class TvShowsModule {
 
     @Provides
     @ViewModelScoped
-    fun providesRepo(db: AppDatabase, api: TvShowApi): TvShowsRepository = TvShowsRepositoryImpl(
+    fun providesRepo(db: AppDatabase, api: TvShowApi): TvShowsRepo = TvShowsRepoImpl(
         localDS = TvShowsLocalDataSourceImpl(dao = db.tvShowsDao()),
         remoteDS = TvShowsRemoteDataSourceImpl(api = api)
     )
 
     @Provides
     @ViewModelScoped
-    fun providesUseCaseWatch(repo: TvShowsRepository): TvShowsUseCaseWatch =
+    fun providesUseCaseWatch(repo: TvShowsRepo): TvShowsUseCaseWatch =
         TvShowsUseCaseWatch(repo = repo)
 
     @Provides
     @ViewModelScoped
-    fun providesUseCaseLoad(repo: TvShowsRepository): TvShowsUseCaseLoad =
+    fun providesUseCaseLoad(repo: TvShowsRepo): TvShowsUseCaseLoad =
         TvShowsUseCaseLoad(repo = repo)
 
 }

@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.irfangujjar.tmdb.UserSession
 import com.irfangujjar.tmdb.core.ui.theme.UserTheme
-import com.irfangujjar.tmdb.features.app_startup.domain.usecase.AppStartupUseCaseLoadData
+import com.irfangujjar.tmdb.features.app_startup.domain.usecases.AppStartupUseCaseLoadData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

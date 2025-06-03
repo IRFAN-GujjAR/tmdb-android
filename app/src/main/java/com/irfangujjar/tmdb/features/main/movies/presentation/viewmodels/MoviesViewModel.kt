@@ -11,6 +11,7 @@ import com.irfangujjar.tmdb.features.main.movies.domain.usecases.MoviesUseCaseLo
 import com.irfangujjar.tmdb.features.main.movies.domain.usecases.MoviesUseCaseWatch
 import com.irfangujjar.tmdb.features.main.movies.presentation.viewstate.MoviesState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -29,8 +30,11 @@ class MoviesViewModel @Inject constructor(
     var isRefreshing by mutableStateOf(false)
         private set
 
+    private val firstEmissionDeferred = CompletableDeferred<Unit>()
+
+
     init {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             watchMovies()
         }
         viewModelScope.launch(Dispatchers.IO) {
@@ -43,6 +47,8 @@ class MoviesViewModel @Inject constructor(
             if (movies != null) {
                 _state.value = MoviesState.Loaded(movies = movies)
             }
+            if (!firstEmissionDeferred.isCompleted)
+                firstEmissionDeferred.complete(Unit)
         }
     }
 
@@ -53,6 +59,7 @@ class MoviesViewModel @Inject constructor(
             }
             moviesUseCaseLoad.invoke()
         }
+        firstEmissionDeferred.await()
         if (result is ResultWrapper.Error) {
             if (state.value is MoviesState.Loaded) {
                 _state.value = MoviesState.ErrorWithCache(
