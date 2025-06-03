@@ -11,7 +11,7 @@ import com.irfangujjar.tmdb.core.ui.util.TvShowsCategories
 
 
 data class MediaItemsHorizontalConfigValues(
-//    val listViewHeight: Dp,
+    val listViewHeight: Dp,
     val listItemWidth: Dp,
     val imageHeight: Dp,
     val font: TextUnit,
@@ -20,7 +20,7 @@ data class MediaItemsHorizontalConfigValues(
 ) {
     companion object {
         fun fromDefault() = MediaItemsHorizontalConfigValues(
-//            listViewHeight = 205.dp,
+            listViewHeight = 205.dp,
             listItemWidth = 99.dp,
             imageHeight = 139.dp,
             font = 12.sp,
@@ -33,43 +33,43 @@ data class MediaItemsHorizontalConfigValues(
         ): MediaItemsHorizontalConfigValues {
             var font = 12.sp
             var listItemWidth = 99.dp
-//            var listViewHeight = 200.dp
+            var listViewHeight = 210.dp
             var imageHeight = 139.dp
             var posterSize = PosterSizes.w185
             when (category) {
                 MoviesCategories.Popular -> {
                     font = 13.sp
                     listItemWidth = 107.dp
-//                    listViewHeight = 220.dp
+                    listViewHeight = 220.dp
                     imageHeight = 150.dp
                 }
 
                 MoviesCategories.InTheatres -> {
                     font = 15.sp
                     listItemWidth = 209.dp
-//                    listViewHeight = 170.dp
+                    listViewHeight = 170.dp
                     imageHeight = 122.dp
                 }
 
                 MoviesCategories.TopRated -> {
                     listItemWidth = 120.dp
-//                    listViewHeight = 240.dp
+                    listViewHeight = 240.dp
                     imageHeight = 180.dp
                     posterSize = PosterSizes.w92
                 }
 
                 MoviesCategories.DetailsRecommended -> {
-//                    listViewHeight = 205.dp
+                    listViewHeight = 205.dp
                 }
 
                 MoviesCategories.DetailsSimilar -> {
-//                    listViewHeight = 205.dp
+                    listViewHeight = 205.dp
                 }
 
                 else -> {}
             }
             return MediaItemsHorizontalConfigValues(
-//                listViewHeight = listViewHeight,
+                listViewHeight = listViewHeight,
                 listItemWidth = listItemWidth,
                 imageHeight = imageHeight,
                 font = font,
@@ -84,32 +84,29 @@ data class MediaItemsHorizontalConfigValues(
         ): MediaItemsHorizontalConfigValues {
             var font = 12.sp
             var listItemWidth = 99.dp
-//            var listViewHeight = 205.dp
+            var listViewHeight = 210.dp
             var imageHeight = 139.dp
             var posterSize = PosterSizes.w185
             when (category) {
                 TvShowsCategories.AiringToday -> {
                     font = 15.sp
                     listItemWidth = 209.dp
-//                    listViewHeight = 170.dp
+                    listViewHeight = 170.dp
                     imageHeight = 122.dp
 
                 }
-
-                TvShowsCategories.Trending -> {
-//                    listViewHeight = 200.dp
-                }
+                
 
                 TvShowsCategories.TopRated -> {
                     listItemWidth = 120.dp
-//                    listViewHeight = 240.dp
+                    listViewHeight = 240.dp
                     imageHeight = 180.dp
                     posterSize = PosterSizes.w92
                 }
 
                 TvShowsCategories.Popular -> {
                     listItemWidth = 107.dp
-//                    listViewHeight = 220.dp
+                    listViewHeight = 220.dp
                     imageHeight = 150.dp
                 }
 
@@ -117,7 +114,7 @@ data class MediaItemsHorizontalConfigValues(
             }
 
             return MediaItemsHorizontalConfigValues(
-//                listViewHeight = listViewHeight,
+                listViewHeight = listViewHeight,
                 listItemWidth = listItemWidth,
                 imageHeight = imageHeight,
                 font = font,
