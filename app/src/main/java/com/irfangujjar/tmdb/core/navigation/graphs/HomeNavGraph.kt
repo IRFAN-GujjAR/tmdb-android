@@ -44,7 +44,9 @@ fun HomeNavGraph(
                     )
 
                     BottomNavBarScreen.Celebs -> CelebsScreen(
-                        paddingValues = paddingValues
+                        paddingValues = paddingValues,
+                        userTheme = userTheme,
+                        snackbarHostState = snackbarHostState
                     )
 
                     BottomNavBarScreen.Search -> SearchScreen(
