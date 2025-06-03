@@ -187,7 +187,6 @@ class LoginViewModel @Inject constructor(
                 withContext(Dispatchers.IO) {
                     appStartupUseCaseSave.invoke()
                 }
-                _continueState.value = LoginContinueState.Idle
                 navigateToMainScreen()
             } catch (e: Exception) {
                 Log.e("LoginViewModel", "Exception :$e")
