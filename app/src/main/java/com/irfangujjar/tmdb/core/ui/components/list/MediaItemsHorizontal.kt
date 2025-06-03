@@ -20,7 +20,6 @@ import com.irfangujjar.tmdb.core.ui.util.MoviesCategories
 @Composable
 fun MediaItemsHorizontal(
     preview: Boolean = false, values: MediaItemsHorizontalValues,
-    isTopRated: Boolean = false,
     title: String,
     onSeeAllClick: () -> Unit
 ) {
@@ -40,7 +39,6 @@ fun MediaItemsHorizontal(
                     values = MediaItemHorizontalValues.fromListValues(
                         listValues = values,
                         index = index,
-                        isTopRated = isTopRated
                     )
                 )
             }
@@ -60,7 +58,6 @@ private fun MediaItemsHorizontalPreview() {
                     isLandscape = false
                 ),
                 title = MoviesCategories.Popular.name,
-                isTopRated = false
             ) {}
         }
     }

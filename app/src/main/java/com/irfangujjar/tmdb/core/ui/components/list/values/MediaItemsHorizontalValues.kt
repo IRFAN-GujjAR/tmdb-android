@@ -4,7 +4,7 @@ import com.irfangujjar.tmdb.core.ui.util.MediaType
 import com.irfangujjar.tmdb.core.ui.util.MoviesCategories
 import com.irfangujjar.tmdb.core.ui.util.TvShowsCategories
 import com.irfangujjar.tmdb.features.main.movies.domain.models.MovieModel
-import com.irfangujjar.tmdb.features.main.tv_shows.domain.entities.TvShowEntity
+import com.irfangujjar.tmdb.features.main.tv_shows.domain.models.TvShowModel
 
 data class MediaItemsHorizontalValues(
     val mediaType: MediaType,
@@ -30,7 +30,7 @@ data class MediaItemsHorizontalValues(
         )
 
         fun fromTvShows(
-            tvShows: List<TvShowEntity>,
+            tvShows: List<TvShowModel>,
             isLandscape: Boolean,
             configValues: MediaItemsHorizontalConfigValues
         ): MediaItemsHorizontalValues = fromList(
@@ -61,9 +61,9 @@ data class MediaItemsHorizontalValues(
             category: TvShowsCategories,
             isLandscape: Boolean,
         ): MediaItemsHorizontalValues {
-            val tvShows = List(20) { TvShowEntity.dummyData() }
+            val tvShows = List(20) { TvShowModel.dummyData() }
             return fromList(
-                mediaType = MediaType.Movie,
+                mediaType = MediaType.TvShow,
                 movies = null,
                 tvShows = tvShows,
                 isLandscape = isLandscape,
@@ -76,7 +76,7 @@ data class MediaItemsHorizontalValues(
         private fun fromList(
             mediaType: MediaType,
             movies: List<MovieModel>?,
-            tvShows: List<TvShowEntity>?,
+            tvShows: List<TvShowModel>?,
             isLandscape: Boolean,
             configValues: MediaItemsHorizontalConfigValues
         ): MediaItemsHorizontalValues {

@@ -8,12 +8,12 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.room.Room
-import com.google.gson.Gson
 import com.irfangujjar.tmdb.BuildConfig
 import com.irfangujjar.tmdb.core.data_store.DataStoreUtil
 import com.irfangujjar.tmdb.core.db.AppDatabase
 import com.irfangujjar.tmdb.core.urls.URLS
 import com.irfangujjar.tmdb.features.main.movies.data.data_sources.remote.api.MovieApi
+import com.irfangujjar.tmdb.features.main.tv_shows.data.data_sources.remote.api.TvShowApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -61,6 +61,10 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun providesTvShowApi(retrofit: Retrofit): TvShowApi = retrofit.create(TvShowApi::class.java)
+
+    @Provides
+    @Singleton
     fun provideDataStore(@ApplicationContext context: Context): DataStore<androidx.datastore.preferences.core.Preferences> {
         return PreferenceDataStoreFactory.create(
             corruptionHandler = ReplaceFileCorruptionHandler(
@@ -71,10 +75,6 @@ object AppModule {
             produceFile = { context.preferencesDataStoreFile(DataStoreUtil.DATA_STORE_NAME) }
         )
     }
-
-    @Provides
-    @Singleton
-    fun providesGson(): Gson = Gson()
 
     @Provides
     @Singleton

@@ -7,12 +7,12 @@ import com.irfangujjar.tmdb.features.main.movies.domain.models.MoviesListModel
 object MoviesModelConverters {
 
     @TypeConverter
-    fun fromMoviesListModel(response: MoviesListModel?): String? {
-        return GsonProvider.gson.toJson(response)
-    }
+    fun fromMoviesListModel(moviesList: MoviesListModel?): String? =
+        GsonProvider.gson.toJson(moviesList)
+
 
     @TypeConverter
-    fun toMoviesListModel(json: String?): MoviesListModel? {
-        return GsonProvider.gson.fromJson(json, MoviesListModel::class.java)
-    }
+    fun toMoviesListModel(json: String?): MoviesListModel? =
+        GsonProvider.gson.fromJson(json, MoviesListModel::class.java)
+
 }

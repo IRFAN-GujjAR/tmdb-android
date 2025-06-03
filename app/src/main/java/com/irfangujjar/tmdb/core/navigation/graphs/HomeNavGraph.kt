@@ -38,7 +38,9 @@ fun HomeNavGraph(
                     )
 
                     BottomNavBarScreen.TVShows -> TvShowsScreen(
-                        paddingValues = paddingValues
+                        paddingValues = paddingValues,
+                        userTheme = userTheme,
+                        snackbarHostState = snackbarHostState
                     )
 
                     BottomNavBarScreen.Celebs -> CelebsScreen(

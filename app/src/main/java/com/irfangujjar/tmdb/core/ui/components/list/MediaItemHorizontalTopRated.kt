@@ -32,14 +32,14 @@ import com.irfangujjar.tmdb.core.ui.util.getTvShowsGenres
 import com.irfangujjar.tmdb.core.ui.util.imageType
 import com.irfangujjar.tmdb.core.ui.util.isMovie
 import com.irfangujjar.tmdb.features.main.movies.domain.models.MovieModel
-import com.irfangujjar.tmdb.features.main.tv_shows.domain.entities.TvShowEntity
+import com.irfangujjar.tmdb.features.main.tv_shows.domain.models.TvShowModel
 
 @Composable
 fun MediaItemHorizontalTopRated(
     preview: Boolean = false,
     type: MediaType,
     movie: MovieModel?,
-    tvShow: TvShowEntity?
+    tvShow: TvShowModel?
 ) {
 
     val posterPath: String?

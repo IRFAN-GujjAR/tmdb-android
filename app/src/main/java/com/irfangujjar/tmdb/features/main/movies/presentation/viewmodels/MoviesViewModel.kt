@@ -12,7 +12,6 @@ import com.irfangujjar.tmdb.features.main.movies.domain.usecases.MoviesUseCaseWa
 import com.irfangujjar.tmdb.features.main.movies.presentation.viewstate.MoviesState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -31,7 +30,7 @@ class MoviesViewModel @Inject constructor(
         private set
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             watchMovies()
         }
         viewModelScope.launch(Dispatchers.IO) {
@@ -49,7 +48,7 @@ class MoviesViewModel @Inject constructor(
 
     private suspend fun loadMovies() {
         val result = safeApiCall {
-            if (state.value !is MoviesState.Error) {
+            if (state.value is MoviesState.Error) {
                 _state.value = MoviesState.Loading
             }
             moviesUseCaseLoad.invoke()
@@ -73,10 +72,9 @@ class MoviesViewModel @Inject constructor(
     }
 
     fun refresh() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             isRefreshing = true
-            delay(4000L)
-//            loadMovies()
+            loadMovies()
             isRefreshing = false
         }
     }

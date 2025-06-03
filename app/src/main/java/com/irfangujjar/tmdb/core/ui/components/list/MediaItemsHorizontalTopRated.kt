@@ -15,7 +15,7 @@ import com.irfangujjar.tmdb.core.ui.components.TextRow
 import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
 import com.irfangujjar.tmdb.core.ui.util.MediaType
 import com.irfangujjar.tmdb.features.main.movies.domain.models.MovieModel
-import com.irfangujjar.tmdb.features.main.tv_shows.domain.entities.TvShowEntity
+import com.irfangujjar.tmdb.features.main.tv_shows.domain.models.TvShowModel
 
 
 @Composable
@@ -23,7 +23,7 @@ fun MediaItemsHorizontalTopRated(
     preview: Boolean = false,
     mediaType: MediaType,
     movies: List<MovieModel>?,
-    tvShows: List<TvShowEntity>?
+    tvShows: List<TvShowModel>?
 ) {
     Column {
         TextRow(title = "Top Rated") { }
@@ -43,7 +43,7 @@ fun MediaItemsHorizontalTopRated(
                             itemIndex = (outerIndex * 4) + innerIndex
                         }
                         var movie: MovieModel? = null
-                        var tvShow: TvShowEntity? = null
+                        var tvShow: TvShowModel? = null
 
                         when (mediaType) {
                             MediaType.Movie -> {

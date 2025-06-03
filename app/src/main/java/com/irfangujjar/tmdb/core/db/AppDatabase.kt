@@ -6,9 +6,13 @@ import androidx.room.TypeConverters
 import com.irfangujjar.tmdb.features.main.movies.data.data_sources.local.db.converters.MoviesModelConverters
 import com.irfangujjar.tmdb.features.main.movies.data.data_sources.local.db.dao.MoviesDao
 import com.irfangujjar.tmdb.features.main.movies.domain.models.MoviesModel
+import com.irfangujjar.tmdb.features.main.tv_shows.data.data_sources.local.db.converters.TvShowsModelConverters
+import com.irfangujjar.tmdb.features.main.tv_shows.data.data_sources.local.db.dao.TvShowsDao
+import com.irfangujjar.tmdb.features.main.tv_shows.domain.models.TvShowsModel
 
-@Database(entities = [MoviesModel::class], version = 1)
-@TypeConverters(value = [MoviesModelConverters::class])
+@Database(entities = [MoviesModel::class, TvShowsModel::class], version = 1)
+@TypeConverters(value = [MoviesModelConverters::class, TvShowsModelConverters::class])
 abstract class AppDatabase : RoomDatabase() {
     abstract fun moviesDao(): MoviesDao
+    abstract fun tvShowsDao(): TvShowsDao
 }
