@@ -26,6 +26,7 @@ import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
 import com.irfangujjar.tmdb.core.ui.theme.UserTheme
 import com.irfangujjar.tmdb.features.main.celebs.domain.models.CelebsModel
 import com.irfangujjar.tmdb.features.main.celebs.presentation.screens.components.PopularCelebs
+import com.irfangujjar.tmdb.features.main.celebs.presentation.screens.components.TrendingCelebs
 import com.irfangujjar.tmdb.features.main.celebs.presentation.viewmodels.CelebsViewModel
 import com.irfangujjar.tmdb.features.main.celebs.presentation.viewstate.CelebsState
 
@@ -123,9 +124,9 @@ private fun CelebsScreenBody(
                     bottom = ScreenPadding.getBottomPadding()
                 )
         ) {
-            PopularCelebs(preview = preview, popularCelebs = celebs.popular)
+            PopularCelebs(preview = preview, popularCelebs = celebs.popular){}
             CustomDivider()
-
+            TrendingCelebs(preview = preview, celebs = celebs.trending.celebrities) { }
         }
     }
 }

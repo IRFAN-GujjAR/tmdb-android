@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.irfangujjar.tmdb.core.ui.ScreenPadding
 import com.irfangujjar.tmdb.core.ui.components.TextRow
 import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
 import com.irfangujjar.tmdb.core.ui.util.MediaType
@@ -30,8 +31,7 @@ fun MediaItemsHorizontalTopRated(
         LazyRow(
             modifier = Modifier.padding(top = 4.dp),
             contentPadding = PaddingValues(
-                start = 12.dp,
-                end = 12.dp
+                horizontal = ScreenPadding.getHorizontalPadding()
             ),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {

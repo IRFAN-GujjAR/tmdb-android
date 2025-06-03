@@ -15,7 +15,8 @@ import com.irfangujjar.tmdb.features.main.celebs.domain.models.CelebsListModel
 @Composable
 fun PopularCelebs(
     preview: Boolean,
-    popularCelebs: CelebsListModel
+    popularCelebs: CelebsListModel,
+    onSeeAllClick:()-> Unit
 ) {
     val size = popularCelebs.celebrities.size
     val firsListLastIndex = (size / 2) - 1
@@ -29,10 +30,9 @@ fun PopularCelebs(
                 celebs = firstList,
                 config = CelebItemHorizontalConfigValues.fromDefault()
             ),
-            title = "Popular"
-        ) {
-
-        }
+            title = "Popular",
+            onSeeAllClick = onSeeAllClick
+        )
         CelebItemsHorizontal(
             preview = preview,
             values = CelebItemsHorizontalValues.fromListValues(
@@ -52,7 +52,7 @@ private fun PopularCelebsPreview(){
                 preview = true,
                 popularCelebs = CelebsListModel(pageNo = 1, totalPages = 2,
                     celebrities = List(20) { CelebModel.dummyData() })
-            )
+            ){}
         }
     }
 }

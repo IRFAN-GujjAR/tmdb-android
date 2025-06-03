@@ -97,7 +97,7 @@ fun MediaItemHorizontalTopRated(
                 color = Color.Gray
             )
         }
-        Spacer(modifier = Modifier.weight(1f))
+        Spacer(Modifier.width(12.dp))
         Icon(
             imageVector = Icons.AutoMirrored.Default.ArrowForwardIos,
             contentDescription = null,
