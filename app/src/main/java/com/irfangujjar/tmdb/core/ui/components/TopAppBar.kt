@@ -1,5 +1,6 @@
 package com.irfangujjar.tmdb.core.ui.components
 
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -13,7 +14,8 @@ import androidx.compose.ui.graphics.Color
 @Composable
 fun CustomTopAppBar(
     title: String,
-    navigationIcon: @Composable (() -> Unit) = {}
+    navigationIcon: @Composable (() -> Unit) = {},
+    actions: @Composable RowScope.() -> Unit = {}
 ) {
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
@@ -21,6 +23,7 @@ fun CustomTopAppBar(
             titleContentColor = Color.White
         ),
         navigationIcon = navigationIcon,
+        actions = actions,
         title = {
             Text(title)
         }
