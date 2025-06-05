@@ -1,6 +1,8 @@
 package com.irfangujjar.tmdb.features.login.presentation.screens
 
+import android.content.Context
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -24,6 +26,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -42,6 +45,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.irfangujjar.tmdb.R
 import com.irfangujjar.tmdb.core.ui.ScreenPadding
 import com.irfangujjar.tmdb.core.ui.components.CustomDialogBox
+import com.irfangujjar.tmdb.core.ui.components.CustomTopAppBar
 import com.irfangujjar.tmdb.features.login.presentation.screens.components.CustomTextField
 import com.irfangujjar.tmdb.features.login.presentation.viewmodel.LoginViewModel
 import com.irfangujjar.tmdb.features.login.presentation.viewmodel.state.LoginContinueState
@@ -53,6 +57,8 @@ import com.irfangujjar.tmdb.features.login.presentation.viewmodel.state.LoginSta
 fun LoginScreen(
     viewModel: LoginViewModel = hiltViewModel<LoginViewModel>(),
     isAppStartedFirstTime: Boolean = false,
+    showBackStack: Boolean = false,
+    onBackStackPressed: () -> Unit = {},
     navigateToMainScreen: () -> Unit = {}
 ) {
     val loginState = viewModel.loginState.collectAsState()
@@ -64,6 +70,67 @@ fun LoginScreen(
     val scrollState = rememberScrollState()
     val context = LocalContext.current
 
+    if (showBackStack)
+        Scaffold(
+            topBar = {
+                CustomTopAppBar(
+                    showBackStack = true,
+                    matchSurfaceColor = true,
+                    onBackStackPressed = onBackStackPressed
+                )
+            }
+        ) { innerPadding ->
+            LoginScreenBody(
+                scrollState = scrollState,
+                viewModel = viewModel,
+                innerPadding = innerPadding,
+                isLoading = isLoading,
+                isAppStartedFirstTime = isAppStartedFirstTime,
+                navigateToMainScreen = navigateToMainScreen,
+                context = context,
+                isLoginLoading = isLoginLoading,
+                isContinueLoading = isContinueLoading,
+                showBackStack = showBackStack
+            )
+        }
+    else
+        LoginScreenBody(
+            scrollState = scrollState,
+            viewModel = viewModel,
+            isLoading = isLoading,
+            innerPadding = null,
+            isAppStartedFirstTime = isAppStartedFirstTime,
+            navigateToMainScreen = navigateToMainScreen,
+            context = context,
+            isLoginLoading = isLoginLoading,
+            isContinueLoading = isContinueLoading,
+            showBackStack = false
+        )
+    if (loginState.value is LoginState.Error) {
+        val loginStateValue = loginState.value as LoginState.Error
+        CustomDialogBox(
+            title = "Error",
+            message = loginStateValue.error.message,
+        ) {
+            viewModel.resetLoginState()
+        }
+    }
+
+}
+
+@Composable
+private fun LoginScreenBody(
+    scrollState: ScrollState,
+    viewModel: LoginViewModel,
+    showBackStack: Boolean,
+    innerPadding: PaddingValues?,
+    isLoading: Boolean,
+    isAppStartedFirstTime: Boolean,
+    navigateToMainScreen: () -> Unit,
+    context: Context,
+    isLoginLoading: Boolean,
+    isContinueLoading: Boolean
+) {
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -72,7 +139,7 @@ fun LoginScreen(
                 .verticalScroll(scrollState)
                 .statusBarsPadding()
                 .padding(
-                    ScreenPadding.getPadding()
+                    ScreenPadding.getPadding(innerPaddingValues = innerPadding)
                 ),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -114,27 +181,19 @@ fun LoginScreen(
                 },
                 isLoading = isLoading,
                 isLoginLoading = isLoginLoading,
-                isContinueLoading = isContinueLoading
+                isContinueLoading = isContinueLoading,
+                showBackStack = showBackStack
             )
         }
 
     }
-    if (loginState.value is LoginState.Error) {
-        val loginStateValue = loginState.value as LoginState.Error
-        CustomDialogBox(
-            title = "Error",
-            message = loginStateValue.error.message,
-        ) {
-            viewModel.resetLoginState()
-        }
-    }
-
 }
 
 @Composable
 private fun LoginScreenButtons(
     onSignInClick: () -> Unit,
     onSignUpClick: () -> Unit,
+    showBackStack: Boolean,
     onContinueWithoutSignInClick: () -> Unit,
     isLoading: Boolean,
     isLoginLoading: Boolean,
@@ -165,38 +224,42 @@ private fun LoginScreenButtons(
             Text("SIGN UP")
         }
     }
-    Spacer(modifier = Modifier.height(8.dp))
-    Row(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 4.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        HorizontalDivider(
-            modifier = Modifier.weight(1f)
-        )
-        Text(
-            "OR",
-            modifier = Modifier.padding(horizontal = 12.dp)
-        )
-        HorizontalDivider(
-            modifier = Modifier.weight(1f)
-        )
+    if (!showBackStack)
+        Spacer(modifier = Modifier.height(8.dp))
+    if (!showBackStack)
+        Row(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            HorizontalDivider(
+                modifier = Modifier.weight(1f)
+            )
+            Text(
+                "OR",
+                modifier = Modifier.padding(horizontal = 12.dp)
+            )
+            HorizontalDivider(
+                modifier = Modifier.weight(1f)
+            )
 
-    }
-    Spacer(modifier = Modifier.height(16.dp))
-    Button(
-        onClick = onContinueWithoutSignInClick,
-        modifier = Modifier.fillMaxWidth(),
-        contentPadding = PaddingValues(vertical = 14.dp),
-        enabled = !isLoading
-    ) {
-        if (isContinueLoading)
-            CircularProgressIndicator()
-        else
-            Text("CONTINUE WITHOUT SIGN IN")
-    }
+        }
+    if (!showBackStack)
+        Spacer(modifier = Modifier.height(16.dp))
+    if (!showBackStack)
+        Button(
+            onClick = onContinueWithoutSignInClick,
+            modifier = Modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(vertical = 14.dp),
+            enabled = !isLoading
+        ) {
+            if (isContinueLoading)
+                CircularProgressIndicator()
+            else
+                Text("CONTINUE WITHOUT SIGN IN")
+        }
 }
 
 @Composable

@@ -1,7 +1,11 @@
 package com.irfangujjar.tmdb.core.ui.components
 
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -13,19 +17,31 @@ import androidx.compose.ui.graphics.Color
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomTopAppBar(
-    title: String,
-    navigationIcon: @Composable (() -> Unit) = {},
-    actions: @Composable RowScope.() -> Unit = {}
+    title: String? = null,
+    actions: @Composable RowScope.() -> Unit = {},
+    showBackStack: Boolean = false,
+    onBackStackPressed: () -> Unit = {},
+    matchSurfaceColor: Boolean = false
 ) {
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.background,
+            containerColor = if (matchSurfaceColor) MaterialTheme.colorScheme.surface else
+                MaterialTheme.colorScheme.background,
             titleContentColor = Color.White
         ),
-        navigationIcon = navigationIcon,
+        navigationIcon = {
+            if (showBackStack)
+                IconButton(onClick = onBackStackPressed) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                        contentDescription = "BackStack Arrow"
+                    )
+                }
+        },
         actions = actions,
         title = {
-            Text(title)
+            if (title != null)
+                Text(title)
         }
     )
 }

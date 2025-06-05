@@ -29,6 +29,7 @@ object HomeRoutes {
 
     object TMDB {
         const val APPEARANCES = "appearances"
+        const val LOGIN = "login"
     }
 
 }

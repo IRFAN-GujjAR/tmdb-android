@@ -1,10 +1,10 @@
 package com.irfangujjar.tmdb.core.navigation.screens
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Movie
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Tv
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.irfangujjar.tmdb.core.navigation.routes.HomeRoutes
@@ -47,7 +47,7 @@ sealed class BottomNavBarScreen(
         route = HomeRoutes.BottomNavBarRoutes.TMDB,
         index = 4,
         label = "TMDb",
-        icon = Icons.Default.Settings
+        icon = Icons.Default.AccountBox
     )
 
     companion object {

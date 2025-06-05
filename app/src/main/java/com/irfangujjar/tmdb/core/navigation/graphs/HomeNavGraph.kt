@@ -8,7 +8,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.irfangujjar.tmdb.core.navigation.screens.BottomNavBarScreen
+import com.irfangujjar.tmdb.core.navigation.screens.HomeScreen
 import com.irfangujjar.tmdb.core.ui.theme.UserTheme
+import com.irfangujjar.tmdb.features.login.presentation.screens.LoginScreen
 import com.irfangujjar.tmdb.features.main.celebs.presentation.screens.CelebsScreen
 import com.irfangujjar.tmdb.features.main.movies.presentation.screens.MoviesScreen
 import com.irfangujjar.tmdb.features.main.search.presentation.screens.SearchScreen
@@ -22,7 +24,8 @@ fun HomeNavGraph(
     startDestination: String,
     paddingValues: PaddingValues,
     userTheme: UserTheme,
-    snackbarHostState: SnackbarHostState
+    snackbarHostState: SnackbarHostState,
+    navigateToLogin: () -> Unit
 ) {
     NavHost(
         navController = navController,
@@ -57,10 +60,25 @@ fun HomeNavGraph(
 
                     BottomNavBarScreen.TMDB -> TMDBScreen(
                         paddingValues = paddingValues,
-                        userTheme = userTheme
+                        userTheme = userTheme,
+                        snackbarHostState = snackbarHostState,
+                        navigateToLogin = navigateToLogin
                     )
                 }
             }
+        }
+
+        composable(HomeScreen.Login.route) {
+            LoginScreen(
+                isAppStartedFirstTime = false,
+                showBackStack = true,
+                onBackStackPressed = {
+                    navController.popBackStack()
+                },
+                navigateToMainScreen = {
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }

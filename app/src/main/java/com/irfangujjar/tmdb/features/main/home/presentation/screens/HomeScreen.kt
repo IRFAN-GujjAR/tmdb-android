@@ -6,12 +6,16 @@ import androidx.compose.runtime.remember
 import androidx.navigation.compose.rememberNavController
 import com.irfangujjar.tmdb.core.navigation.graphs.HomeNavGraph
 import com.irfangujjar.tmdb.core.navigation.screens.BottomNavBarScreen
+import com.irfangujjar.tmdb.core.navigation.screens.HomeScreen
 import com.irfangujjar.tmdb.core.ui.theme.UserTheme
-import com.irfangujjar.tmdb.features.main.home.presentation.components.CustomNavBar
+import com.irfangujjar.tmdb.features.main.home.presentation.screens.components.CustomNavBar
 
 
 @Composable
-fun HomeScreen(userTheme: UserTheme) {
+fun HomeScreen(
+    userTheme: UserTheme,
+//    navigateToLogin: () -> Unit
+) {
     val navController = rememberNavController()
     val snackBarHostState = remember { SnackbarHostState() }
 
@@ -26,7 +30,10 @@ fun HomeScreen(userTheme: UserTheme) {
             startDestination = BottomNavBarScreen.Movies.route,
             paddingValues = paddingValues,
             userTheme = userTheme,
-            snackbarHostState = snackBarHostState
+            snackbarHostState = snackBarHostState,
+            navigateToLogin = {
+                navController.navigate(HomeScreen.Login.route)
+            }
         )
     }
 
