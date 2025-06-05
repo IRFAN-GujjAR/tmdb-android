@@ -1,31 +1,37 @@
 package com.irfangujjar.tmdb.features.main.search.presentation.screens
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.irfangujjar.tmdb.core.ui.components.CustomTopAppBar
+import com.irfangujjar.tmdb.core.ui.theme.UserTheme
 import com.irfangujjar.tmdb.features.main.search.presentation.screens.components.CustomSearchBar
+import com.irfangujjar.tmdb.features.main.search.presentation.screens.components.TrendingSearches
 import com.irfangujjar.tmdb.features.main.search.presentation.viewmodels.SearchViewModel
+import com.irfangujjar.tmdb.features.main.search.presentation.viewmodels.state.SearchState
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
+    userTheme: UserTheme,
     paddingValues: PaddingValues,
+    snackbarHostState: SnackbarHostState?,
     viewModel: SearchViewModel = hiltViewModel()
 ) {
+
+    val state = viewModel.state.collectAsState()
 
     Scaffold(topBar = {
         if (viewModel.showSearchBar)
@@ -47,13 +53,19 @@ fun SearchScreen(
             )
     }) { innerPadding ->
         Surface(modifier = Modifier.fillMaxSize()) {
-            Box(
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .padding(bottom = paddingValues.calculateBottomPadding()),
-                contentAlignment = Alignment.Center
-            ) {
+            when (state.value) {
+                SearchState.Trending -> TrendingSearches(
+                    userTheme = userTheme,
+                    outerPaddingValues = paddingValues,
+                    innerPaddingValues = innerPadding,
+                    viewModel = viewModel,
+                    snackbarHostState = snackbarHostState
+                )
 
+                SearchState.Suggestions -> {}
+                SearchState.Details -> {
+
+                }
             }
         }
     }

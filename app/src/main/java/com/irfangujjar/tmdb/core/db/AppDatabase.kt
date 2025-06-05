@@ -9,17 +9,24 @@ import com.irfangujjar.tmdb.features.main.celebs.domain.models.CelebsModel
 import com.irfangujjar.tmdb.features.main.movies.data.data_sources.local.db.converters.MoviesModelConverters
 import com.irfangujjar.tmdb.features.main.movies.data.data_sources.local.db.dao.MoviesDao
 import com.irfangujjar.tmdb.features.main.movies.domain.models.MoviesModel
+import com.irfangujjar.tmdb.features.main.search.data.data_sources.local.db.converters.SearchModelConverters
+import com.irfangujjar.tmdb.features.main.search.data.data_sources.local.db.dao.SearchDao
+import com.irfangujjar.tmdb.features.main.search.domain.models.SearchModel
 import com.irfangujjar.tmdb.features.main.tv_shows.data.data_sources.local.db.converters.TvShowsModelConverters
 import com.irfangujjar.tmdb.features.main.tv_shows.data.data_sources.local.db.dao.TvShowsDao
 import com.irfangujjar.tmdb.features.main.tv_shows.domain.models.TvShowsModel
 
 @Database(
-    entities = [MoviesModel::class, TvShowsModel::class, CelebsModel::class],
+    entities = [MoviesModel::class, TvShowsModel::class, CelebsModel::class, SearchModel::class],
     version = 1
 )
-@TypeConverters(value = [MoviesModelConverters::class, TvShowsModelConverters::class, CelebsModelConverters::class])
+@TypeConverters(
+    value = [MoviesModelConverters::class, TvShowsModelConverters::class, CelebsModelConverters::class,
+        SearchModelConverters::class]
+)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun moviesDao(): MoviesDao
     abstract fun tvShowsDao(): TvShowsDao
     abstract fun celebsDao(): CelebsDao
+    abstract fun searchDao(): SearchDao
 }

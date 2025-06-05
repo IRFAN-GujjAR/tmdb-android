@@ -50,7 +50,9 @@ fun HomeNavGraph(
                     )
 
                     BottomNavBarScreen.Search -> SearchScreen(
-                        paddingValues = paddingValues
+                        paddingValues = paddingValues,
+                        userTheme = userTheme,
+                        snackbarHostState = snackbarHostState
                     )
 
                     BottomNavBarScreen.TMDB -> TMDBScreen(
