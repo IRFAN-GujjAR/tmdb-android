@@ -34,7 +34,7 @@ import com.irfangujjar.tmdb.features.main.movies.domain.models.MovieModel
 import com.irfangujjar.tmdb.features.main.movies.domain.models.MoviesListModel
 import com.irfangujjar.tmdb.features.main.movies.domain.models.MoviesModel
 import com.irfangujjar.tmdb.features.main.movies.presentation.viewmodels.MoviesViewModel
-import com.irfangujjar.tmdb.features.main.movies.presentation.viewstate.MoviesState
+import com.irfangujjar.tmdb.features.main.movies.presentation.viewmodels.state.MoviesState
 
 
 @Composable
@@ -122,90 +122,90 @@ private fun MoviesScreenBody(
                 )
             )
     ) {
-    Column(
-        modifier = Modifier
-            .verticalScroll(scrollState)
-            .padding(
-                top = ScreenPadding.getTopPadding(),
-                bottom = ScreenPadding.getBottomPadding()
-            )
-    ) {
-        MediaItemsHorizontal(
-            preview = preview,
-            values = if (preview) MediaItemsHorizontalValues.dummyDataMovie(
-                category = MoviesCategories.Popular,
-                isLandscape = false
-            )
-            else MediaItemsHorizontalValues.fromMovies(
-                movies = movies.popular.movies,
-                isLandscape = false,
-                configValues = MediaItemsHorizontalConfigValues.movieConfig(
-                    MoviesCategories.Popular
+        Column(
+            modifier = Modifier
+                .verticalScroll(scrollState)
+                .padding(
+                    top = ScreenPadding.getTopPadding(),
+                    bottom = ScreenPadding.getBottomPadding()
+                )
+        ) {
+            MediaItemsHorizontal(
+                preview = preview,
+                values = if (preview) MediaItemsHorizontalValues.dummyDataMovie(
+                    category = MoviesCategories.Popular,
+                    isLandscape = false
+                )
+                else MediaItemsHorizontalValues.fromMovies(
+                    movies = movies.popular.movies,
+                    isLandscape = false,
+                    configValues = MediaItemsHorizontalConfigValues.movieConfig(
+                        MoviesCategories.Popular
+                    ),
                 ),
-            ),
-            title = MoviesCategories.Popular.name,
-        ) {
+                title = MoviesCategories.Popular.name,
+            ) {
 
-        }
-        CustomDivider()
-        MediaItemsHorizontal(
-            preview = preview,
-            values = if (preview) MediaItemsHorizontalValues.dummyDataMovie(
-                category = MoviesCategories.InTheatres,
-                isLandscape = true
-            ) else MediaItemsHorizontalValues.fromMovies(
-                movies = movies.inTheatres.movies,
-                isLandscape = true,
-                configValues = MediaItemsHorizontalConfigValues.movieConfig(
-                    MoviesCategories.InTheatres
+            }
+            CustomDivider()
+            MediaItemsHorizontal(
+                preview = preview,
+                values = if (preview) MediaItemsHorizontalValues.dummyDataMovie(
+                    category = MoviesCategories.InTheatres,
+                    isLandscape = true
+                ) else MediaItemsHorizontalValues.fromMovies(
+                    movies = movies.inTheatres.movies,
+                    isLandscape = true,
+                    configValues = MediaItemsHorizontalConfigValues.movieConfig(
+                        MoviesCategories.InTheatres
+                    ),
                 ),
-            ),
-            title = MoviesCategories.InTheatres.name
-        ) {
+                title = MoviesCategories.InTheatres.name
+            ) {
 
-        }
-        CustomDivider()
-        MediaItemsHorizontal(
-            preview = preview,
-            values = if (preview) MediaItemsHorizontalValues.dummyDataMovie(
-                category = MoviesCategories.Trending,
-                isLandscape = false
-            )
-            else MediaItemsHorizontalValues.fromMovies(
-                movies = movies.trending.movies,
-                isLandscape = false,
-                configValues = MediaItemsHorizontalConfigValues.movieConfig(
-                    MoviesCategories.Trending
+            }
+            CustomDivider()
+            MediaItemsHorizontal(
+                preview = preview,
+                values = if (preview) MediaItemsHorizontalValues.dummyDataMovie(
+                    category = MoviesCategories.Trending,
+                    isLandscape = false
+                )
+                else MediaItemsHorizontalValues.fromMovies(
+                    movies = movies.trending.movies,
+                    isLandscape = false,
+                    configValues = MediaItemsHorizontalConfigValues.movieConfig(
+                        MoviesCategories.Trending
+                    ),
                 ),
-            ),
-            title = MoviesCategories.Trending.name
-        ) {
+                title = MoviesCategories.Trending.name
+            ) {
 
-        }
-        CustomDivider()
-        MediaItemsHorizontalTopRated(
-            preview = preview,
-            mediaType = MediaType.Movie,
-            movies = if (preview) List(20) { MovieModel.dummyData() }
-            else movies.topRated.movies,
-            tvShows = null
-        )
-        CustomDivider()
-        MediaItemsHorizontal(
-            preview = preview,
-            values = if (preview) MediaItemsHorizontalValues.dummyDataMovie(
-                category = MoviesCategories.Upcoming,
-                isLandscape = false
+            }
+            CustomDivider()
+            MediaItemsHorizontalTopRated(
+                preview = preview,
+                mediaType = MediaType.Movie,
+                movies = if (preview) List(20) { MovieModel.dummyData() }
+                else movies.topRated.movies,
+                tvShows = null
             )
-            else MediaItemsHorizontalValues.fromMovies(
-                movies = movies.upcoming.movies,
-                isLandscape = false,
-                configValues = MediaItemsHorizontalConfigValues.movieConfig(MoviesCategories.Upcoming)
-            ),
-            title = MoviesCategories.Upcoming.name
-        ) {
+            CustomDivider()
+            MediaItemsHorizontal(
+                preview = preview,
+                values = if (preview) MediaItemsHorizontalValues.dummyDataMovie(
+                    category = MoviesCategories.Upcoming,
+                    isLandscape = false
+                )
+                else MediaItemsHorizontalValues.fromMovies(
+                    movies = movies.upcoming.movies,
+                    isLandscape = false,
+                    configValues = MediaItemsHorizontalConfigValues.movieConfig(MoviesCategories.Upcoming)
+                ),
+                title = MoviesCategories.Upcoming.name
+            ) {
 
-        }
+            }
         }
     }
 
@@ -216,7 +216,7 @@ private fun MoviesScreenBody(
 @Composable
 private fun PreviewMovieScreen() {
     TMDbTheme {
-        val emptyList= MoviesListModel(pageNo = 1, totalPages = 2, movies = emptyList())
+        val emptyList = MoviesListModel(pageNo = 1, totalPages = 2, movies = emptyList())
         Surface {
             MoviesScreenBody(
                 preview = true,

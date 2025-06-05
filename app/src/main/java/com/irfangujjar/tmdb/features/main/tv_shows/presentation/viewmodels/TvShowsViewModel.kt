@@ -9,7 +9,7 @@ import com.irfangujjar.tmdb.core.api.ResultWrapper
 import com.irfangujjar.tmdb.core.api.safeApiCall
 import com.irfangujjar.tmdb.features.main.tv_shows.domain.usecases.TvShowsUseCaseLoad
 import com.irfangujjar.tmdb.features.main.tv_shows.domain.usecases.TvShowsUseCaseWatch
-import com.irfangujjar.tmdb.features.main.tv_shows.presentation.viewstate.TvShowsState
+import com.irfangujjar.tmdb.features.main.tv_shows.presentation.viewmodels.state.TvShowsState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers

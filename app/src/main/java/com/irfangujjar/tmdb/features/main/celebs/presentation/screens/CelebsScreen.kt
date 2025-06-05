@@ -28,7 +28,7 @@ import com.irfangujjar.tmdb.features.main.celebs.domain.models.CelebsModel
 import com.irfangujjar.tmdb.features.main.celebs.presentation.screens.components.PopularCelebs
 import com.irfangujjar.tmdb.features.main.celebs.presentation.screens.components.TrendingCelebs
 import com.irfangujjar.tmdb.features.main.celebs.presentation.viewmodels.CelebsViewModel
-import com.irfangujjar.tmdb.features.main.celebs.presentation.viewstate.CelebsState
+import com.irfangujjar.tmdb.features.main.celebs.presentation.viewmodels.state.CelebsState
 
 
 @Composable
@@ -124,7 +124,7 @@ private fun CelebsScreenBody(
                     bottom = ScreenPadding.getBottomPadding()
                 )
         ) {
-            PopularCelebs(preview = preview, popularCelebs = celebs.popular){}
+            PopularCelebs(preview = preview, popularCelebs = celebs.popular) {}
             CustomDivider()
             TrendingCelebs(preview = preview, celebs = celebs.trending.celebrities) { }
         }
@@ -133,7 +133,7 @@ private fun CelebsScreenBody(
 
 @Preview
 @Composable
-private fun CelebsScreenBodyPreview(){
+private fun CelebsScreenBodyPreview() {
     TMDbTheme {
         Surface {
             CelebsScreenBody(

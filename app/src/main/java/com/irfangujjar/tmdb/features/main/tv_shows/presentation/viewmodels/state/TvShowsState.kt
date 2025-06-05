@@ -1,4 +1,4 @@
-package com.irfangujjar.tmdb.features.main.tv_shows.presentation.viewstate
+package com.irfangujjar.tmdb.features.main.tv_shows.presentation.viewmodels.state
 
 import com.irfangujjar.tmdb.core.error.ErrorEntity
 import com.irfangujjar.tmdb.features.main.tv_shows.domain.models.TvShowsModel

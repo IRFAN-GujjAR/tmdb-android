@@ -9,7 +9,7 @@ import com.irfangujjar.tmdb.core.api.ResultWrapper
 import com.irfangujjar.tmdb.core.api.safeApiCall
 import com.irfangujjar.tmdb.features.main.celebs.domain.usecases.CelebsUseCaseLoad
 import com.irfangujjar.tmdb.features.main.celebs.domain.usecases.CelebsUseCaseWatch
-import com.irfangujjar.tmdb.features.main.celebs.presentation.viewstate.CelebsState
+import com.irfangujjar.tmdb.features.main.celebs.presentation.viewmodels.state.CelebsState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers

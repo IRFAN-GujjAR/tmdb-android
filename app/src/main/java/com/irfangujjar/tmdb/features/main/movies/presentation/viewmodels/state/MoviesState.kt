@@ -1,4 +1,4 @@
-package com.irfangujjar.tmdb.features.main.movies.presentation.viewstate
+package com.irfangujjar.tmdb.features.main.movies.presentation.viewmodels.state
 
 import com.irfangujjar.tmdb.core.error.ErrorEntity
 import com.irfangujjar.tmdb.features.main.movies.domain.models.MoviesModel

@@ -34,7 +34,7 @@ import com.irfangujjar.tmdb.features.main.tv_shows.domain.models.TvShowModel
 import com.irfangujjar.tmdb.features.main.tv_shows.domain.models.TvShowsListModel
 import com.irfangujjar.tmdb.features.main.tv_shows.domain.models.TvShowsModel
 import com.irfangujjar.tmdb.features.main.tv_shows.presentation.viewmodels.TvShowsViewModel
-import com.irfangujjar.tmdb.features.main.tv_shows.presentation.viewstate.TvShowsState
+import com.irfangujjar.tmdb.features.main.tv_shows.presentation.viewmodels.state.TvShowsState
 
 
 @Composable

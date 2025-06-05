@@ -9,7 +9,7 @@ import com.irfangujjar.tmdb.core.api.ResultWrapper
 import com.irfangujjar.tmdb.core.api.safeApiCall
 import com.irfangujjar.tmdb.features.main.movies.domain.usecases.MoviesUseCaseLoad
 import com.irfangujjar.tmdb.features.main.movies.domain.usecases.MoviesUseCaseWatch
-import com.irfangujjar.tmdb.features.main.movies.presentation.viewstate.MoviesState
+import com.irfangujjar.tmdb.features.main.movies.presentation.viewmodels.state.MoviesState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
@@ -34,7 +34,7 @@ class MoviesViewModel @Inject constructor(
 
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             watchMovies()
         }
         viewModelScope.launch(Dispatchers.IO) {
