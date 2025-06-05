@@ -1,4 +1,4 @@
-package com.irfangujjar.tmdb.features.login.presentation.ui.screens
+package com.irfangujjar.tmdb.features.login.presentation.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -42,7 +42,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.irfangujjar.tmdb.R
 import com.irfangujjar.tmdb.core.ui.ScreenPadding
 import com.irfangujjar.tmdb.core.ui.components.CustomDialogBox
-import com.irfangujjar.tmdb.features.login.presentation.ui.screens.components.CustomTextField
+import com.irfangujjar.tmdb.features.login.presentation.screens.components.CustomTextField
 import com.irfangujjar.tmdb.features.login.presentation.viewmodel.LoginViewModel
 import com.irfangujjar.tmdb.features.login.presentation.viewmodel.state.LoginContinueState
 import com.irfangujjar.tmdb.features.login.presentation.viewmodel.state.LoginState

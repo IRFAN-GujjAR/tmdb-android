@@ -1,7 +1,6 @@
 package com.irfangujjar.tmdb
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
@@ -18,9 +17,8 @@ import androidx.navigation.compose.rememberNavController
 import com.irfangujjar.tmdb.core.navigation.graphs.AppNavGraph
 import com.irfangujjar.tmdb.core.navigation.screens.AppScreen
 import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
-import com.irfangujjar.tmdb.core.ui.theme.UserTheme
 import com.irfangujjar.tmdb.features.app_startup.presentation.viewmodel.AppStartupViewModel
-import com.irfangujjar.tmdb.features.login.presentation.ui.screens.LoginScreen
+import com.irfangujjar.tmdb.features.login.presentation.screens.LoginScreen
 import com.irfangujjar.tmdb.features.theme.presentation.viewmodel.UserThemeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 

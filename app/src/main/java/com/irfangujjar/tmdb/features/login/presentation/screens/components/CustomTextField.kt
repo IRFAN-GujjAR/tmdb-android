@@ -1,4 +1,4 @@
-package com.irfangujjar.tmdb.features.login.presentation.ui.screens.components
+package com.irfangujjar.tmdb.features.login.presentation.screens.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth

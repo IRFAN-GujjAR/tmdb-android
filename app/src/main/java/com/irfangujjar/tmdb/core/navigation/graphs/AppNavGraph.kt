@@ -8,7 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.irfangujjar.tmdb.core.navigation.screens.AppScreen
 import com.irfangujjar.tmdb.core.ui.theme.UserTheme
-import com.irfangujjar.tmdb.features.login.presentation.ui.screens.LoginScreen
+import com.irfangujjar.tmdb.features.login.presentation.screens.LoginScreen
 
 @Composable
 fun AppNavGraph(
