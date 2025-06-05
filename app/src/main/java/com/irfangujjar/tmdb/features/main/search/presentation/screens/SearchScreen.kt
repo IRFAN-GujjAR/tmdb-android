@@ -26,7 +26,7 @@ import com.irfangujjar.tmdb.features.main.search.presentation.viewmodels.state.S
 @Composable
 fun SearchScreen(
     userTheme: UserTheme,
-    paddingValues: PaddingValues,
+    outerPadding: PaddingValues,
     snackbarHostState: SnackbarHostState?,
     viewModel: SearchViewModel = hiltViewModel()
 ) {
@@ -56,7 +56,7 @@ fun SearchScreen(
             when (state.value) {
                 SearchState.Trending -> TrendingSearches(
                     userTheme = userTheme,
-                    outerPaddingValues = paddingValues,
+                    outerPaddingValues = outerPadding,
                     innerPaddingValues = innerPadding,
                     viewModel = viewModel,
                     snackbarHostState = snackbarHostState

@@ -34,7 +34,7 @@ import com.irfangujjar.tmdb.features.main.celebs.presentation.viewmodels.state.C
 @Composable
 fun CelebsScreen(
     preview: Boolean = false,
-    paddingValues: PaddingValues,
+    outerPadding: PaddingValues,
     userTheme: UserTheme,
     snackbarHostState: SnackbarHostState?,
     viewModel: CelebsViewModel = hiltViewModel()
@@ -65,7 +65,7 @@ fun CelebsScreen(
                     }
                     CelebsScreenBody(
                         preview = preview,
-                        paddingValues = paddingValues,
+                        paddingValues = outerPadding,
                         innerPadding = innerPadding,
                         celebs = state.celebs,
                         isRefreshing = viewModel.isRefreshing,
@@ -75,7 +75,7 @@ fun CelebsScreen(
 
                 is CelebsState.Loaded -> CelebsScreenBody(
                     preview = preview,
-                    paddingValues = paddingValues,
+                    paddingValues = outerPadding,
                     innerPadding = innerPadding,
                     celebs = state.celebs,
                     isRefreshing = viewModel.isRefreshing,

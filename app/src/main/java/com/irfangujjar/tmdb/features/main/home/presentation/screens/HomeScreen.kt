@@ -6,7 +6,6 @@ import androidx.compose.runtime.remember
 import androidx.navigation.compose.rememberNavController
 import com.irfangujjar.tmdb.core.navigation.graphs.HomeNavGraph
 import com.irfangujjar.tmdb.core.navigation.screens.BottomNavBarScreen
-import com.irfangujjar.tmdb.core.navigation.screens.HomeScreen
 import com.irfangujjar.tmdb.core.ui.theme.UserTheme
 import com.irfangujjar.tmdb.features.main.home.presentation.screens.components.CustomNavBar
 
@@ -28,12 +27,9 @@ fun HomeScreen(
         HomeNavGraph(
             navController = navController,
             startDestination = BottomNavBarScreen.Movies.route,
-            paddingValues = paddingValues,
+            outerPadding = paddingValues,
             userTheme = userTheme,
             snackbarHostState = snackBarHostState,
-            navigateToLogin = {
-                navController.navigate(HomeScreen.Login.route)
-            }
         )
     }
 

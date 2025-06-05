@@ -1,5 +1,6 @@
 package com.irfangujjar.tmdb.core.navigation.graphs
 
+import ThemeScreen
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarHostState
@@ -22,10 +23,9 @@ import com.irfangujjar.tmdb.features.main.tv_shows.presentation.screens.TvShowsS
 fun HomeNavGraph(
     navController: NavHostController,
     startDestination: String,
-    paddingValues: PaddingValues,
+    outerPadding: PaddingValues,
     userTheme: UserTheme,
     snackbarHostState: SnackbarHostState,
-    navigateToLogin: () -> Unit
 ) {
     NavHost(
         navController = navController,
@@ -35,34 +35,39 @@ fun HomeNavGraph(
             composable(bottomScreen.route) {
                 when (bottomScreen) {
                     BottomNavBarScreen.Movies -> MoviesScreen(
-                        paddingValues = paddingValues,
+                        outerPadding = outerPadding,
                         userTheme = userTheme,
                         snackbarHostState = snackbarHostState
                     )
 
                     BottomNavBarScreen.TVShows -> TvShowsScreen(
-                        paddingValues = paddingValues,
+                        outerPadding = outerPadding,
                         userTheme = userTheme,
                         snackbarHostState = snackbarHostState
                     )
 
                     BottomNavBarScreen.Celebs -> CelebsScreen(
-                        paddingValues = paddingValues,
+                        outerPadding = outerPadding,
                         userTheme = userTheme,
                         snackbarHostState = snackbarHostState
                     )
 
                     BottomNavBarScreen.Search -> SearchScreen(
-                        paddingValues = paddingValues,
+                        outerPadding = outerPadding,
                         userTheme = userTheme,
                         snackbarHostState = snackbarHostState
                     )
 
                     BottomNavBarScreen.TMDB -> TMDBScreen(
-                        paddingValues = paddingValues,
+                        outerPadding = outerPadding,
                         userTheme = userTheme,
                         snackbarHostState = snackbarHostState,
-                        navigateToLogin = navigateToLogin
+                        navigateToLogin = {
+                            navController.navigate(HomeScreen.Login.route)
+                        },
+                        navigateToAppearances = {
+                            navController.navigate(HomeScreen.TMDBAppearances.route)
+                        }
                     )
                 }
             }
@@ -76,6 +81,16 @@ fun HomeNavGraph(
                     navController.popBackStack()
                 },
                 navigateToMainScreen = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        composable(HomeScreen.TMDBAppearances.route) {
+            ThemeScreen(
+                userTheme = userTheme,
+                outerPadding = outerPadding,
+                onBackStackPressed = {
                     navController.popBackStack()
                 }
             )

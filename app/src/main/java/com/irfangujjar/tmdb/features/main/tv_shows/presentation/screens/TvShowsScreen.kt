@@ -39,7 +39,7 @@ import com.irfangujjar.tmdb.features.main.tv_shows.presentation.viewmodels.state
 
 @Composable
 fun TvShowsScreen(
-    preview: Boolean = false, paddingValues: PaddingValues,
+    preview: Boolean = false, outerPadding: PaddingValues,
     viewModel: TvShowsViewModel = hiltViewModel(),
     userTheme: UserTheme,
     snackbarHostState: SnackbarHostState?
@@ -71,7 +71,7 @@ fun TvShowsScreen(
                     }
                     TvShowsScreenBody(
                         preview = preview,
-                        paddingValues = paddingValues,
+                        paddingValues = outerPadding,
                         innerPadding = innerPadding,
                         tvShows = state.tvShows,
                         isRefreshing = viewModel.isRefreshing,
@@ -81,7 +81,7 @@ fun TvShowsScreen(
 
                 is TvShowsState.Loaded -> TvShowsScreenBody(
                     preview = preview,
-                    paddingValues = paddingValues,
+                    paddingValues = outerPadding,
                     innerPadding = innerPadding,
                     tvShows = state.tvShows,
                     isRefreshing = viewModel.isRefreshing,

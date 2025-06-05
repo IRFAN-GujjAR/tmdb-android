@@ -39,7 +39,7 @@ import com.irfangujjar.tmdb.features.main.movies.presentation.viewmodels.state.M
 
 @Composable
 fun MoviesScreen(
-    preview: Boolean = false, paddingValues: PaddingValues,
+    preview: Boolean = false, outerPadding: PaddingValues,
     viewModel: MoviesViewModel = hiltViewModel(),
     userTheme: UserTheme,
     snackbarHostState: SnackbarHostState?
@@ -71,7 +71,7 @@ fun MoviesScreen(
                     }
                     MoviesScreenBody(
                         preview = preview,
-                        paddingValues = paddingValues,
+                        paddingValues = outerPadding,
                         innerPadding = innerPadding,
                         movies = state.movies,
                         isRefreshing = viewModel.isRefreshing,
@@ -81,7 +81,7 @@ fun MoviesScreen(
 
                 is MoviesState.Loaded -> MoviesScreenBody(
                     preview = preview,
-                    paddingValues = paddingValues,
+                    paddingValues = outerPadding,
                     innerPadding = innerPadding,
                     movies = state.movies,
                     isRefreshing = viewModel.isRefreshing,

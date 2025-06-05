@@ -44,11 +44,12 @@ import com.irfangujjar.tmdb.features.main.tmdb.presentation.viewmodels.state.Acc
 @Composable
 fun TMDBScreen(
     preview: Boolean = false,
-    paddingValues: PaddingValues,
+    outerPadding: PaddingValues,
     userTheme: UserTheme,
     snackbarHostState: SnackbarHostState?,
     viewModel: TMDBViewModel = hiltViewModel(),
-    navigateToLogin: () -> Unit
+    navigateToLogin: () -> Unit,
+    navigateToAppearances: () -> Unit
 ) {
     val state = viewModel.state.collectAsState().value
     Surface(
@@ -64,20 +65,20 @@ fun TMDBScreen(
             AccountDetailsState.Empty -> {
                 TMDbScreenBody(
                     preview = preview,
-                    paddingValues = paddingValues,
-                    userTheme = userTheme,
+                    paddingValues = outerPadding,
                     accountDetails = null,
-                    navigateToLogin = navigateToLogin
+                    navigateToLogin = navigateToLogin,
+                    navigateToAppearances = navigateToAppearances
                 )
             }
 
             is AccountDetailsState.Loaded -> {
                 TMDbScreenBody(
                     preview = preview,
-                    paddingValues = paddingValues,
-                    userTheme = userTheme,
+                    paddingValues = outerPadding,
                     accountDetails = state.accountDetails,
-                    navigateToLogin = navigateToLogin
+                    navigateToLogin = navigateToLogin,
+                    navigateToAppearances = navigateToAppearances
                 )
             }
 
@@ -88,10 +89,10 @@ fun TMDBScreen(
                 }
                 TMDbScreenBody(
                     preview = preview,
-                    paddingValues = paddingValues,
-                    userTheme = userTheme,
+                    paddingValues = outerPadding,
                     accountDetails = state.accountDetails,
-                    navigateToLogin = navigateToLogin
+                    navigateToLogin = navigateToLogin,
+                    navigateToAppearances = navigateToAppearances
                 )
             }
 
@@ -111,9 +112,9 @@ fun TMDBScreen(
 private fun TMDbScreenBody(
     preview: Boolean,
     paddingValues: PaddingValues,
-    userTheme: UserTheme,
     accountDetails: AccountDetailsWithoutIdEntity?,
-    navigateToLogin: () -> Unit
+    navigateToLogin: () -> Unit,
+    navigateToAppearances: () -> Unit
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -197,13 +198,13 @@ private fun TMDbScreenBody(
             })
         ListItem(
             modifier = Modifier
-                .clickable(onClick = {}),
-            headlineContent = { Text("Appearances") },
+                .clickable(onClick = navigateToAppearances),
+            headlineContent = { Text("Theme") },
             supportingContent = { Text("Set Light & Dark Theme") },
             leadingContent = {
                 Icon(
                     imageVector = Icons.Default.Settings,
-                    contentDescription = "Appearances Icon"
+                    contentDescription = "Theme Icon"
                 )
             },
             trailingContent = {
@@ -249,9 +250,9 @@ private fun TMDBScreenPreview() {
             TMDbScreenBody(
                 preview = true,
                 paddingValues = PaddingValues(),
-                userTheme = UserTheme.SYSTEM,
                 accountDetails = null,
-                navigateToLogin = {}
+                navigateToLogin = {},
+                navigateToAppearances = {}
             )
         }
     }
