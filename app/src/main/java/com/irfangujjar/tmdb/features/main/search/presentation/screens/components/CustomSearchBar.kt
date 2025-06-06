@@ -1,6 +1,8 @@
 package com.irfangujjar.tmdb.features.main.search.presentation.screens.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
@@ -16,13 +18,15 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.ImeAction
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomSearchBar(
     value: String,
     onValueChanged: (String) -> Unit,
-    hideSearchBar: () -> Unit
+    hideSearchBar: () -> Unit,
+    onSearch: () -> Unit
 ) {
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
@@ -35,6 +39,12 @@ fun CustomSearchBar(
                 value = value,
                 onValueChange = onValueChanged,
                 placeholder = { Text("Search...") },
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    imeAction = ImeAction.Search
+                ),
+                keyboardActions = KeyboardActions(onSearch = {
+                    onSearch()
+                }),
                 leadingIcon = {
                     IconButton(onClick = hideSearchBar) {
                         Icon(

@@ -6,6 +6,8 @@ import com.irfangujjar.tmdb.features.main.search.data.data_sources.remote.Search
 import com.irfangujjar.tmdb.features.main.search.data.data_sources.remote.api.SearchApi
 import com.irfangujjar.tmdb.features.main.search.data.repos.SearchRepoImpl
 import com.irfangujjar.tmdb.features.main.search.domain.repos.SearchRepo
+import com.irfangujjar.tmdb.features.main.search.domain.usecases.SearchDetailsUseCaseLoad
+import com.irfangujjar.tmdb.features.main.search.domain.usecases.SearchSuggestionsUseCaseLoad
 import com.irfangujjar.tmdb.features.main.search.domain.usecases.TrendingSearchUseCaseLoad
 import com.irfangujjar.tmdb.features.main.search.domain.usecases.TrendingSearchUseCaseWatch
 import dagger.Module
@@ -35,4 +37,14 @@ class SearchModule {
     @ViewModelScoped
     fun providesTrendingSearchUseCaseWatch(repo: SearchRepo): TrendingSearchUseCaseWatch =
         TrendingSearchUseCaseWatch(repo = repo)
+
+    @Provides
+    @ViewModelScoped
+    fun providesSuggestionUSeCaseLoad(repo: SearchRepo): SearchSuggestionsUseCaseLoad =
+        SearchSuggestionsUseCaseLoad(repo = repo)
+
+    @Provides
+    @ViewModelScoped
+    fun providesDetailsUseCaseLoad(repo: SearchRepo): SearchDetailsUseCaseLoad =
+        SearchDetailsUseCaseLoad(repo = repo)
 }

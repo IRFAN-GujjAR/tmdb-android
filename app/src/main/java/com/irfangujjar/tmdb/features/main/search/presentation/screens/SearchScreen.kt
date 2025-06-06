@@ -17,6 +17,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.irfangujjar.tmdb.core.ui.components.CustomTopAppBar
 import com.irfangujjar.tmdb.core.ui.theme.UserTheme
 import com.irfangujjar.tmdb.features.main.search.presentation.screens.components.CustomSearchBar
+import com.irfangujjar.tmdb.features.main.search.presentation.screens.components.SearchDetails
+import com.irfangujjar.tmdb.features.main.search.presentation.screens.components.SearchSuggestions
 import com.irfangujjar.tmdb.features.main.search.presentation.screens.components.TrendingSearches
 import com.irfangujjar.tmdb.features.main.search.presentation.viewmodels.SearchViewModel
 import com.irfangujjar.tmdb.features.main.search.presentation.viewmodels.state.SearchState
@@ -40,7 +42,10 @@ fun SearchScreen(
                 onValueChanged = {
                     viewModel.updateQuery(it)
                 },
-                hideSearchBar = { viewModel.updateShowSearchBar(false) }
+                hideSearchBar = { viewModel.updateShowSearchBar(false) },
+                onSearch = {
+                    viewModel.onSearch()
+                }
             )
         else
             CustomTopAppBar(
@@ -62,10 +67,19 @@ fun SearchScreen(
                     snackbarHostState = snackbarHostState
                 )
 
-                SearchState.Suggestions -> {}
-                SearchState.Details -> {
+                SearchState.Suggestions -> SearchSuggestions(
+                    userTheme = userTheme,
+                    outerPaddingValues = outerPadding,
+                    innerPaddingValues = innerPadding,
+                    viewModel = viewModel
+                )
 
-                }
+                SearchState.Details -> SearchDetails(
+                    userTheme = userTheme,
+                    outerPaddingValues = outerPadding,
+                    innerPaddingValues = innerPadding,
+                    viewModel = viewModel
+                )
             }
         }
     }

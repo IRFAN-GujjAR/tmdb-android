@@ -31,7 +31,8 @@ import com.irfangujjar.tmdb.features.main.search.presentation.viewmodels.state.T
 fun TrendingSearches(
     userTheme: UserTheme,
     outerPaddingValues: PaddingValues,
-    innerPaddingValues: PaddingValues, viewModel: SearchViewModel,
+    innerPaddingValues: PaddingValues,
+    viewModel: SearchViewModel,
     snackbarHostState: SnackbarHostState?
 ) {
     val state = viewModel.trendingState.collectAsState().value
@@ -42,7 +43,10 @@ fun TrendingSearches(
             outerPaddingValues = outerPaddingValues, innerPaddingValues = innerPaddingValues,
             trendingSearch = state.trendingSearch,
             isRefreshing = viewModel.isTrendingSearchRefreshing,
-            onRefresh = { viewModel.refreshTrendingSearch() }
+            onRefresh = { viewModel.refreshTrendingSearch() },
+            onItemClicked = {
+                viewModel.onTrendingItemSelected(it)
+            }
         )
 
         is TrendingSearchState.ErrorWithCache -> {
@@ -54,7 +58,10 @@ fun TrendingSearches(
                 outerPaddingValues = outerPaddingValues, innerPaddingValues = innerPaddingValues,
                 trendingSearch = state.trendingSearch,
                 isRefreshing = viewModel.isTrendingSearchRefreshing,
-                onRefresh = { viewModel.refreshTrendingSearch() }
+                onRefresh = { viewModel.refreshTrendingSearch() },
+                onItemClicked = {
+                    viewModel.onTrendingItemSelected(it)
+                }
             )
         }
 
@@ -76,7 +83,8 @@ private fun TrendingSearchBody(
     innerPaddingValues: PaddingValues,
     trendingSearch: SearchModel,
     isRefreshing: Boolean,
-    onRefresh: () -> Unit
+    onRefresh: () -> Unit,
+    onItemClicked: (query: String) -> Unit
 ) {
     PullToRefreshBox(
         isRefreshing = isRefreshing,
@@ -106,7 +114,9 @@ private fun TrendingSearchBody(
                 )
             }
             items(8) {
-                TextButton(onClick = {}) {
+                TextButton(onClick = {
+                    onItemClicked(trendingSearch.searches[it].searchTitle)
+                }) {
                     Text(
                         trendingSearch.searches[it].searchTitle,
                         fontSize = 16.sp
