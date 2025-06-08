@@ -2,7 +2,7 @@ package com.irfangujjar.tmdb.core.ui.components.list.values
 
 import com.irfangujjar.tmdb.features.main.celebs.domain.models.CelebModel
 
-data class CelebItemsHorizontalValues(
+data class CelebItemsHorizontalListValues(
     val celebIds: List<Int>,
     val celebsNames: List<String>,
     val celebsKnownFor: List<String?>,
@@ -11,9 +11,9 @@ data class CelebItemsHorizontalValues(
 ) {
     companion object {
 
-        fun dummyData(): CelebItemsHorizontalValues {
+        fun dummyData(): CelebItemsHorizontalListValues {
             val celebs = List(20) { CelebModel.dummyData() }
-            return CelebItemsHorizontalValues(
+            return CelebItemsHorizontalListValues(
                 celebIds = celebs.map { it.id },
                 celebsNames = celebs.map { it.name },
                 celebsKnownFor = celebs.map { it.knownFor },
@@ -25,7 +25,7 @@ data class CelebItemsHorizontalValues(
         fun fromListValues(
             celebs: List<CelebModel>,
             config: CelebItemHorizontalConfigValues
-        ): CelebItemsHorizontalValues {
+        ): CelebItemsHorizontalListValues {
 
             val celebIds = mutableListOf<Int>()
             val celebsNames = mutableListOf<String>()
@@ -39,7 +39,7 @@ data class CelebItemsHorizontalValues(
                 profilePaths.add(it.profilePath)
             }
 
-            return CelebItemsHorizontalValues(
+            return CelebItemsHorizontalListValues(
                 celebIds = celebIds,
                 celebsNames = celebsNames,
                 celebsKnownFor = celebsKnownFor,

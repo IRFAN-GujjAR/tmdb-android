@@ -22,10 +22,11 @@ import com.irfangujjar.tmdb.core.ui.components.CustomDivider
 import com.irfangujjar.tmdb.core.ui.components.CustomError
 import com.irfangujjar.tmdb.core.ui.components.CustomLoading
 import com.irfangujjar.tmdb.core.ui.components.CustomTopAppBar
-import com.irfangujjar.tmdb.core.ui.components.list.MediaItemsHorizontal
-import com.irfangujjar.tmdb.core.ui.components.list.MediaItemsHorizontalTopRated
-import com.irfangujjar.tmdb.core.ui.components.list.values.MediaItemsHorizontalConfigValues
-import com.irfangujjar.tmdb.core.ui.components.list.values.MediaItemsHorizontalValues
+import com.irfangujjar.tmdb.core.ui.components.DividerTopPadding
+import com.irfangujjar.tmdb.core.ui.components.list.MediaItemsHorizontalList
+import com.irfangujjar.tmdb.core.ui.components.list.MediaItemsHorizontalTopRatedList
+import com.irfangujjar.tmdb.core.ui.components.list.values.MediaItemsHorizontalListConfigValues
+import com.irfangujjar.tmdb.core.ui.components.list.values.MediaItemsHorizontalListValues
 import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
 import com.irfangujjar.tmdb.core.ui.theme.UserTheme
 import com.irfangujjar.tmdb.core.ui.util.MediaType
@@ -130,16 +131,16 @@ private fun MoviesScreenBody(
                     bottom = ScreenPadding.getBottomPadding()
                 )
         ) {
-            MediaItemsHorizontal(
+            MediaItemsHorizontalList(
                 preview = preview,
-                values = if (preview) MediaItemsHorizontalValues.dummyDataMovie(
+                values = if (preview) MediaItemsHorizontalListValues.dummyDataMovie(
                     category = MoviesCategories.Popular,
                     isLandscape = false
                 )
-                else MediaItemsHorizontalValues.fromMovies(
+                else MediaItemsHorizontalListValues.fromMovies(
                     movies = movies.popular.movies,
                     isLandscape = false,
-                    configValues = MediaItemsHorizontalConfigValues.movieConfig(
+                    configValues = MediaItemsHorizontalListConfigValues.movieConfig(
                         MoviesCategories.Popular
                     ),
                 ),
@@ -147,16 +148,16 @@ private fun MoviesScreenBody(
             ) {
 
             }
-            CustomDivider()
-            MediaItemsHorizontal(
+            CustomDivider(topPadding = DividerTopPadding.Double)
+            MediaItemsHorizontalList(
                 preview = preview,
-                values = if (preview) MediaItemsHorizontalValues.dummyDataMovie(
+                values = if (preview) MediaItemsHorizontalListValues.dummyDataMovie(
                     category = MoviesCategories.InTheatres,
                     isLandscape = true
-                ) else MediaItemsHorizontalValues.fromMovies(
+                ) else MediaItemsHorizontalListValues.fromMovies(
                     movies = movies.inTheatres.movies,
                     isLandscape = true,
-                    configValues = MediaItemsHorizontalConfigValues.movieConfig(
+                    configValues = MediaItemsHorizontalListConfigValues.movieConfig(
                         MoviesCategories.InTheatres
                     ),
                 ),
@@ -164,17 +165,17 @@ private fun MoviesScreenBody(
             ) {
 
             }
-            CustomDivider()
-            MediaItemsHorizontal(
+            CustomDivider(topPadding = DividerTopPadding.Double)
+            MediaItemsHorizontalList(
                 preview = preview,
-                values = if (preview) MediaItemsHorizontalValues.dummyDataMovie(
+                values = if (preview) MediaItemsHorizontalListValues.dummyDataMovie(
                     category = MoviesCategories.Trending,
                     isLandscape = false
                 )
-                else MediaItemsHorizontalValues.fromMovies(
+                else MediaItemsHorizontalListValues.fromMovies(
                     movies = movies.trending.movies,
                     isLandscape = false,
-                    configValues = MediaItemsHorizontalConfigValues.movieConfig(
+                    configValues = MediaItemsHorizontalListConfigValues.movieConfig(
                         MoviesCategories.Trending
                     ),
                 ),
@@ -182,25 +183,25 @@ private fun MoviesScreenBody(
             ) {
 
             }
-            CustomDivider()
-            MediaItemsHorizontalTopRated(
+            CustomDivider(topPadding = DividerTopPadding.Double)
+            MediaItemsHorizontalTopRatedList(
                 preview = preview,
                 mediaType = MediaType.Movie,
                 movies = if (preview) List(20) { MovieModel.dummyData() }
                 else movies.topRated.movies,
                 tvShows = null
             )
-            CustomDivider()
-            MediaItemsHorizontal(
+            CustomDivider(topPadding = DividerTopPadding.Double)
+            MediaItemsHorizontalList(
                 preview = preview,
-                values = if (preview) MediaItemsHorizontalValues.dummyDataMovie(
+                values = if (preview) MediaItemsHorizontalListValues.dummyDataMovie(
                     category = MoviesCategories.Upcoming,
                     isLandscape = false
                 )
-                else MediaItemsHorizontalValues.fromMovies(
+                else MediaItemsHorizontalListValues.fromMovies(
                     movies = movies.upcoming.movies,
                     isLandscape = false,
-                    configValues = MediaItemsHorizontalConfigValues.movieConfig(MoviesCategories.Upcoming)
+                    configValues = MediaItemsHorizontalListConfigValues.movieConfig(MoviesCategories.Upcoming)
                 ),
                 title = MoviesCategories.Upcoming.name
             ) {

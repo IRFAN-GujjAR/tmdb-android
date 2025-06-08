@@ -14,11 +14,11 @@ data class MediaItemHorizontalValues(
     val posterPath: String?,
     val backdropPath: String?,
     val isLandscape: Boolean,
-    val configValues: MediaItemsHorizontalConfigValues,
+    val configValues: MediaItemsHorizontalListConfigValues,
 ) {
     companion object {
         fun fromListValues(
-            listValues: MediaItemsHorizontalValues,
+            listValues: MediaItemsHorizontalListValues,
             index: Int,
         ): MediaItemHorizontalValues = MediaItemHorizontalValues(
             mediaType = listValues.mediaType,
@@ -44,7 +44,7 @@ data class MediaItemHorizontalValues(
                 posterPath = movie.posterPath,
                 backdropPath = movie.backdropPath,
                 isLandscape = isLandscape,
-                configValues = MediaItemsHorizontalConfigValues.movieConfig(
+                configValues = MediaItemsHorizontalListConfigValues.movieConfig(
                     category
                 ),
             )
@@ -63,7 +63,7 @@ data class MediaItemHorizontalValues(
                 posterPath = tvShow.posterPath,
                 backdropPath = tvShow.backdropPath,
                 isLandscape = isLandscape,
-                configValues = MediaItemsHorizontalConfigValues.tvConfig(
+                configValues = MediaItemsHorizontalListConfigValues.tvConfig(
                     category
                 ),
             )

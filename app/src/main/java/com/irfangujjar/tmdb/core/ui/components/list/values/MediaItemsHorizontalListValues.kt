@@ -6,7 +6,7 @@ import com.irfangujjar.tmdb.core.ui.util.TvShowsCategories
 import com.irfangujjar.tmdb.features.main.movies.domain.models.MovieModel
 import com.irfangujjar.tmdb.features.main.tv_shows.domain.models.TvShowModel
 
-data class MediaItemsHorizontalValues(
+data class MediaItemsHorizontalListValues(
     val mediaType: MediaType,
     val mediaIds: List<Int>,
     val mediaTitles: List<String>,
@@ -14,14 +14,14 @@ data class MediaItemsHorizontalValues(
     val posterPaths: List<String?>,
     val backdropPaths: List<String?>,
     val isLandscape: Boolean,
-    val configValues: MediaItemsHorizontalConfigValues
+    val configValues: MediaItemsHorizontalListConfigValues
 ) {
     companion object {
         fun fromMovies(
             movies: List<MovieModel>,
             isLandscape: Boolean,
-            configValues: MediaItemsHorizontalConfigValues
-        ): MediaItemsHorizontalValues = fromList(
+            configValues: MediaItemsHorizontalListConfigValues
+        ): MediaItemsHorizontalListValues = fromList(
             mediaType = MediaType.Movie,
             movies = movies,
             tvShows = null,
@@ -32,8 +32,8 @@ data class MediaItemsHorizontalValues(
         fun fromTvShows(
             tvShows: List<TvShowModel>,
             isLandscape: Boolean,
-            configValues: MediaItemsHorizontalConfigValues
-        ): MediaItemsHorizontalValues = fromList(
+            configValues: MediaItemsHorizontalListConfigValues
+        ): MediaItemsHorizontalListValues = fromList(
             mediaType = MediaType.TvShow,
             movies = null,
             tvShows = tvShows,
@@ -44,14 +44,14 @@ data class MediaItemsHorizontalValues(
         fun dummyDataMovie(
             category: MoviesCategories,
             isLandscape: Boolean,
-        ): MediaItemsHorizontalValues {
+        ): MediaItemsHorizontalListValues {
             val movies = List(20) { MovieModel.dummyData() }
             return fromList(
                 mediaType = MediaType.Movie,
                 movies = movies,
                 tvShows = null,
                 isLandscape = isLandscape,
-                configValues = MediaItemsHorizontalConfigValues.movieConfig(
+                configValues = MediaItemsHorizontalListConfigValues.movieConfig(
                     category = category
                 )
             )
@@ -60,14 +60,14 @@ data class MediaItemsHorizontalValues(
         fun dummyDataTv(
             category: TvShowsCategories,
             isLandscape: Boolean,
-        ): MediaItemsHorizontalValues {
+        ): MediaItemsHorizontalListValues {
             val tvShows = List(20) { TvShowModel.dummyData() }
             return fromList(
                 mediaType = MediaType.TvShow,
                 movies = null,
                 tvShows = tvShows,
                 isLandscape = isLandscape,
-                configValues = MediaItemsHorizontalConfigValues.tvConfig(
+                configValues = MediaItemsHorizontalListConfigValues.tvConfig(
                     category = category
                 )
             )
@@ -78,8 +78,8 @@ data class MediaItemsHorizontalValues(
             movies: List<MovieModel>?,
             tvShows: List<TvShowModel>?,
             isLandscape: Boolean,
-            configValues: MediaItemsHorizontalConfigValues
-        ): MediaItemsHorizontalValues {
+            configValues: MediaItemsHorizontalListConfigValues
+        ): MediaItemsHorizontalListValues {
             val mediaIds = arrayListOf<Int>()
             val mediaTitles = arrayListOf<String>()
             val mediaGenres = arrayListOf<List<Int>>()
@@ -99,7 +99,7 @@ data class MediaItemsHorizontalValues(
                 posterPaths.add(it.posterPath)
                 backdropPaths.add(it.backdropPath)
             }
-            return MediaItemsHorizontalValues(
+            return MediaItemsHorizontalListValues(
                 mediaType = mediaType,
                 mediaIds = mediaIds,
                 mediaTitles = mediaTitles,

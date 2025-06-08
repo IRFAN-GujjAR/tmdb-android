@@ -14,14 +14,16 @@ import androidx.compose.ui.unit.dp
 import com.irfangujjar.tmdb.core.ui.ScreenPadding
 import com.irfangujjar.tmdb.core.ui.components.TextRow
 import com.irfangujjar.tmdb.core.ui.components.list.values.CelebItemHorizontalValues
-import com.irfangujjar.tmdb.core.ui.components.list.values.CelebItemsHorizontalValues
+import com.irfangujjar.tmdb.core.ui.components.list.values.CelebItemsHorizontalListValues
 import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
 
 @Composable
-fun CelebItemsHorizontal(preview: Boolean = false, values: CelebItemsHorizontalValues,
-                         title: String?=null,
-                         onSeeAllClick:(()-> Unit)?=null, ) {
-    if(title!=null && onSeeAllClick!=null)
+fun CelebItemsHorizontalList(
+    preview: Boolean = false, values: CelebItemsHorizontalListValues,
+    title: String? = null,
+    onSeeAllClick: (() -> Unit)? = null,
+) {
+    if (title != null && onSeeAllClick != null)
         Column {
             TextRow(title = title, onSeeAllClick = onSeeAllClick)
             HorizontalRow(values, preview)
@@ -33,7 +35,7 @@ fun CelebItemsHorizontal(preview: Boolean = false, values: CelebItemsHorizontalV
 
 @Composable
 private fun HorizontalRow(
-    values: CelebItemsHorizontalValues,
+    values: CelebItemsHorizontalListValues,
     preview: Boolean
 ) {
     LazyRow(
@@ -63,9 +65,9 @@ private fun HorizontalRow(
 private fun CelebItemsHorizontalPreview() {
     TMDbTheme {
         Surface {
-            CelebItemsHorizontal(
+            CelebItemsHorizontalList(
                 preview = true,
-                values = CelebItemsHorizontalValues.dummyData(),
+                values = CelebItemsHorizontalListValues.dummyData(),
                 title = "Popular",
                 onSeeAllClick = {}
             )

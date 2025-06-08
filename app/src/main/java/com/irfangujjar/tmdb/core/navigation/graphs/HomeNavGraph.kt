@@ -55,7 +55,10 @@ fun HomeNavGraph(
                     BottomNavBarScreen.Search -> SearchScreen(
                         outerPadding = outerPadding,
                         userTheme = userTheme,
-                        snackbarHostState = snackbarHostState
+                        snackbarHostState = snackbarHostState,
+                        onNavigateToDetailsPage = {
+                            navController.navigate(HomeScreen.Login.route)
+                        }
                     )
 
                     BottomNavBarScreen.TMDB -> TMDBScreen(

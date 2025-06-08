@@ -20,7 +20,7 @@ import com.irfangujjar.tmdb.features.main.tv_shows.domain.models.TvShowModel
 
 
 @Composable
-fun MediaItemsHorizontalTopRated(
+fun MediaItemsHorizontalTopRatedList(
     preview: Boolean = false,
     mediaType: MediaType,
     movies: List<MovieModel>?,
@@ -72,7 +72,7 @@ fun MediaItemsHorizontalTopRated(
 fun MediaItemsHorizontalTopRatedPreview() {
     TMDbTheme {
         Surface {
-            MediaItemsHorizontalTopRated(
+            MediaItemsHorizontalTopRatedList(
                 preview = true,
                 mediaType = MediaType.Movie,
                 movies = List(20) { MovieModel.dummyData() },

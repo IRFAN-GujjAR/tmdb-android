@@ -4,9 +4,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.irfangujjar.tmdb.core.ui.components.list.CelebItemsHorizontal
+import com.irfangujjar.tmdb.core.ui.components.list.CelebItemsHorizontalList
 import com.irfangujjar.tmdb.core.ui.components.list.values.CelebItemHorizontalConfigValues
-import com.irfangujjar.tmdb.core.ui.components.list.values.CelebItemsHorizontalValues
+import com.irfangujjar.tmdb.core.ui.components.list.values.CelebItemsHorizontalListValues
 import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
 import com.irfangujjar.tmdb.features.main.celebs.domain.models.CelebModel
 import com.irfangujjar.tmdb.features.main.celebs.domain.models.CelebsListModel
@@ -16,7 +16,7 @@ import com.irfangujjar.tmdb.features.main.celebs.domain.models.CelebsListModel
 fun PopularCelebs(
     preview: Boolean,
     popularCelebs: CelebsListModel,
-    onSeeAllClick:()-> Unit
+    onSeeAllClick: () -> Unit
 ) {
     val size = popularCelebs.celebrities.size
     val firsListLastIndex = (size / 2) - 1
@@ -24,18 +24,18 @@ fun PopularCelebs(
     val secondList = popularCelebs.celebrities.subList(firsListLastIndex + 1, size - 1)
 
     Column {
-        CelebItemsHorizontal(
+        CelebItemsHorizontalList(
             preview = preview,
-            values = CelebItemsHorizontalValues.fromListValues(
+            values = CelebItemsHorizontalListValues.fromListValues(
                 celebs = firstList,
                 config = CelebItemHorizontalConfigValues.fromDefault()
             ),
             title = "Popular",
             onSeeAllClick = onSeeAllClick
         )
-        CelebItemsHorizontal(
+        CelebItemsHorizontalList(
             preview = preview,
-            values = CelebItemsHorizontalValues.fromListValues(
+            values = CelebItemsHorizontalListValues.fromListValues(
                 celebs = secondList,
                 config = CelebItemHorizontalConfigValues.fromDefault()
             ),
@@ -45,14 +45,15 @@ fun PopularCelebs(
 
 @Preview
 @Composable
-private fun PopularCelebsPreview(){
+private fun PopularCelebsPreview() {
     TMDbTheme {
         Surface {
             PopularCelebs(
                 preview = true,
-                popularCelebs = CelebsListModel(pageNo = 1, totalPages = 2,
+                popularCelebs = CelebsListModel(
+                    pageNo = 1, totalPages = 2,
                     celebrities = List(20) { CelebModel.dummyData() })
-            ){}
+            ) {}
         }
     }
 }

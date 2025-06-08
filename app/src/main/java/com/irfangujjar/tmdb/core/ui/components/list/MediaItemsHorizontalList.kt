@@ -14,13 +14,13 @@ import androidx.compose.ui.unit.dp
 import com.irfangujjar.tmdb.core.ui.ScreenPadding
 import com.irfangujjar.tmdb.core.ui.components.TextRow
 import com.irfangujjar.tmdb.core.ui.components.list.values.MediaItemHorizontalValues
-import com.irfangujjar.tmdb.core.ui.components.list.values.MediaItemsHorizontalValues
+import com.irfangujjar.tmdb.core.ui.components.list.values.MediaItemsHorizontalListValues
 import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
 import com.irfangujjar.tmdb.core.ui.util.MoviesCategories
 
 @Composable
-fun MediaItemsHorizontal(
-    preview: Boolean = false, values: MediaItemsHorizontalValues,
+fun MediaItemsHorizontalList(
+    preview: Boolean = false, values: MediaItemsHorizontalListValues,
     title: String,
     onSeeAllClick: () -> Unit
 ) {
@@ -54,9 +54,9 @@ fun MediaItemsHorizontal(
 private fun MediaItemsHorizontalPreview() {
     TMDbTheme {
         Surface {
-            MediaItemsHorizontal(
+            MediaItemsHorizontalList(
                 preview = true,
-                values = MediaItemsHorizontalValues.dummyDataMovie(
+                values = MediaItemsHorizontalListValues.dummyDataMovie(
                     category = MoviesCategories.Popular,
                     isLandscape = false
                 ),

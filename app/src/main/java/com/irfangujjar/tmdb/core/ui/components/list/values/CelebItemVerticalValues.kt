@@ -2,36 +2,32 @@ package com.irfangujjar.tmdb.core.ui.components.list.values
 
 import com.irfangujjar.tmdb.features.main.celebs.domain.models.CelebModel
 
-data class CelebItemHorizontalValues(
+data class CelebItemVerticalValues(
     val id: Int,
     val name: String,
     val knownFor: String?,
     val profilePath: String?,
-    val config: CelebItemHorizontalConfigValues
 ) {
     companion object {
-        fun dummyData(): CelebItemHorizontalValues {
+        fun dummyData(): CelebItemVerticalValues {
             val celeb = CelebModel.dummyData()
-            return CelebItemHorizontalValues(
+            return CelebItemVerticalValues(
                 id = celeb.id,
                 name = celeb.name,
                 knownFor = celeb.knownFor,
-                profilePath = celeb.profilePath,
-                config = CelebItemHorizontalConfigValues.fromDefault()
+                profilePath = celeb.profilePath
             )
         }
 
         fun fromListValues(
-            values: CelebItemsHorizontalListValues,
+            values: CelebItemsVerticalListValues,
             index: Int
-        ): CelebItemHorizontalValues {
-            return CelebItemHorizontalValues(
-                id = values.celebIds[index],
+        ): CelebItemVerticalValues =
+            CelebItemVerticalValues(
+                id = values.celebsIds[index],
                 name = values.celebsNames[index],
                 knownFor = values.celebsKnownFor[index],
-                profilePath = values.profilePaths[index],
-                config = values.config
+                profilePath = values.profilePaths[index]
             )
-        }
     }
 }

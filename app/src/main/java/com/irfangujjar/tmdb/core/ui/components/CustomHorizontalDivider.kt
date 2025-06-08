@@ -4,25 +4,64 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.irfangujjar.tmdb.core.ui.ScreenPadding
 
 
 @Composable
 fun CustomDivider(
-    topPadding: Dp = 24.dp,
-    startPadding: Dp = ScreenPadding.getStartPadding(),
-    endPadding: Dp = 0.dp,
-    bottomPadding: Dp = 12.dp
+    topPadding: DividerTopPadding = DividerTopPadding.Default,
+    startPadding: DividerStartPadding = DividerStartPadding.Default,
+    endPadding: DividerEndPadding = DividerEndPadding.Zero,
+    bottomPadding: DividerBottomPadding = DividerBottomPadding.Default
 ) {
+
+    val topPad = when (topPadding) {
+        DividerTopPadding.Default -> 12.dp
+        DividerTopPadding.Double -> 24.dp
+        DividerTopPadding.Zero -> 0.dp
+    }
+    val startPad = when (startPadding) {
+        DividerStartPadding.Default -> ScreenPadding.getStartPadding()
+        DividerStartPadding.Zero -> 0.dp
+    }
+    val endPad = when (endPadding) {
+        DividerEndPadding.Default -> ScreenPadding.getEndPadding()
+        DividerEndPadding.Zero -> 0.dp
+    }
+    val bottomPad = when (bottomPadding) {
+        DividerBottomPadding.Default -> 12.dp
+        DividerBottomPadding.Zero -> 0.dp
+    }
+
     HorizontalDivider(
         modifier = Modifier.padding(
-            start = startPadding,
-            end = endPadding,
-            top = topPadding,
-            bottom = bottomPadding
+            start = startPad,
+            end = endPad,
+            top = topPad,
+            bottom = bottomPad
         ),
         thickness = 0.5.dp
     )
+}
+
+enum class DividerTopPadding {
+    Default,
+    Double,
+    Zero
+}
+
+enum class DividerBottomPadding {
+    Default,
+    Zero
+}
+
+enum class DividerStartPadding {
+    Default,
+    Zero
+}
+
+enum class DividerEndPadding {
+    Default,
+    Zero
 }

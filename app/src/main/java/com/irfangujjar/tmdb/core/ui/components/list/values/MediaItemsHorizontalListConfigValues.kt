@@ -10,7 +10,7 @@ import com.irfangujjar.tmdb.core.ui.util.PosterSizes
 import com.irfangujjar.tmdb.core.ui.util.TvShowsCategories
 
 
-data class MediaItemsHorizontalConfigValues(
+data class MediaItemsHorizontalListConfigValues(
     val listViewHeight: Dp,
     val listItemWidth: Dp,
     val imageHeight: Dp,
@@ -19,7 +19,7 @@ data class MediaItemsHorizontalConfigValues(
     val backdropSize: BackdropSizes
 ) {
     companion object {
-        fun fromDefault() = MediaItemsHorizontalConfigValues(
+        fun fromDefault() = MediaItemsHorizontalListConfigValues(
             listViewHeight = 205.dp,
             listItemWidth = 99.dp,
             imageHeight = 139.dp,
@@ -30,7 +30,7 @@ data class MediaItemsHorizontalConfigValues(
 
         fun movieConfig(
             category: MoviesCategories,
-        ): MediaItemsHorizontalConfigValues {
+        ): MediaItemsHorizontalListConfigValues {
             var font = 12.sp
             var listItemWidth = 99.dp
             var listViewHeight = 210.dp
@@ -68,7 +68,7 @@ data class MediaItemsHorizontalConfigValues(
 
                 else -> {}
             }
-            return MediaItemsHorizontalConfigValues(
+            return MediaItemsHorizontalListConfigValues(
                 listViewHeight = listViewHeight,
                 listItemWidth = listItemWidth,
                 imageHeight = imageHeight,
@@ -81,7 +81,7 @@ data class MediaItemsHorizontalConfigValues(
 
         fun tvConfig(
             category: TvShowsCategories
-        ): MediaItemsHorizontalConfigValues {
+        ): MediaItemsHorizontalListConfigValues {
             var font = 12.sp
             var listItemWidth = 99.dp
             var listViewHeight = 210.dp
@@ -95,7 +95,7 @@ data class MediaItemsHorizontalConfigValues(
                     imageHeight = 122.dp
 
                 }
-                
+
 
                 TvShowsCategories.TopRated -> {
                     listItemWidth = 120.dp
@@ -113,7 +113,7 @@ data class MediaItemsHorizontalConfigValues(
                 else -> {}
             }
 
-            return MediaItemsHorizontalConfigValues(
+            return MediaItemsHorizontalListConfigValues(
                 listViewHeight = listViewHeight,
                 listItemWidth = listItemWidth,
                 imageHeight = imageHeight,
