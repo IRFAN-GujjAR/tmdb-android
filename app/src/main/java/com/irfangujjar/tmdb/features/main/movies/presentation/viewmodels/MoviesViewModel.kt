@@ -7,9 +7,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.irfangujjar.tmdb.core.api.ResultWrapper
 import com.irfangujjar.tmdb.core.api.safeApiCall
+import com.irfangujjar.tmdb.core.ui.util.MoviesCategories
+import com.irfangujjar.tmdb.features.main.movies.domain.models.MoviesModel
 import com.irfangujjar.tmdb.features.main.movies.domain.usecases.MoviesUseCaseLoad
 import com.irfangujjar.tmdb.features.main.movies.domain.usecases.MoviesUseCaseWatch
 import com.irfangujjar.tmdb.features.main.movies.presentation.viewmodels.state.MoviesState
+import com.irfangujjar.tmdb.features.main.movies.sub_features.see_all.presentation.nav_args_holder.SeeAllMoviesNavArgsHolder
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
@@ -21,11 +24,19 @@ import javax.inject.Inject
 @HiltViewModel
 class MoviesViewModel @Inject constructor(
     private val moviesUseCaseWatch: MoviesUseCaseWatch,
-    private val moviesUseCaseLoad: MoviesUseCaseLoad
+    private val moviesUseCaseLoad: MoviesUseCaseLoad,
+    private val seeAllMoviesNavArgsHolder: SeeAllMoviesNavArgsHolder
 ) : ViewModel() {
 
     private val _state: MutableStateFlow<MoviesState> = MutableStateFlow(MoviesState.Loading)
     val state: StateFlow<MoviesState> = _state
+
+    var showSnackBarErrorMessage by mutableStateOf(false)
+        private set
+
+    fun clearSnackBarError() {
+        showSnackBarErrorMessage = false
+    }
 
     var isRefreshing by mutableStateOf(false)
         private set
@@ -62,6 +73,7 @@ class MoviesViewModel @Inject constructor(
         firstEmissionDeferred.await()
         if (result is ResultWrapper.Error) {
             if (state.value is MoviesState.Loaded) {
+                showSnackBarErrorMessage = true
                 _state.value = MoviesState.ErrorWithCache(
                     movies = (state.value as MoviesState.Loaded).movies,
                     error = result.errorEntity
@@ -85,4 +97,16 @@ class MoviesViewModel @Inject constructor(
             isRefreshing = false
         }
     }
+
+
+    fun saveSeeAllMoviesArg(category: MoviesCategories, movies: MoviesModel): String =
+        when (category) {
+            MoviesCategories.Popular -> seeAllMoviesNavArgsHolder.saveArgData(movies.popular)
+            MoviesCategories.InTheatres -> seeAllMoviesNavArgsHolder.saveArgData(movies.inTheatres)
+            MoviesCategories.Trending -> seeAllMoviesNavArgsHolder.saveArgData(movies.trending)
+            MoviesCategories.TopRated -> seeAllMoviesNavArgsHolder.saveArgData(movies.topRated)
+            else -> seeAllMoviesNavArgsHolder.saveArgData(movies.upcoming)
+        }
+
+
 }

@@ -1,9 +1,12 @@
 package com.irfangujjar.tmdb.features.main.movies.domain.models
 
 import JsonKeyNames
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import com.irfangujjar.tmdb.core.entities.MediaModel
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class MovieModel(
     override val id: Int,
     val title: String,
@@ -13,7 +16,7 @@ data class MovieModel(
     @SerializedName(JsonKeyNames.VOTE_COUNT) override val voteCount: Int,
     @SerializedName(JsonKeyNames.VOTE_AVERAGE) override val voteAverage: Double,
     @SerializedName(JsonKeyNames.RELEASE_DATE) val releaseDate: String?
-) : MediaModel {
+) : MediaModel, Parcelable {
     companion object {
         fun dummyData(): MovieModel = MovieModel(
             id = 238,

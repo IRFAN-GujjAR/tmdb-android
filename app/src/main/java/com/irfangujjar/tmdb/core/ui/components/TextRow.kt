@@ -25,7 +25,7 @@ fun TextRow(title: String, onSeeAllClick: () -> Unit) {
     ) {
         Text(title)
         Spacer(modifier = Modifier.weight(1f)) // pushes the button to the end
-        TextButton(onClick = {}) {
+        TextButton(onClick = onSeeAllClick) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     "See all",

@@ -26,7 +26,7 @@ fun HomeScreen(
     ) { paddingValues ->
         HomeNavGraph(
             navController = navController,
-            startDestination = BottomNavBarScreen.Movies.route,
+            startDestination = BottomNavBarScreen.Movies,
             outerPadding = paddingValues,
             userTheme = userTheme,
             snackbarHostState = snackBarHostState,

@@ -13,7 +13,6 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
@@ -31,10 +30,9 @@ fun CustomNavBar(navController: NavHostController) {
         HomeScreen.Login.route
     )
     val selectedIndex = rememberSaveable { mutableIntStateOf(0) }
-
     val selectedScreen = BottomNavBarScreen.items.find { it.route == currentDestination }
     if (selectedScreen != null) {
-        selectedIndex.intValue = selectedScreen.index
+        selectedIndex.intValue = selectedScreen.getCustomNavBarItem().index
     }
 
     val isVisible = currentDestination !in hiddenRoutes
@@ -47,16 +45,17 @@ fun CustomNavBar(navController: NavHostController) {
 
         NavigationBar {
             BottomNavBarScreen.items.forEach { screen ->
+                val customNavBarItem = screen.getCustomNavBarItem()
                 NavigationBarItem(
                     colors = NavigationBarItemDefaults.colors(
                         indicatorColor = MaterialTheme.colorScheme.primary,
                         selectedTextColor = MaterialTheme.colorScheme.primary,
                         selectedIconColor = Color.Black.copy(alpha = 0.8f)
                     ),
-                    selected = screen.index == selectedIndex.intValue,
+                    selected = customNavBarItem.index == selectedIndex.intValue,
                     onClick = {
-                        selectedIndex.intValue = screen.index
-                        navController.navigate(screen.route) {
+                        selectedIndex.intValue = customNavBarItem.index
+                        navController.navigate(screen) {
                             launchSingleTop = true
                             restoreState = true
                             popUpTo(navController.graph.startDestinationId) {
@@ -66,11 +65,11 @@ fun CustomNavBar(navController: NavHostController) {
                     },
                     icon = {
                         Icon(
-                            imageVector = screen.icon,
-                            contentDescription = screen.label
+                            imageVector = customNavBarItem.icon,
+                            contentDescription = customNavBarItem.label
                         )
                     },
-                    label = { Text(screen.label) },
+                    label = { Text(customNavBarItem.label) },
                 )
             }
         }

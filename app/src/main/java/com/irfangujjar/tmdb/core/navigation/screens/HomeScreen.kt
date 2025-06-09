@@ -1,14 +1,30 @@
 package com.irfangujjar.tmdb.core.navigation.screens
 
-import com.irfangujjar.tmdb.core.navigation.routes.HomeRoutes
+import com.irfangujjar.tmdb.core.ui.util.MoviesCategories
+import kotlinx.serialization.Serializable
 
-sealed class HomeScreen(
+sealed interface HomeScreen {
     val route: String
-) {
-    object MovieDetails : HomeScreen(HomeRoutes.Movies.DETAILS)
-    object TvShowDetails : HomeScreen(HomeRoutes.TvShows.DETAILS)
-    object CelebDetails : HomeScreen(HomeRoutes.Celebs.DETAILS)
-    object SearchDetails : HomeScreen(HomeRoutes.Search.DETAILS)
-    object TMDBAppearances : HomeScreen(HomeRoutes.TMDB.APPEARANCES)
-    object Login : HomeScreen(HomeRoutes.TMDB.LOGIN)
+        get() = this::class.qualifiedName ?: ""
+
+    @Serializable
+    object MovieDetails : HomeScreen
+
+    @Serializable
+    object TvShowDetails : HomeScreen
+
+    @Serializable
+    object CelebDetails : HomeScreen
+
+    @Serializable
+    object SearchDetails : HomeScreen
+
+    @Serializable
+    object TMDBAppearances : HomeScreen
+
+    @Serializable
+    object Login : HomeScreen
+
+    @Serializable
+    data class SeeAllMovies(val argsId: String, val category: MoviesCategories) : HomeScreen
 }

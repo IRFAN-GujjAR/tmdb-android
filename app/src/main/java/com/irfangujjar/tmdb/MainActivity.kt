@@ -57,8 +57,8 @@ class MainActivity : ComponentActivity() {
                     AppNavGraph(
                         navController = navController,
                         startDestination = if (isAppStartedFirstTime)
-                            AppScreen.Login.route else
-                            AppScreen.Main.route,
+                            AppScreen.Login else
+                            AppScreen.Main,
                         isAppStartedFirstTime = isAppStartedFirstTime,
                         userTheme = userThemeValue
                     )

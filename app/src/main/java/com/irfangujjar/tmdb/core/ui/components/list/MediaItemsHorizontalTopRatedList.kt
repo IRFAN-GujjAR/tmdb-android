@@ -24,10 +24,11 @@ fun MediaItemsHorizontalTopRatedList(
     preview: Boolean = false,
     mediaType: MediaType,
     movies: List<MovieModel>?,
-    tvShows: List<TvShowModel>?
+    tvShows: List<TvShowModel>?,
+    onSeeAllClick: () -> Unit
 ) {
     Column {
-        TextRow(title = "Top Rated") { }
+        TextRow(title = "Top Rated", onSeeAllClick = onSeeAllClick)
         LazyRow(
             modifier = Modifier.padding(top = 4.dp),
             contentPadding = PaddingValues(
@@ -77,7 +78,7 @@ fun MediaItemsHorizontalTopRatedPreview() {
                 mediaType = MediaType.Movie,
                 movies = List(20) { MovieModel.dummyData() },
                 tvShows = null,
-            )
+            ){}
         }
     }
 }

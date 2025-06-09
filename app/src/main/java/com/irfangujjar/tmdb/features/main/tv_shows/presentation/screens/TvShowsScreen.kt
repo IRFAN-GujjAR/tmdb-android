@@ -171,7 +171,10 @@ private fun TvShowsScreenBody(
                 mediaType = MediaType.TvShow,
                 tvShows = if (preview) List(20) { TvShowModel.dummyData() }
                 else tvShows.topRated.tvShows,
-                movies = null
+                movies = null,
+                onSeeAllClick = {
+                    
+                }
             )
             CustomDivider(topPadding = DividerTopPadding.Double)
             MediaItemsHorizontalList(

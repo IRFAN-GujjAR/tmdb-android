@@ -14,6 +14,7 @@ import com.irfangujjar.tmdb.core.ui.theme.UserTheme
 import com.irfangujjar.tmdb.features.login.presentation.screens.LoginScreen
 import com.irfangujjar.tmdb.features.main.celebs.presentation.screens.CelebsScreen
 import com.irfangujjar.tmdb.features.main.movies.presentation.screens.MoviesScreen
+import com.irfangujjar.tmdb.features.main.movies.sub_features.see_all.presentation.screens.SeeAllMoviesScreen
 import com.irfangujjar.tmdb.features.main.search.presentation.screens.SearchScreen
 import com.irfangujjar.tmdb.features.main.tmdb.presentation.screens.TMDBScreen
 import com.irfangujjar.tmdb.features.main.tv_shows.presentation.screens.TvShowsScreen
@@ -22,7 +23,7 @@ import com.irfangujjar.tmdb.features.main.tv_shows.presentation.screens.TvShowsS
 @Composable
 fun HomeNavGraph(
     navController: NavHostController,
-    startDestination: String,
+    startDestination: BottomNavBarScreen,
     outerPadding: PaddingValues,
     userTheme: UserTheme,
     snackbarHostState: SnackbarHostState,
@@ -31,52 +32,127 @@ fun HomeNavGraph(
         navController = navController,
         startDestination = startDestination,
     ) {
+
         BottomNavBarScreen.items.forEach { bottomScreen ->
-            composable(bottomScreen.route) {
-                when (bottomScreen) {
-                    BottomNavBarScreen.Movies -> MoviesScreen(
+            when (bottomScreen) {
+                BottomNavBarScreen.Movies -> composable<BottomNavBarScreen.Movies> {
+                    MoviesScreen(
+                        outerPadding = outerPadding,
+                        userTheme = userTheme,
+                        snackbarHostState = snackbarHostState,
+                        onNavigateToSeeAllMovies = { argId, category ->
+                            navController.navigate(
+                                HomeScreen.SeeAllMovies(
+                                    argsId = argId,
+                                    category = category
+                                )
+                            )
+                        }
+                    )
+                }
+
+                BottomNavBarScreen.TVShows -> composable<BottomNavBarScreen.TVShows> {
+                    TvShowsScreen(
                         outerPadding = outerPadding,
                         userTheme = userTheme,
                         snackbarHostState = snackbarHostState
                     )
+                }
 
-                    BottomNavBarScreen.TVShows -> TvShowsScreen(
+                BottomNavBarScreen.Celebs -> composable<BottomNavBarScreen.Celebs> {
+                    CelebsScreen(
                         outerPadding = outerPadding,
                         userTheme = userTheme,
                         snackbarHostState = snackbarHostState
                     )
+                }
 
-                    BottomNavBarScreen.Celebs -> CelebsScreen(
-                        outerPadding = outerPadding,
-                        userTheme = userTheme,
-                        snackbarHostState = snackbarHostState
-                    )
-
-                    BottomNavBarScreen.Search -> SearchScreen(
+                BottomNavBarScreen.Search -> composable<BottomNavBarScreen.Search> {
+                    SearchScreen(
                         outerPadding = outerPadding,
                         userTheme = userTheme,
                         snackbarHostState = snackbarHostState,
                         onNavigateToDetailsPage = {
-                            navController.navigate(HomeScreen.Login.route)
                         }
                     )
+                }
 
-                    BottomNavBarScreen.TMDB -> TMDBScreen(
+                BottomNavBarScreen.TMDB -> composable<BottomNavBarScreen.TMDB> {
+                    TMDBScreen(
                         outerPadding = outerPadding,
                         userTheme = userTheme,
                         snackbarHostState = snackbarHostState,
                         navigateToLogin = {
-                            navController.navigate(HomeScreen.Login.route)
+                            navController.navigate(HomeScreen.Login)
                         },
                         navigateToAppearances = {
-                            navController.navigate(HomeScreen.TMDBAppearances.route)
+                            navController.navigate(HomeScreen.TMDBAppearances)
                         }
                     )
                 }
+
+
             }
         }
 
-        composable(HomeScreen.Login.route) {
+        /*   BottomNavBarScreen.items.forEach { bottomScreen ->
+               composable(bottomScreen.route) {
+                   when (bottomScreen) {
+                       BottomNavBarScreen.Movies -> MoviesScreen(
+                           outerPadding = outerPadding,
+                           userTheme = userTheme,
+                           snackbarHostState = snackbarHostState,
+                           onNavigateToSeeAllMovies = { argId, category ->
+                               navController.navigate(
+                                   HomeScreen.SeeAllMovies(
+                                       argsId = argId,
+                                       category = category
+                                   )
+                               )
+                           }
+                       )
+
+                       BottomNavBarScreen.TVShows -> TvShowsScreen(
+                           outerPadding = outerPadding,
+                           userTheme = userTheme,
+                           snackbarHostState = snackbarHostState
+                       )
+
+                       BottomNavBarScreen.Celebs -> CelebsScreen(
+                           outerPadding = outerPadding,
+                           userTheme = userTheme,
+                           snackbarHostState = snackbarHostState
+                       )
+
+                       BottomNavBarScreen.Search -> SearchScreen(
+                           outerPadding = outerPadding,
+                           userTheme = userTheme,
+                           snackbarHostState = snackbarHostState,
+                           onNavigateToDetailsPage = {
+                           }
+                       )
+
+                       BottomNavBarScreen.TMDB -> TMDBScreen(
+                           outerPadding = outerPadding,
+                           userTheme = userTheme,
+                           snackbarHostState = snackbarHostState,
+                           navigateToLogin = {
+                               navController.navigate(HomeScreen.Login)
+                           },
+                           navigateToAppearances = {
+                               navController.navigate(HomeScreen.TMDBAppearances)
+                           }
+                       )
+                   }
+               }
+           }*/
+
+
+        composable<HomeScreen.SeeAllMovies> {
+            SeeAllMoviesScreen()
+        }
+
+        composable<HomeScreen.Login> {
             LoginScreen(
                 isAppStartedFirstTime = false,
                 showBackStack = true,
@@ -89,7 +165,7 @@ fun HomeNavGraph(
             )
         }
 
-        composable(HomeScreen.TMDBAppearances.route) {
+        composable<HomeScreen.TMDBAppearances> {
             ThemeScreen(
                 userTheme = userTheme,
                 outerPadding = outerPadding,
@@ -98,5 +174,7 @@ fun HomeNavGraph(
                 }
             )
         }
+
+
     }
 }

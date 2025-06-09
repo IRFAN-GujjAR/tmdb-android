@@ -43,7 +43,8 @@ fun MoviesScreen(
     preview: Boolean = false, outerPadding: PaddingValues,
     viewModel: MoviesViewModel = hiltViewModel(),
     userTheme: UserTheme,
-    snackbarHostState: SnackbarHostState?
+    snackbarHostState: SnackbarHostState?,
+    onNavigateToSeeAllMovies: (String, MoviesCategories) -> Unit
 ) {
 
     Scaffold(topBar = {
@@ -67,16 +68,25 @@ fun MoviesScreen(
 
                 is MoviesState.ErrorWithCache -> {
                     val error = state.error
-                    LaunchedEffect(Unit) {
-                        snackbarHostState?.showSnackbar(error.message)
-                    }
+                    if (viewModel.showSnackBarErrorMessage)
+                        LaunchedEffect(Unit) {
+                            snackbarHostState?.showSnackbar(error.message)
+                            viewModel.clearSnackBarError()
+                        }
                     MoviesScreenBody(
                         preview = preview,
                         paddingValues = outerPadding,
                         innerPadding = innerPadding,
                         movies = state.movies,
                         isRefreshing = viewModel.isRefreshing,
-                        onRefresh = { viewModel.refresh() }
+                        onRefresh = { viewModel.refresh() },
+                        onNavigateToSeeAllMovies = {
+                            val argId = viewModel.saveSeeAllMoviesArg(
+                                category = it,
+                                movies = state.movies
+                            )
+                            onNavigateToSeeAllMovies(argId, it)
+                        }
                     )
                 }
 
@@ -86,8 +96,14 @@ fun MoviesScreen(
                     innerPadding = innerPadding,
                     movies = state.movies,
                     isRefreshing = viewModel.isRefreshing,
-                    onRefresh = { viewModel.refresh() }
-
+                    onRefresh = { viewModel.refresh() },
+                    onNavigateToSeeAllMovies = {
+                        val argId = viewModel.saveSeeAllMoviesArg(
+                            category = it,
+                            movies = state.movies
+                        )
+                        onNavigateToSeeAllMovies(argId, it)
+                    }
                 )
 
                 MoviesState.Loading -> CustomLoading()
@@ -105,7 +121,8 @@ private fun MoviesScreenBody(
     innerPadding: PaddingValues,
     movies: MoviesModel,
     isRefreshing: Boolean,
-    onRefresh: () -> Unit
+    onRefresh: () -> Unit,
+    onNavigateToSeeAllMovies: (MoviesCategories) -> Unit
 ) {
     val scrollState = rememberScrollState()
     PullToRefreshBox(
@@ -146,7 +163,7 @@ private fun MoviesScreenBody(
                 ),
                 title = MoviesCategories.Popular.name,
             ) {
-
+                onNavigateToSeeAllMovies(MoviesCategories.Popular)
             }
             CustomDivider(topPadding = DividerTopPadding.Double)
             MediaItemsHorizontalList(
@@ -163,7 +180,7 @@ private fun MoviesScreenBody(
                 ),
                 title = MoviesCategories.InTheatres.name
             ) {
-
+                onNavigateToSeeAllMovies(MoviesCategories.InTheatres)
             }
             CustomDivider(topPadding = DividerTopPadding.Double)
             MediaItemsHorizontalList(
@@ -181,7 +198,7 @@ private fun MoviesScreenBody(
                 ),
                 title = MoviesCategories.Trending.name
             ) {
-
+                onNavigateToSeeAllMovies(MoviesCategories.Trending)
             }
             CustomDivider(topPadding = DividerTopPadding.Double)
             MediaItemsHorizontalTopRatedList(
@@ -190,7 +207,9 @@ private fun MoviesScreenBody(
                 movies = if (preview) List(20) { MovieModel.dummyData() }
                 else movies.topRated.movies,
                 tvShows = null
-            )
+            ) {
+                onNavigateToSeeAllMovies(MoviesCategories.TopRated)
+            }
             CustomDivider(topPadding = DividerTopPadding.Double)
             MediaItemsHorizontalList(
                 preview = preview,
@@ -205,7 +224,7 @@ private fun MoviesScreenBody(
                 ),
                 title = MoviesCategories.Upcoming.name
             ) {
-
+                onNavigateToSeeAllMovies(MoviesCategories.Upcoming)
             }
         }
     }
@@ -230,8 +249,12 @@ private fun PreviewMovieScreen() {
                     topRated = emptyList,
                     upcoming = emptyList
                 ),
-                isRefreshing = false
-            ) { }
+                isRefreshing = false,
+                onRefresh = {},
+                onNavigateToSeeAllMovies = {
+
+                }
+            )
         }
     }
 }
