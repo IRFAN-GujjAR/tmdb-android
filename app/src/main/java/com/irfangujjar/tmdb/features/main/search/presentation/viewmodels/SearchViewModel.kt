@@ -14,8 +14,8 @@ import com.irfangujjar.tmdb.features.main.search.domain.usecases.SearchDetailsUs
 import com.irfangujjar.tmdb.features.main.search.domain.usecases.SearchSuggestionsUseCaseLoad
 import com.irfangujjar.tmdb.features.main.search.domain.usecases.TrendingSearchUseCaseLoad
 import com.irfangujjar.tmdb.features.main.search.domain.usecases.TrendingSearchUseCaseWatch
-import com.irfangujjar.tmdb.features.main.search.domain.usecases.params.SearchDetailsParams
-import com.irfangujjar.tmdb.features.main.search.domain.usecases.params.SearchSuggestionParams
+import com.irfangujjar.tmdb.features.main.search.domain.usecases.params.SearchDetailsUseCaseLoadParams
+import com.irfangujjar.tmdb.features.main.search.domain.usecases.params.SearchSuggestionUseCaseLoadParams
 import com.irfangujjar.tmdb.features.main.search.presentation.viewmodels.state.SearchDetailsState
 import com.irfangujjar.tmdb.features.main.search.presentation.viewmodels.state.SearchState
 import com.irfangujjar.tmdb.features.main.search.presentation.viewmodels.state.SearchSuggestionState
@@ -154,7 +154,7 @@ class SearchViewModel @Inject constructor(
         suggestionsJob = viewModelScope.launch(Dispatchers.IO) {
             val result = safeApiCall {
                 _suggestionsState.value = SearchSuggestionState.Loading
-                searchSuggestionsUseCaseLoad.invoke(params = SearchSuggestionParams(query))
+                searchSuggestionsUseCaseLoad.invoke(params = SearchSuggestionUseCaseLoadParams(query))
             }
             when (result) {
                 is ResultWrapper.Error -> {
@@ -208,7 +208,7 @@ class SearchViewModel @Inject constructor(
         detailsJob = viewModelScope.launch(Dispatchers.IO) {
             val result = safeApiCall {
                 _detailsState.value = SearchDetailsState.Loading
-                searchDetailsUseCaseLoad.invoke(params = SearchDetailsParams(query = query))
+                searchDetailsUseCaseLoad.invoke(params = SearchDetailsUseCaseLoadParams(query = query))
             }
             when (result) {
                 is ResultWrapper.Error -> {

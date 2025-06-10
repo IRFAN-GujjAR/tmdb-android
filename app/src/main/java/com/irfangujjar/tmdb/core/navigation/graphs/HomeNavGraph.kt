@@ -13,6 +13,7 @@ import com.irfangujjar.tmdb.core.navigation.screens.HomeScreen
 import com.irfangujjar.tmdb.core.ui.theme.UserTheme
 import com.irfangujjar.tmdb.features.login.presentation.screens.LoginScreen
 import com.irfangujjar.tmdb.features.main.celebs.presentation.screens.CelebsScreen
+import com.irfangujjar.tmdb.features.main.celebs.sub_features.see_all.presentation.screens.SeeAllCelebsScreen
 import com.irfangujjar.tmdb.features.main.movies.presentation.screens.MoviesScreen
 import com.irfangujjar.tmdb.features.main.movies.sub_features.see_all.presentation.screens.SeeAllMoviesScreen
 import com.irfangujjar.tmdb.features.main.search.presentation.screens.SearchScreen
@@ -74,7 +75,15 @@ fun HomeNavGraph(
                     CelebsScreen(
                         outerPadding = outerPadding,
                         userTheme = userTheme,
-                        snackbarHostState = snackbarHostState
+                        snackbarHostState = snackbarHostState,
+                        onNavigateToSeeAllCelebs = { argId, category ->
+                            navController.navigate(
+                                HomeScreen.SeeAllCelebs(
+                                    argId = argId,
+                                    category = category
+                                )
+                            )
+                        }
                     )
                 }
 
@@ -171,6 +180,15 @@ fun HomeNavGraph(
 
         composable<HomeScreen.SeeAllTvShows> {
             SeeAllTvShowsScreen(
+                outerPadding = outerPadding,
+                snackbarHostState = snackbarHostState,
+                onBackStackPressed = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable<HomeScreen.SeeAllCelebs> {
+            SeeAllCelebsScreen(
                 outerPadding = outerPadding,
                 snackbarHostState = snackbarHostState,
                 onBackStackPressed = {

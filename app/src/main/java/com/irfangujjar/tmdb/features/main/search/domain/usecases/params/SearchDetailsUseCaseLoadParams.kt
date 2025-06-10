@@ -1,5 +1,5 @@
 package com.irfangujjar.tmdb.features.main.search.domain.usecases.params
 
-data class SearchSuggestionParams(
+data class SearchDetailsUseCaseLoadParams(
     val query: String
 )

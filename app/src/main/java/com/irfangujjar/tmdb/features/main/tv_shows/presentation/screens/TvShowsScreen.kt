@@ -30,7 +30,7 @@ import com.irfangujjar.tmdb.core.ui.components.list.values.MediaItemsHorizontalL
 import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
 import com.irfangujjar.tmdb.core.ui.theme.UserTheme
 import com.irfangujjar.tmdb.core.ui.util.MediaType
-import com.irfangujjar.tmdb.core.ui.util.TvShowsCategories
+import com.irfangujjar.tmdb.core.ui.util.TvShowsCategory
 import com.irfangujjar.tmdb.features.main.tv_shows.domain.models.TvShowModel
 import com.irfangujjar.tmdb.features.main.tv_shows.domain.models.TvShowsListModel
 import com.irfangujjar.tmdb.features.main.tv_shows.domain.models.TvShowsModel
@@ -44,7 +44,7 @@ fun TvShowsScreen(
     viewModel: TvShowsViewModel = hiltViewModel(),
     userTheme: UserTheme,
     snackbarHostState: SnackbarHostState?,
-    onNavigateToSeeAllTvShows: (String, TvShowsCategories) -> Unit
+    onNavigateToSeeAllTvShows: (String, TvShowsCategory) -> Unit
 ) {
 
     Scaffold(topBar = {
@@ -120,7 +120,7 @@ private fun TvShowsScreenBody(
     innerPadding: PaddingValues,
     tvShows: TvShowsModel,
     isRefreshing: Boolean,
-    onNavigateToSeeAllMovies: (TvShowsCategories) -> Unit,
+    onNavigateToSeeAllMovies: (TvShowsCategory) -> Unit,
     onRefresh: () -> Unit
 ) {
     val scrollState = rememberScrollState()
@@ -150,36 +150,36 @@ private fun TvShowsScreenBody(
             MediaItemsHorizontalList(
                 preview = preview,
                 values = if (preview) MediaItemsHorizontalListValues.dummyDataTv(
-                    category = TvShowsCategories.AiringToday,
+                    category = TvShowsCategory.AiringToday,
                     isLandscape = true
                 )
                 else MediaItemsHorizontalListValues.fromTvShows(
                     tvShows = tvShows.popular.tvShows,
                     isLandscape = true,
                     configValues = MediaItemsHorizontalListConfigValues.tvConfig(
-                        TvShowsCategories.AiringToday
+                        TvShowsCategory.AiringToday
                     ),
                 ),
-                title = TvShowsCategories.AiringToday.name,
+                title = TvShowsCategory.AiringToday.name,
             ) {
-                onNavigateToSeeAllMovies(TvShowsCategories.AiringToday)
+                onNavigateToSeeAllMovies(TvShowsCategory.AiringToday)
             }
             CustomDivider(topPadding = DividerTopPadding.Double)
             MediaItemsHorizontalList(
                 preview = preview,
                 values = if (preview) MediaItemsHorizontalListValues.dummyDataTv(
-                    category = TvShowsCategories.Trending,
+                    category = TvShowsCategory.Trending,
                     isLandscape = false
                 ) else MediaItemsHorizontalListValues.fromTvShows(
                     tvShows = tvShows.trending.tvShows,
                     isLandscape = false,
                     configValues = MediaItemsHorizontalListConfigValues.tvConfig(
-                        TvShowsCategories.Trending
+                        TvShowsCategory.Trending
                     ),
                 ),
-                title = TvShowsCategories.Trending.name
+                title = TvShowsCategory.Trending.name
             ) {
-                onNavigateToSeeAllMovies(TvShowsCategories.Trending)
+                onNavigateToSeeAllMovies(TvShowsCategory.Trending)
             }
             CustomDivider()
             MediaItemsHorizontalTopRatedList(
@@ -189,24 +189,24 @@ private fun TvShowsScreenBody(
                 else tvShows.topRated.tvShows,
                 movies = null,
                 onSeeAllClick = {
-                    onNavigateToSeeAllMovies(TvShowsCategories.TopRated)
+                    onNavigateToSeeAllMovies(TvShowsCategory.TopRated)
                 }
             )
             CustomDivider(topPadding = DividerTopPadding.Double)
             MediaItemsHorizontalList(
                 preview = preview,
                 values = if (preview) MediaItemsHorizontalListValues.dummyDataTv(
-                    category = TvShowsCategories.Popular,
+                    category = TvShowsCategory.Popular,
                     isLandscape = false
                 )
                 else MediaItemsHorizontalListValues.fromTvShows(
                     tvShows = tvShows.popular.tvShows,
                     isLandscape = false,
-                    configValues = MediaItemsHorizontalListConfigValues.tvConfig(TvShowsCategories.Popular)
+                    configValues = MediaItemsHorizontalListConfigValues.tvConfig(TvShowsCategory.Popular)
                 ),
-                title = TvShowsCategories.Popular.name
+                title = TvShowsCategory.Popular.name
             ) {
-                onNavigateToSeeAllMovies(TvShowsCategories.Popular)
+                onNavigateToSeeAllMovies(TvShowsCategory.Popular)
             }
         }
     }

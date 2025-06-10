@@ -1,8 +1,8 @@
 package com.irfangujjar.tmdb.core.ui.components.list.values
 
 import com.irfangujjar.tmdb.core.ui.util.MediaType
-import com.irfangujjar.tmdb.core.ui.util.MoviesCategories
-import com.irfangujjar.tmdb.core.ui.util.TvShowsCategories
+import com.irfangujjar.tmdb.core.ui.util.MoviesCategory
+import com.irfangujjar.tmdb.core.ui.util.TvShowsCategory
 import com.irfangujjar.tmdb.features.main.movies.domain.models.MovieModel
 import com.irfangujjar.tmdb.features.main.tv_shows.domain.models.TvShowModel
 
@@ -32,7 +32,7 @@ data class MediaItemHorizontalValues(
         )
 
         fun dummyDataMovie(
-            category: MoviesCategories,
+            category: MoviesCategory,
             isLandscape: Boolean
         ): MediaItemHorizontalValues {
             val movie = MovieModel.dummyData()
@@ -51,7 +51,7 @@ data class MediaItemHorizontalValues(
         }
 
         fun dummyDataTv(
-            category: TvShowsCategories,
+            category: TvShowsCategory,
             isLandscape: Boolean
         ): MediaItemHorizontalValues {
             val tvShow = TvShowModel.dummyData()

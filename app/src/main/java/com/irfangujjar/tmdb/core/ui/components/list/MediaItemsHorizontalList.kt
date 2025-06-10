@@ -16,7 +16,7 @@ import com.irfangujjar.tmdb.core.ui.components.TextRow
 import com.irfangujjar.tmdb.core.ui.components.list.values.MediaItemHorizontalValues
 import com.irfangujjar.tmdb.core.ui.components.list.values.MediaItemsHorizontalListValues
 import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
-import com.irfangujjar.tmdb.core.ui.util.MoviesCategories
+import com.irfangujjar.tmdb.core.ui.util.MoviesCategory
 
 @Composable
 fun MediaItemsHorizontalList(
@@ -57,10 +57,10 @@ private fun MediaItemsHorizontalPreview() {
             MediaItemsHorizontalList(
                 preview = true,
                 values = MediaItemsHorizontalListValues.dummyDataMovie(
-                    category = MoviesCategories.Popular,
+                    category = MoviesCategory.Popular,
                     isLandscape = false
                 ),
-                title = MoviesCategories.Popular.name,
+                title = MoviesCategory.Popular.name,
             ) {}
         }
     }

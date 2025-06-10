@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.irfangujjar.tmdb.core.api.ResultWrapper
 import com.irfangujjar.tmdb.core.api.safeApiCall
-import com.irfangujjar.tmdb.core.ui.util.MoviesCategories
+import com.irfangujjar.tmdb.core.ui.util.MoviesCategory
 import com.irfangujjar.tmdb.core.viewmodels.ViewModelWithErrorAlerts
 import com.irfangujjar.tmdb.features.main.movies.domain.models.MoviesModel
 import com.irfangujjar.tmdb.features.main.movies.domain.usecases.MoviesUseCaseLoad
@@ -92,12 +92,12 @@ class MoviesViewModel @Inject constructor(
     }
 
 
-    fun saveSeeAllMoviesArg(category: MoviesCategories, movies: MoviesModel): String =
+    fun saveSeeAllMoviesArg(category: MoviesCategory, movies: MoviesModel): String =
         when (category) {
-            MoviesCategories.Popular -> seeAllMoviesNavArgsHolder.saveArgData(movies.popular)
-            MoviesCategories.InTheatres -> seeAllMoviesNavArgsHolder.saveArgData(movies.inTheatres)
-            MoviesCategories.Trending -> seeAllMoviesNavArgsHolder.saveArgData(movies.trending)
-            MoviesCategories.TopRated -> seeAllMoviesNavArgsHolder.saveArgData(movies.topRated)
+            MoviesCategory.Popular -> seeAllMoviesNavArgsHolder.saveArgData(movies.popular)
+            MoviesCategory.InTheatres -> seeAllMoviesNavArgsHolder.saveArgData(movies.inTheatres)
+            MoviesCategory.Trending -> seeAllMoviesNavArgsHolder.saveArgData(movies.trending)
+            MoviesCategory.TopRated -> seeAllMoviesNavArgsHolder.saveArgData(movies.topRated)
             else -> seeAllMoviesNavArgsHolder.saveArgData(movies.upcoming)
         }
 

@@ -24,6 +24,7 @@ import com.irfangujjar.tmdb.core.ui.components.CustomLoading
 import com.irfangujjar.tmdb.core.ui.components.CustomTopAppBar
 import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
 import com.irfangujjar.tmdb.core.ui.theme.UserTheme
+import com.irfangujjar.tmdb.core.ui.util.CelebsCategory
 import com.irfangujjar.tmdb.features.main.celebs.domain.models.CelebsModel
 import com.irfangujjar.tmdb.features.main.celebs.presentation.screens.components.PopularCelebs
 import com.irfangujjar.tmdb.features.main.celebs.presentation.screens.components.TrendingCelebs
@@ -37,6 +38,7 @@ fun CelebsScreen(
     outerPadding: PaddingValues,
     userTheme: UserTheme,
     snackbarHostState: SnackbarHostState?,
+    onNavigateToSeeAllCelebs: (String, CelebsCategory) -> Unit,
     viewModel: CelebsViewModel = hiltViewModel()
 ) {
     Scaffold(topBar = {
@@ -71,7 +73,14 @@ fun CelebsScreen(
                         innerPadding = innerPadding,
                         celebs = state.celebs,
                         isRefreshing = viewModel.isRefreshing,
-                        onRefresh = { viewModel.refresh() }
+                        onRefresh = { viewModel.refresh() },
+                        onNavigateToSeeAllCelebs = {
+                            val argId = viewModel.saveSeeAllCelebsArg(
+                                category = it,
+                                celebs = state.celebs
+                            )
+                            onNavigateToSeeAllCelebs(argId, it)
+                        }
                     )
                 }
 
@@ -81,8 +90,14 @@ fun CelebsScreen(
                     innerPadding = innerPadding,
                     celebs = state.celebs,
                     isRefreshing = viewModel.isRefreshing,
-                    onRefresh = { viewModel.refresh() }
-
+                    onRefresh = { viewModel.refresh() },
+                    onNavigateToSeeAllCelebs = {
+                        val argId = viewModel.saveSeeAllCelebsArg(
+                            category = it,
+                            celebs = state.celebs
+                        )
+                        onNavigateToSeeAllCelebs(argId, it)
+                    }
                 )
 
                 CelebsState.Loading -> CustomLoading()
@@ -100,6 +115,7 @@ private fun CelebsScreenBody(
     innerPadding: PaddingValues,
     celebs: CelebsModel,
     isRefreshing: Boolean,
+    onNavigateToSeeAllCelebs: (CelebsCategory) -> Unit,
     onRefresh: () -> Unit
 ) {
     val scrollState = rememberScrollState()
@@ -126,9 +142,17 @@ private fun CelebsScreenBody(
                     bottom = ScreenPadding.getBottomPadding()
                 )
         ) {
-            PopularCelebs(preview = preview, popularCelebs = celebs.popular) {}
+            PopularCelebs(
+                preview = preview, popularCelebs = celebs.popular,
+                onSeeAllClick = {
+                    onNavigateToSeeAllCelebs(CelebsCategory.Popular)
+                })
             CustomDivider()
-            TrendingCelebs(preview = preview, celebs = celebs.trending.celebrities) { }
+            TrendingCelebs(
+                preview = preview, celebs = celebs.trending.celebrities,
+                onSeeAllClick = {
+                    onNavigateToSeeAllCelebs(CelebsCategory.Trending)
+                })
         }
     }
 }
@@ -144,7 +168,10 @@ private fun CelebsScreenBodyPreview() {
                 innerPadding = PaddingValues(),
                 celebs = CelebsModel.dummyData(),
                 isRefreshing = false,
-                onRefresh = {}
+                onRefresh = {},
+                onNavigateToSeeAllCelebs = {
+                    
+                }
             )
         }
     }

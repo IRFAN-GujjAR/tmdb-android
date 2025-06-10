@@ -19,8 +19,8 @@ import com.irfangujjar.tmdb.core.ui.components.list.values.CelebItemsHorizontalL
 import com.irfangujjar.tmdb.core.ui.components.list.values.MediaItemsHorizontalListConfigValues
 import com.irfangujjar.tmdb.core.ui.components.list.values.MediaItemsHorizontalListValues
 import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
-import com.irfangujjar.tmdb.core.ui.util.MoviesCategories
-import com.irfangujjar.tmdb.core.ui.util.TvShowsCategories
+import com.irfangujjar.tmdb.core.ui.util.MoviesCategory
+import com.irfangujjar.tmdb.core.ui.util.TvShowsCategory
 import com.irfangujjar.tmdb.features.main.celebs.domain.models.CelebsListModel
 import com.irfangujjar.tmdb.features.main.movies.domain.models.MoviesListModel
 import com.irfangujjar.tmdb.features.main.tv_shows.domain.models.TvShowsListModel
@@ -49,7 +49,7 @@ fun SearchDetailsAll(
                 movies = moviesList.movies,
                 isLandscape = false,
                 configValues = MediaItemsHorizontalListConfigValues.movieConfig(
-                    MoviesCategories.Popular
+                    MoviesCategory.Popular
                 )
             ),
             title = "Movies"
@@ -63,7 +63,7 @@ fun SearchDetailsAll(
                 tvShows = tvShowsList.tvShows,
                 isLandscape = true,
                 configValues = MediaItemsHorizontalListConfigValues.tvConfig(
-                    TvShowsCategories.AiringToday
+                    TvShowsCategory.AiringToday
                 )
             ),
             title = "Tv Shows"

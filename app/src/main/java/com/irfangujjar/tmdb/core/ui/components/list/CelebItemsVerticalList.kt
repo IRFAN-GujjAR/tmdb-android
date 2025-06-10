@@ -6,6 +6,17 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
 import com.irfangujjar.tmdb.core.ui.ScreenPadding
 import com.irfangujjar.tmdb.core.ui.components.CustomDivider
@@ -20,6 +31,7 @@ fun CelebItemsVerticalList(
     outerPadding: PaddingValues? = null,
     innerPadding: PaddingValues? = null,
     state: LazyListState? = null,
+    onScrollThresholdReached: () -> Unit = {},
     values: CelebItemsVerticalListValues
 ) {
     val padding = ScreenPadding.getPadding(
@@ -27,19 +39,56 @@ fun CelebItemsVerticalList(
         innerPaddingValues = innerPadding,
         includeEndPadding = false
     )
-    if (state == null)
+    if (state == null) {
         LazyColumn(
             contentPadding = padding
         ) {
             itemContent(preview = preview, values = values)
         }
-    else
+    } else {
+        val hasAlreadyTriggered = rememberSaveable { mutableStateOf(false) }
+
+        val hasReachedThreshold by remember {
+            derivedStateOf {
+                isThresholdReached(state)
+            }
+        }
+        LaunchedEffect(hasReachedThreshold) {
+            if (hasReachedThreshold && !hasAlreadyTriggered.value) {
+                hasAlreadyTriggered.value = true
+                onScrollThresholdReached()
+            } else if (!hasReachedThreshold) {
+                hasAlreadyTriggered.value = false
+            }
+        }
+
+        //When user reaches at the end of list and tries to scroll
+        val overScrollConnection = remember {
+            object : NestedScrollConnection {
+                override fun onPostScroll(
+                    consumed: Offset,
+                    available: Offset,
+                    source: NestedScrollSource
+                ): Offset {
+                    // Only trigger when dragging upward (i.e., user trying to scroll down)
+                    if (available.y < 0f) {
+                        if (isThresholdReached(state)) {
+                            onScrollThresholdReached()
+                        }
+                    }
+                    return Offset.Zero
+                }
+            }
+        }
+
         LazyColumn(
             state = state,
-            contentPadding = padding
+            contentPadding = padding,
+            modifier = Modifier.nestedScroll(overScrollConnection)
         ) {
             itemContent(preview = preview, values = values)
         }
+    }
 }
 
 private fun LazyListScope.itemContent(
@@ -60,6 +109,14 @@ private fun LazyListScope.itemContent(
         }
     }
 }
+
+private fun isThresholdReached(listState: LazyListState): Boolean {
+    val lastVisibleItemIndex =
+        listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
+    val totalItems = listState.layoutInfo.totalItemsCount
+    return totalItems > 0 && lastVisibleItemIndex >= totalItems - 5
+}
+
 
 @Preview
 @Composable

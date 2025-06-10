@@ -5,9 +5,9 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.irfangujjar.tmdb.core.ui.util.BackdropSizes
-import com.irfangujjar.tmdb.core.ui.util.MoviesCategories
+import com.irfangujjar.tmdb.core.ui.util.MoviesCategory
 import com.irfangujjar.tmdb.core.ui.util.PosterSizes
-import com.irfangujjar.tmdb.core.ui.util.TvShowsCategories
+import com.irfangujjar.tmdb.core.ui.util.TvShowsCategory
 
 
 data class MediaItemsHorizontalListConfigValues(
@@ -29,7 +29,7 @@ data class MediaItemsHorizontalListConfigValues(
         )
 
         fun movieConfig(
-            category: MoviesCategories,
+            category: MoviesCategory,
         ): MediaItemsHorizontalListConfigValues {
             val default = fromDefault()
             var font = default.font
@@ -38,21 +38,21 @@ data class MediaItemsHorizontalListConfigValues(
             var imageHeight = default.imageHeight
             var posterSize = default.posterSize
             when (category) {
-                MoviesCategories.Popular -> {
+                MoviesCategory.Popular -> {
                     font = 13.sp
                     listItemWidth = 107.dp
                     listViewHeight = 220.dp
                     imageHeight = 150.dp
                 }
 
-                MoviesCategories.InTheatres -> {
+                MoviesCategory.InTheatres -> {
                     font = 15.sp
                     listItemWidth = 209.dp
                     listViewHeight = 170.dp
                     imageHeight = 122.dp
                 }
 
-                MoviesCategories.TopRated -> {
+                MoviesCategory.TopRated -> {
                     listItemWidth = 120.dp
                     listViewHeight = 240.dp
                     imageHeight = 180.dp
@@ -73,7 +73,7 @@ data class MediaItemsHorizontalListConfigValues(
 
 
         fun tvConfig(
-            category: TvShowsCategories
+            category: TvShowsCategory
         ): MediaItemsHorizontalListConfigValues {
             val default = fromDefault()
             var font = default.font
@@ -82,7 +82,7 @@ data class MediaItemsHorizontalListConfigValues(
             var imageHeight = default.imageHeight
             var posterSize = default.posterSize
             when (category) {
-                TvShowsCategories.AiringToday -> {
+                TvShowsCategory.AiringToday -> {
                     font = 15.sp
                     listItemWidth = 209.dp
                     listViewHeight = 170.dp
@@ -91,14 +91,14 @@ data class MediaItemsHorizontalListConfigValues(
                 }
 
 
-                TvShowsCategories.TopRated -> {
+                TvShowsCategory.TopRated -> {
                     listItemWidth = 120.dp
                     listViewHeight = 240.dp
                     imageHeight = 180.dp
                     posterSize = PosterSizes.w92
                 }
 
-                TvShowsCategories.Popular -> {
+                TvShowsCategory.Popular -> {
                     listItemWidth = 107.dp
                     listViewHeight = 220.dp
                     imageHeight = 150.dp

@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.sp
 import com.irfangujjar.tmdb.core.ui.components.image.CustomNetworkImage
 import com.irfangujjar.tmdb.core.ui.components.list.values.MediaItemHorizontalValues
 import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
-import com.irfangujjar.tmdb.core.ui.util.MoviesCategories
+import com.irfangujjar.tmdb.core.ui.util.MoviesCategory
 import com.irfangujjar.tmdb.core.ui.util.getMovieGenres
 import com.irfangujjar.tmdb.core.ui.util.getTvShowsGenres
 import com.irfangujjar.tmdb.core.ui.util.imageType
@@ -86,7 +86,7 @@ private fun MediaItemHorizontalPreview() {
                 preview = true,
                 values = MediaItemHorizontalValues.dummyDataMovie(
                     category =
-                        MoviesCategories.Popular,
+                        MoviesCategory.Popular,
                     isLandscape = false
                 )
             )

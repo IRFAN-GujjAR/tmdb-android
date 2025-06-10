@@ -17,7 +17,7 @@ enum class MediaType(value: String) {
 fun MediaType.isMovie() = this == MediaType.Movie
 fun MediaType.imageType() = if (this.isMovie()) MediaImageType.Movie else MediaImageType.TvShow
 
-enum class MoviesCategories(name: String) {
+enum class MoviesCategory(name: String) {
     Popular("Popular"),
     InTheatres("Playing In Theatres"),
     Trending("Trending"),
@@ -27,11 +27,7 @@ enum class MoviesCategories(name: String) {
     DetailsSimilar("Similar"),
 }
 
-enum class MovieDetails() {
-
-}
-
-enum class TvShowsCategories(name: String) {
+enum class TvShowsCategory(name: String) {
     AiringToday("Airing Today"),
     Trending("Trending"),
     TopRated("Top Rated"),
@@ -40,6 +36,10 @@ enum class TvShowsCategories(name: String) {
     DetailsSimilar("Similar"),
 }
 
+enum class CelebsCategory(name: String) {
+    Popular("Popular"),
+    Trending("Trending")
+}
 
 fun getMovieGenres(genres: List<Int>): String {
     val genreName = mapOf(

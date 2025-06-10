@@ -6,10 +6,13 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.irfangujjar.tmdb.core.api.ResultWrapper
 import com.irfangujjar.tmdb.core.api.safeApiCall
+import com.irfangujjar.tmdb.core.ui.util.CelebsCategory
 import com.irfangujjar.tmdb.core.viewmodels.ViewModelWithErrorAlerts
+import com.irfangujjar.tmdb.features.main.celebs.domain.models.CelebsModel
 import com.irfangujjar.tmdb.features.main.celebs.domain.usecases.CelebsUseCaseLoad
 import com.irfangujjar.tmdb.features.main.celebs.domain.usecases.CelebsUseCaseWatch
 import com.irfangujjar.tmdb.features.main.celebs.presentation.viewmodels.state.CelebsState
+import com.irfangujjar.tmdb.features.main.celebs.sub_features.see_all.presentation.nav_args_holder.SeeAllCelebsNavArgsHolder
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
@@ -21,7 +24,8 @@ import javax.inject.Inject
 @HiltViewModel
 class CelebsViewModel @Inject constructor(
     private val celebsUseCaseWatch: CelebsUseCaseWatch,
-    private val celebsUseCaseLoad: CelebsUseCaseLoad
+    private val celebsUseCaseLoad: CelebsUseCaseLoad,
+    private val seeAllCelebsNavArgsHolder: SeeAllCelebsNavArgsHolder
 ) : ViewModelWithErrorAlerts() {
     private val _state: MutableStateFlow<CelebsState> = MutableStateFlow(CelebsState.Loading)
     val state: StateFlow<CelebsState> = _state
@@ -84,4 +88,10 @@ class CelebsViewModel @Inject constructor(
             isRefreshing = false
         }
     }
+
+    fun saveSeeAllCelebsArg(category: CelebsCategory, celebs: CelebsModel): String =
+        when (category) {
+            CelebsCategory.Popular -> seeAllCelebsNavArgsHolder.saveArgData(celebs.popular)
+            CelebsCategory.Trending -> seeAllCelebsNavArgsHolder.saveArgData(celebs.trending)
+        }
 }

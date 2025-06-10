@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.irfangujjar.tmdb.core.api.ResultWrapper
 import com.irfangujjar.tmdb.core.api.safeApiCall
-import com.irfangujjar.tmdb.core.ui.util.TvShowsCategories
+import com.irfangujjar.tmdb.core.ui.util.TvShowsCategory
 import com.irfangujjar.tmdb.core.viewmodels.ViewModelWithErrorAlerts
 import com.irfangujjar.tmdb.features.main.tv_shows.domain.models.TvShowsModel
 import com.irfangujjar.tmdb.features.main.tv_shows.domain.usecases.TvShowsUseCaseLoad
@@ -89,11 +89,11 @@ class TvShowsViewModel @Inject constructor(
         }
     }
 
-    fun saveSeeAllTvShowsArg(category: TvShowsCategories, tvShows: TvShowsModel): String =
+    fun saveSeeAllTvShowsArg(category: TvShowsCategory, tvShows: TvShowsModel): String =
         when (category) {
-            TvShowsCategories.AiringToday -> seeAllTvShowsNavArgsHolder.saveArgData(tvShows.airingToday)
-            TvShowsCategories.Trending -> seeAllTvShowsNavArgsHolder.saveArgData(tvShows.trending)
-            TvShowsCategories.TopRated -> seeAllTvShowsNavArgsHolder.saveArgData(tvShows.topRated)
+            TvShowsCategory.AiringToday -> seeAllTvShowsNavArgsHolder.saveArgData(tvShows.airingToday)
+            TvShowsCategory.Trending -> seeAllTvShowsNavArgsHolder.saveArgData(tvShows.trending)
+            TvShowsCategory.TopRated -> seeAllTvShowsNavArgsHolder.saveArgData(tvShows.topRated)
             else -> seeAllTvShowsNavArgsHolder.saveArgData(tvShows.popular)
         }
 }
