@@ -18,6 +18,7 @@ import com.irfangujjar.tmdb.features.main.tv_shows.domain.models.TvShowsListMode
 @Composable
 fun SearchDetailsTvShows(
     preview: Boolean,
+    topPadding: Dp = 0.dp,
     bottomPadding: Dp,
     listState: LazyListState?,
     tvShowsList: TvShowsListModel
@@ -27,6 +28,7 @@ fun SearchDetailsTvShows(
             state = listState,
             preview = preview,
             outerPadding = PaddingValues(
+                top = topPadding,
                 bottom = bottomPadding
             ),
             values = MediaItemsVerticalListValues.fromTvShows(tvShows = tvShowsList.tvShows)

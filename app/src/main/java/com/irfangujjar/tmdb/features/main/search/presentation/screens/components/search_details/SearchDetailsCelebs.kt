@@ -20,13 +20,14 @@ import com.irfangujjar.tmdb.features.main.celebs.domain.models.CelebsListModel
 fun SearchDetailsCelebs(
     preview: Boolean,
     listState: LazyListState?,
+    topPadding: Dp = 0.dp,
     bottomPadding: Dp, celebsList: CelebsListModel
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         CelebItemsVerticalList(
             preview = preview,
             state = listState,
-            outerPadding = PaddingValues(bottom = bottomPadding),
+            outerPadding = PaddingValues(top = topPadding, bottom = bottomPadding),
             values = CelebItemsVerticalListValues.fromCelebs(celebs = celebsList.celebrities)
         )
     }

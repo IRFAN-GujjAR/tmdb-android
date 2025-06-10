@@ -77,13 +77,18 @@ private fun SearchDetailsBody(
         outerPaddingValues = outerPaddingValues,
         innerPaddingValues = innerPaddingValues
     )
-    val topPadding = ScreenPadding.getTopPadding()
 
     if (searchDetails.length() < 2) {
+        val topPadding = ScreenPadding.getTopPadding(
+            outerPaddingValues = outerPaddingValues,
+            innerPaddingValues = innerPaddingValues
+        )
+
         if (!searchDetails.isMoviesEmpty()) {
             SearchDetailsMovies(
                 preview = preview,
                 moviesList = searchDetails.moviesList,
+                topPadding = topPadding,
                 bottomPadding = bottomPadding,
                 listState = null
             ) {
@@ -92,6 +97,7 @@ private fun SearchDetailsBody(
         } else if (!searchDetails.isTvShowsEmpty()) {
             SearchDetailsTvShows(
                 preview = preview,
+                topPadding = topPadding,
                 bottomPadding = bottomPadding,
                 listState = null,
                 tvShowsList = searchDetails.tvShowsList
@@ -99,74 +105,77 @@ private fun SearchDetailsBody(
         } else {
             SearchDetailsCelebs(
                 preview = preview,
+                topPadding = topPadding,
                 bottomPadding = bottomPadding,
                 listState = null,
                 celebsList = searchDetails.celebsList
             )
         }
-    }
+    } else {
+        val topPadding = ScreenPadding.getTopPadding()
 
-    val tabItems = getTabItems(searchDetails = searchDetails)
-    var selectedIndex by rememberSaveable { mutableIntStateOf(0) }
-    val pagerState = rememberPagerState { tabItems.size }
-    val listStateSize = if (searchDetails.isAllPresent()) tabItems.size - 1 else tabItems.size
-    val listStates = rememberSaveable { List(listStateSize) { LazyListState() } }
+        val tabItems = getTabItems(searchDetails = searchDetails)
+        var selectedIndex by rememberSaveable { mutableIntStateOf(0) }
+        val pagerState = rememberPagerState { tabItems.size }
+        val listStateSize = if (searchDetails.isAllPresent()) tabItems.size - 1 else tabItems.size
+        val listStates = rememberSaveable { List(listStateSize) { LazyListState() } }
 
 
-    LaunchedEffect(selectedIndex) {
-        pagerState.animateScrollToPage(selectedIndex)
-    }
-
-    LaunchedEffect(pagerState.currentPage, pagerState.isScrollInProgress) {
-        if (!pagerState.isScrollInProgress)
-            selectedIndex = pagerState.currentPage
-    }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(
-                top = ScreenPadding.getTopPadding(
-                    outerPaddingValues = outerPaddingValues,
-                    innerPaddingValues = innerPaddingValues,
-                    includeSpacing = false
-                )
-            )
-    ) {
-        TabRow(
-            selectedTabIndex = selectedIndex,
-            containerColor = MaterialTheme.colorScheme.surfaceContainer
-        ) {
-            tabItems.forEachIndexed { index, item ->
-                Tab(
-                    unselectedContentColor = Color.Gray,
-                    selected = selectedIndex == index,
-                    onClick = {
-                        selectedIndex = index
-                    },
-                    text = { Text(item.title) },
-                )
-            }
+        LaunchedEffect(selectedIndex) {
+            pagerState.animateScrollToPage(selectedIndex)
         }
 
+        LaunchedEffect(pagerState.currentPage, pagerState.isScrollInProgress) {
+            if (!pagerState.isScrollInProgress)
+                selectedIndex = pagerState.currentPage
+        }
 
-
-        HorizontalPager(
-            state = pagerState,
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
-            userScrollEnabled = !searchDetails.isAllPresent()
-        ) { index ->
-            HorizontalPagerBody(
-                searchDetails,
-                index,
-                preview,
-                topPadding,
-                bottomPadding,
-                listStates,
-                onNavigateToDetails
-            )
+                .fillMaxSize()
+                .padding(
+                    top = ScreenPadding.getTopPadding(
+                        outerPaddingValues = outerPaddingValues,
+                        innerPaddingValues = innerPaddingValues,
+                        includeSpacing = false
+                    )
+                )
+        ) {
+            TabRow(
+                selectedTabIndex = selectedIndex,
+                containerColor = MaterialTheme.colorScheme.surfaceContainer
+            ) {
+                tabItems.forEachIndexed { index, item ->
+                    Tab(
+                        unselectedContentColor = Color.Gray,
+                        selected = selectedIndex == index,
+                        onClick = {
+                            selectedIndex = index
+                        },
+                        text = { Text(item.title) },
+                    )
+                }
+            }
+
+
+
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                userScrollEnabled = !searchDetails.isAllPresent()
+            ) { index ->
+                HorizontalPagerBody(
+                    searchDetails,
+                    index,
+                    preview,
+                    topPadding,
+                    bottomPadding,
+                    listStates,
+                    onNavigateToDetails
+                )
+            }
         }
     }
 }

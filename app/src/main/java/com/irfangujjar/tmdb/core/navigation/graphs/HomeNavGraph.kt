@@ -149,7 +149,14 @@ fun HomeNavGraph(
 
 
         composable<HomeScreen.SeeAllMovies> {
-            SeeAllMoviesScreen()
+            SeeAllMoviesScreen(
+                outerPadding = outerPadding,
+                snackbarHostState = snackbarHostState,
+                onBackStackPressed = {
+                    navController.popBackStack()
+
+                }
+            )
         }
 
         composable<HomeScreen.Login> {

@@ -27,6 +27,10 @@ enum class MoviesCategories(name: String) {
     DetailsSimilar("Similar"),
 }
 
+enum class MovieDetails() {
+
+}
+
 enum class TvShowsCategories(name: String) {
     AiringToday("Airing Today"),
     Trending("Trending"),

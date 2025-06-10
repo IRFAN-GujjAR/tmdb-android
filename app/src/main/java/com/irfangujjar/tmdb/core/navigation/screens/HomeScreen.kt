@@ -26,5 +26,8 @@ sealed interface HomeScreen {
     object Login : HomeScreen
 
     @Serializable
-    data class SeeAllMovies(val argsId: String, val category: MoviesCategories) : HomeScreen
+    data class SeeAllMovies(
+        val argsId: String, val category: MoviesCategories,
+        val movieId: Int? = null
+    ) : HomeScreen
 }

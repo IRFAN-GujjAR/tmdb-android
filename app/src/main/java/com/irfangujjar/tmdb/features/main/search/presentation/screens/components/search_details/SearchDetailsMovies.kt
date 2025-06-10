@@ -19,8 +19,10 @@ import com.irfangujjar.tmdb.features.main.movies.domain.models.MoviesListModel
 @Composable
 fun SearchDetailsMovies(
     preview: Boolean,
+    topPadding: Dp = 0.dp,
     bottomPadding: Dp, moviesList: MoviesListModel,
     listState: LazyListState?,
+
     onItemClicked: (Int) -> Unit,
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
@@ -28,6 +30,7 @@ fun SearchDetailsMovies(
             preview = preview,
             state = listState,
             outerPadding = PaddingValues(
+                top = topPadding,
                 bottom = bottomPadding
             ),
             values = MediaItemsVerticalListValues.fromMovies(movies = moviesList.movies)

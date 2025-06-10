@@ -6,6 +6,12 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.tooling.preview.Preview
 import com.irfangujjar.tmdb.core.ui.ScreenPadding
 import com.irfangujjar.tmdb.core.ui.components.CustomDivider
@@ -22,6 +28,7 @@ fun MediaItemsVerticalList(
     innerPadding: PaddingValues? = null,
     values: MediaItemsVerticalListValues,
     state: LazyListState? = null,
+    onScrollThresholdReached: () -> Unit = {},
     onItemClicked: (Int) -> Unit
 ) {
     val padding = ScreenPadding.getPadding(
@@ -31,6 +38,26 @@ fun MediaItemsVerticalList(
     )
 
     if (state != null) {
+
+        val hasAlreadyTriggered = rememberSaveable { mutableStateOf(false) }
+
+        val hasReachedThreshold by remember {
+            derivedStateOf {
+                val lastVisibleIndex = state.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
+                val totalItems = state.layoutInfo.totalItemsCount
+                totalItems > 0 && lastVisibleIndex >= (totalItems - 5)
+            }
+        }
+
+        LaunchedEffect(hasReachedThreshold) {
+            if (hasReachedThreshold && !hasAlreadyTriggered.value) {
+                hasAlreadyTriggered.value = true
+                onScrollThresholdReached()
+            } else if (!hasReachedThreshold) {
+                hasAlreadyTriggered.value = false
+            }
+        }
+
         LazyColumn(
             state = state,
             contentPadding = padding

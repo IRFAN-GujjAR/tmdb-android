@@ -8,6 +8,9 @@ import com.irfangujjar.tmdb.features.main.movies.data.repos.MoviesRepoImpl
 import com.irfangujjar.tmdb.features.main.movies.domain.repos.MoviesRepo
 import com.irfangujjar.tmdb.features.main.movies.domain.usecases.MoviesUseCaseLoad
 import com.irfangujjar.tmdb.features.main.movies.domain.usecases.MoviesUseCaseWatch
+import com.irfangujjar.tmdb.features.main.movies.sub_features.see_all.data.data_sources.SeeAllMoviesDataSourceImpl
+import com.irfangujjar.tmdb.features.main.movies.sub_features.see_all.data.repos.SeeAllMoviesRepoImpl
+import com.irfangujjar.tmdb.features.main.movies.sub_features.see_all.domain.usecases.SeeAllMoviesUseCaseLoad
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -38,4 +41,15 @@ class MoviesModule {
     @ViewModelScoped
     fun providesUseCaseLoad(repo: MoviesRepo): MoviesUseCaseLoad =
         MoviesUseCaseLoad(repo = repo)
+
+    @Provides
+    @ViewModelScoped
+    fun providesSeeAllMoviesUseCaseLoad(api: MovieApi): SeeAllMoviesUseCaseLoad =
+        SeeAllMoviesUseCaseLoad(
+            repo = SeeAllMoviesRepoImpl(
+                dataSource = SeeAllMoviesDataSourceImpl(
+                    api = api
+                )
+            )
+        )
 }

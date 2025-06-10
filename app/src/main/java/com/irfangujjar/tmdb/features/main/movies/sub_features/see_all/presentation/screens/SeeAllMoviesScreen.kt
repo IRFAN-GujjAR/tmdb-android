@@ -1,32 +1,61 @@
 package com.irfangujjar.tmdb.features.main.movies.sub_features.see_all.presentation.screens
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.irfangujjar.tmdb.core.ui.components.CustomTopAppBar
+import com.irfangujjar.tmdb.core.ui.components.list.MediaItemsVerticalList
+import com.irfangujjar.tmdb.core.ui.components.list.values.MediaItemsVerticalListValues
 import com.irfangujjar.tmdb.features.main.movies.sub_features.see_all.presentation.viewmodels.SeeAllMoviesViewModel
 
 @Composable
 fun SeeAllMoviesScreen(
+    preview: Boolean = false,
+    outerPadding: PaddingValues,
+    snackbarHostState: SnackbarHostState,
     viewModel: SeeAllMoviesViewModel = hiltViewModel(),
+    onBackStackPressed: () -> Unit
 ) {
-    val moviesList = viewModel.moviesList!!
-    Scaffold { innerPadding ->
+    val listState = rememberLazyListState()
+    val movies = viewModel.moviesListState.collectAsState().value.movies
+
+    if (viewModel.showSnackBarErrorMessage) {
+        LaunchedEffect(Unit) {
+            snackbarHostState.showSnackbar(viewModel.errorMessage)
+            viewModel.clearSnackBarError()
+        }
+    }
+
+    Scaffold(
+        topBar = {
+            CustomTopAppBar(
+                title = viewModel.args.category.name,
+                showBackStack = true,
+                onBackStackPressed = onBackStackPressed
+            )
+        }
+    ) { innerPadding ->
         Surface(modifier = Modifier.fillMaxSize()) {
-            Box(
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(moviesList.totalPages.toString())
-            }
+            MediaItemsVerticalList(
+                preview = preview,
+                outerPadding = outerPadding,
+                innerPadding = innerPadding,
+                values = MediaItemsVerticalListValues.fromMovies(
+                    movies = movies
+                ),
+                state = listState,
+                onScrollThresholdReached = {
+                    viewModel.onLoadMore()
+                }
+            ) { }
         }
     }
 }

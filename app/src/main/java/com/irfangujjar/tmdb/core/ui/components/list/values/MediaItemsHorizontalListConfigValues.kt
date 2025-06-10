@@ -20,7 +20,7 @@ data class MediaItemsHorizontalListConfigValues(
 ) {
     companion object {
         fun fromDefault() = MediaItemsHorizontalListConfigValues(
-            listViewHeight = 205.dp,
+            listViewHeight = 210.dp,
             listItemWidth = 99.dp,
             imageHeight = 139.dp,
             font = 12.sp,
@@ -31,11 +31,12 @@ data class MediaItemsHorizontalListConfigValues(
         fun movieConfig(
             category: MoviesCategories,
         ): MediaItemsHorizontalListConfigValues {
-            var font = 12.sp
-            var listItemWidth = 99.dp
-            var listViewHeight = 210.dp
-            var imageHeight = 139.dp
-            var posterSize = PosterSizes.w185
+            val default = fromDefault()
+            var font = default.font
+            var listItemWidth = default.listItemWidth
+            var listViewHeight = default.listViewHeight
+            var imageHeight = default.imageHeight
+            var posterSize = default.posterSize
             when (category) {
                 MoviesCategories.Popular -> {
                     font = 13.sp
@@ -58,14 +59,6 @@ data class MediaItemsHorizontalListConfigValues(
                     posterSize = PosterSizes.w92
                 }
 
-                MoviesCategories.DetailsRecommended -> {
-                    listViewHeight = 205.dp
-                }
-
-                MoviesCategories.DetailsSimilar -> {
-                    listViewHeight = 205.dp
-                }
-
                 else -> {}
             }
             return MediaItemsHorizontalListConfigValues(
@@ -74,7 +67,7 @@ data class MediaItemsHorizontalListConfigValues(
                 imageHeight = imageHeight,
                 font = font,
                 posterSize = posterSize,
-                backdropSize = BackdropSizes.w300,
+                backdropSize = default.backdropSize,
             )
         }
 
@@ -82,11 +75,12 @@ data class MediaItemsHorizontalListConfigValues(
         fun tvConfig(
             category: TvShowsCategories
         ): MediaItemsHorizontalListConfigValues {
-            var font = 12.sp
-            var listItemWidth = 99.dp
-            var listViewHeight = 210.dp
-            var imageHeight = 139.dp
-            var posterSize = PosterSizes.w185
+            val default = fromDefault()
+            var font = default.font
+            var listItemWidth = default.listItemWidth
+            var listViewHeight = default.listViewHeight
+            var imageHeight = default.imageHeight
+            var posterSize = default.posterSize
             when (category) {
                 TvShowsCategories.AiringToday -> {
                     font = 15.sp
@@ -119,7 +113,7 @@ data class MediaItemsHorizontalListConfigValues(
                 imageHeight = imageHeight,
                 font = font,
                 posterSize = posterSize,
-                backdropSize = BackdropSizes.w300,
+                backdropSize = default.backdropSize,
             )
         }
     }
