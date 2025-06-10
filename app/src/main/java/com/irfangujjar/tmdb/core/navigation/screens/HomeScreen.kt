@@ -29,12 +29,12 @@ sealed interface HomeScreen {
     @Serializable
     data class SeeAllMovies(
         val argId: String, val category: MoviesCategories,
-        val movieId: Int? = null
+        val movieId: Int?
     ) : HomeScreen
 
     @Serializable
     data class SeeAllTvShows(
         val argId: String, val category: TvShowsCategories,
-        val tvId: Int? = null
+        val tvId: Int?
     ) : HomeScreen
 }

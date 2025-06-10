@@ -45,7 +45,8 @@ fun HomeNavGraph(
                             navController.navigate(
                                 HomeScreen.SeeAllMovies(
                                     argId = argId,
-                                    category = category
+                                    category = category,
+                                    movieId = null
                                 )
                             )
                         }
@@ -61,7 +62,8 @@ fun HomeNavGraph(
                             navController.navigate(
                                 HomeScreen.SeeAllTvShows(
                                     argId = argId,
-                                    category = category
+                                    category = category,
+                                    tvId = null
                                 )
                             )
                         }
