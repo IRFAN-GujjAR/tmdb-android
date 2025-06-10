@@ -13,9 +13,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.irfangujjar.tmdb.core.ui.components.CustomTopAppBar
 import com.irfangujjar.tmdb.core.ui.theme.UserTheme
+import com.irfangujjar.tmdb.core.ui.util.hideKeyboardAndUnFocus
 import com.irfangujjar.tmdb.features.main.search.presentation.screens.components.CustomSearchBar
 import com.irfangujjar.tmdb.features.main.search.presentation.screens.components.SearchSuggestions
 import com.irfangujjar.tmdb.features.main.search.presentation.screens.components.TrendingSearches
@@ -34,6 +37,8 @@ fun SearchScreen(
     onNavigateToDetailsPage: () -> Unit
 ) {
     val state = viewModel.state.collectAsState()
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
 
     Scaffold(topBar = {
         if (viewModel.showSearchBar)
@@ -42,8 +47,18 @@ fun SearchScreen(
                 onValueChanged = {
                     viewModel.updateQuery(it)
                 },
-                hideSearchBar = { viewModel.updateShowSearchBar(false) },
+                hideSearchBar = {
+                    hideKeyboardAndUnFocus(
+                        keyboardController = keyboardController,
+                        focusManager = focusManager
+                    )
+                    viewModel.updateShowSearchBar(false)
+                },
                 onSearch = {
+                    hideKeyboardAndUnFocus(
+                        keyboardController = keyboardController,
+                        focusManager = focusManager
+                    )
                     viewModel.onSearch()
                 }
             )
@@ -57,7 +72,10 @@ fun SearchScreen(
                 }
             )
     }) { innerPadding ->
-        Surface(modifier = Modifier.fillMaxSize()) {
+        Surface(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
             when (state.value) {
                 SearchState.Trending -> TrendingSearches(
                     userTheme = userTheme,

@@ -17,12 +17,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.irfangujjar.tmdb.core.ui.ScreenPadding
 import com.irfangujjar.tmdb.core.ui.components.CustomError
 import com.irfangujjar.tmdb.core.ui.components.CustomLoading
 import com.irfangujjar.tmdb.core.ui.theme.UserTheme
+import com.irfangujjar.tmdb.core.ui.util.hideKeyboardAndUnFocus
 import com.irfangujjar.tmdb.features.main.search.domain.models.SearchItemModel
 import com.irfangujjar.tmdb.features.main.search.presentation.viewmodels.SearchViewModel
 import com.irfangujjar.tmdb.features.main.search.presentation.viewmodels.state.SearchSuggestionState
@@ -35,6 +38,8 @@ fun SearchSuggestions(
     viewModel: SearchViewModel
 ) {
     val state = viewModel.suggestionsState.collectAsState().value
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
     when (state) {
         SearchSuggestionState.Idle -> Box(
             modifier = Modifier.fillMaxSize(),
@@ -61,6 +66,10 @@ fun SearchSuggestions(
             innerPaddingValues = innerPaddingValues,
             searches = state.searchSuggestion.searches,
             onSuggestionClicked = {
+                hideKeyboardAndUnFocus(
+                    keyboardController = keyboardController,
+                    focusManager = focusManager
+                )
                 viewModel.onSuggestionItemSelected(it)
             }
         )

@@ -10,7 +10,10 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchCelebsViewModel @Inject constructor(
     private val useCase: SearchCelebsUseCase
-) : PaginatedViewModel<CelebsListModel, SearchUseCaseListParams>() {
+) : PaginatedViewModel<CelebsListModel, SearchUseCaseListParams>(
+    initialState =
+        CelebsListModel.dummyData()
+) {
 
     var isInitialized: Boolean = false
         private set
@@ -22,9 +25,6 @@ class SearchCelebsViewModel @Inject constructor(
         updateStateValue(celebsList)
         isInitialized = true
     }
-
-    override fun initialState(): CelebsListModel =
-        CelebsListModel.dummyData()
 
 
     override fun canLoadMore(current: CelebsListModel): Boolean =

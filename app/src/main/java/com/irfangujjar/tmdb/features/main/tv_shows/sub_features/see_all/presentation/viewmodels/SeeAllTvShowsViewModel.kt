@@ -1,21 +1,13 @@
 package com.irfangujjar.tmdb.features.main.tv_shows.sub_features.see_all.presentation.viewmodels
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
-import com.irfangujjar.tmdb.core.api.ResultWrapper
-import com.irfangujjar.tmdb.core.api.safeApiCall
 import com.irfangujjar.tmdb.core.navigation.screens.HomeScreen
-import com.irfangujjar.tmdb.core.viewmodels.ViewModelWithErrorAlerts
+import com.irfangujjar.tmdb.core.viewmodels.PaginatedViewModel
 import com.irfangujjar.tmdb.features.main.tv_shows.domain.models.TvShowsListModel
 import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.see_all.domain.usecases.SeeAllTvShowsUseCaseLoad
 import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.see_all.domain.usecases.params.SeeAllTvShowsUseCaseLoadParams
 import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.see_all.presentation.nav_args_holder.SeeAllTvShowsNavArgsHolder
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,51 +15,43 @@ class SeeAllTvShowsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val navArgsHolder: SeeAllTvShowsNavArgsHolder,
     private val useCaseLoad: SeeAllTvShowsUseCaseLoad
-) : ViewModelWithErrorAlerts() {
+) : PaginatedViewModel<TvShowsListModel, SeeAllTvShowsUseCaseLoadParams>(
+    initialState = getInitialState<TvShowsListModel, HomeScreen.SeeAllTvShows>(
+        savedStateHandle = savedStateHandle,
+        navArgsHolder = navArgsHolder
+    )!!
+) {
 
-    val args = savedStateHandle.toRoute<HomeScreen.SeeAllTvShows>()
-    private val _tvShowsListState =
-        MutableStateFlow<TvShowsListModel>(navArgsHolder.getArgData(args.argId)!!)
-    val tvShowsListState: StateFlow<TvShowsListModel> = _tvShowsListState
+    val args = getArgs<HomeScreen.SeeAllTvShows>(savedStateHandle)
 
-    private var isLoadingMore = false
+    override fun canLoadMore(current: TvShowsListModel): Boolean =
+        current.pageNo < current.totalPages
 
-    fun onLoadMore() {
-        if (!isLoadingMore && tvShowsListState.value.pageNo < tvShowsListState.value.totalPages) {
-            isLoadingMore = true
-            viewModelScope.launch(Dispatchers.IO) {
-                val result = safeApiCall {
-                    useCaseLoad.invoke(
-                        params = SeeAllTvShowsUseCaseLoadParams(
-                            category = args.category,
-                            tvId = args.tvId,
-                            pageNo = tvShowsListState.value.pageNo + 1
-                        )
-                    )
-                }
-                when (result) {
-                    is ResultWrapper.Error -> {
-                        showAlert(result.errorEntity.message)
-                    }
+    override fun nextPageParams(current: TvShowsListModel): SeeAllTvShowsUseCaseLoadParams =
+        SeeAllTvShowsUseCaseLoadParams(
+            category = args.category,
+            pageNo = current.pageNo + 1,
+            tvId = args.tvId
+        )
 
-                    is ResultWrapper.Success<TvShowsListModel> -> {
-                        val tvShowsList = TvShowsListModel(
-                            pageNo = result.data.pageNo,
-                            totalPages = result.data.totalPages,
-                            tvShows = tvShowsListState.value.tvShows + result.data.tvShows
-                        )
-                        _tvShowsListState.value = tvShowsList
-                    }
-                }
-            }.invokeOnCompletion {
-                isLoadingMore = false
-            }
-        }
-    }
+    override suspend fun fetchData(params: SeeAllTvShowsUseCaseLoadParams): TvShowsListModel =
+        useCaseLoad.invoke(params)
+
+
+    override fun mergeData(
+        old: TvShowsListModel,
+        new: TvShowsListModel
+    ): TvShowsListModel =
+        TvShowsListModel(
+            pageNo = new.pageNo,
+            totalPages = new.totalPages,
+            tvShows = old.tvShows + new.tvShows
+        )
 
 
     override fun onCleared() {
         super.onCleared()
         navArgsHolder.removeArg(args.argId)
     }
+
 }

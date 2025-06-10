@@ -25,7 +25,7 @@ fun SeeAllTvShowsScreen(
     onBackStackPressed: () -> Unit
 ) {
     val listState = rememberLazyListState()
-    val tvShows = viewModel.tvShowsListState.collectAsState().value.tvShows
+    val tvShows = viewModel.state.collectAsState().value.tvShows
 
     if (viewModel.showAlert) {
         LaunchedEffect(Unit) {
@@ -53,7 +53,7 @@ fun SeeAllTvShowsScreen(
                 ),
                 state = listState,
                 onScrollThresholdReached = {
-                    viewModel.onLoadMore()
+                    viewModel.loadMore()
                 }
             ) { }
         }

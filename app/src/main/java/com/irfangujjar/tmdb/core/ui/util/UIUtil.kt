@@ -1,5 +1,8 @@
 package com.irfangujjar.tmdb.core.ui.util
 
+import androidx.compose.ui.focus.FocusManager
+import androidx.compose.ui.platform.SoftwareKeyboardController
+
 enum class MediaType(value: String) {
     Movie("movie"),
     TvShow("tv");
@@ -90,4 +93,12 @@ fun getTvShowsGenres(genres: List<Int>): String {
 
     val result = genres.mapNotNull { genreName[it] }
     return if (result.isEmpty()) "" else result.joinToString(", ")
+}
+
+fun hideKeyboardAndUnFocus(
+    keyboardController: SoftwareKeyboardController?,
+    focusManager: FocusManager
+) {
+    keyboardController?.hide()
+    focusManager.clearFocus()
 }

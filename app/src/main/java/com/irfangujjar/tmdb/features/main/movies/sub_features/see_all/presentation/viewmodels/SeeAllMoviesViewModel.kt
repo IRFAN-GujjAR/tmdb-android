@@ -1,73 +1,59 @@
 package com.irfangujjar.tmdb.features.main.movies.sub_features.see_all.presentation.viewmodels
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
-import com.irfangujjar.tmdb.core.api.ResultWrapper
-import com.irfangujjar.tmdb.core.api.safeApiCall
 import com.irfangujjar.tmdb.core.navigation.screens.HomeScreen
-import com.irfangujjar.tmdb.core.viewmodels.ViewModelWithErrorAlerts
+import com.irfangujjar.tmdb.core.viewmodels.PaginatedViewModel
 import com.irfangujjar.tmdb.features.main.movies.domain.models.MoviesListModel
 import com.irfangujjar.tmdb.features.main.movies.sub_features.see_all.domain.usecases.SeeAllMoviesUseCaseLoad
 import com.irfangujjar.tmdb.features.main.movies.sub_features.see_all.domain.usecases.params.SeeAllMoviesUseCaseLoadParams
 import com.irfangujjar.tmdb.features.main.movies.sub_features.see_all.presentation.nav_args_holder.SeeAllMoviesNavArgsHolder
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 
 @HiltViewModel
 class SeeAllMoviesViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val navArgsHolder: SeeAllMoviesNavArgsHolder,
     private val useCaseLoad: SeeAllMoviesUseCaseLoad
-) : ViewModelWithErrorAlerts() {
+) : PaginatedViewModel<MoviesListModel, SeeAllMoviesUseCaseLoadParams>(
+    initialState = getInitialState<MoviesListModel, HomeScreen.SeeAllMovies>(
+        savedStateHandle = savedStateHandle,
+        navArgsHolder = navArgsHolder,
+    )!!
+) {
 
-    val args = savedStateHandle.toRoute<HomeScreen.SeeAllMovies>()
-    private val _moviesListState =
-        MutableStateFlow<MoviesListModel>(navArgsHolder.getArgData(args.argId)!!)
-    val moviesListState: StateFlow<MoviesListModel> = _moviesListState
+    val args = getArgs<HomeScreen.SeeAllMovies>(savedStateHandle)
 
-    private var isLoadingMore = false
+    override fun canLoadMore(current: MoviesListModel): Boolean =
+        current.pageNo < current.totalPages
 
-    fun onLoadMore() {
-        if (!isLoadingMore && moviesListState.value.pageNo < moviesListState.value.totalPages) {
-            isLoadingMore = true
-            viewModelScope.launch(Dispatchers.IO) {
-                val result = safeApiCall {
-                    useCaseLoad.invoke(
-                        params = SeeAllMoviesUseCaseLoadParams(
-                            category = args.category,
-                            movieId = args.movieId,
-                            pageNo = moviesListState.value.pageNo + 1
-                        )
-                    )
-                }
-                when (result) {
-                    is ResultWrapper.Error -> {
-                        showAlert(result.errorEntity.message)
-                    }
+    override fun nextPageParams(current: MoviesListModel): SeeAllMoviesUseCaseLoadParams =
+        SeeAllMoviesUseCaseLoadParams(
+            category = args.category,
+            pageNo = current.pageNo + 1,
+            movieId = args.movieId
+        )
 
-                    is ResultWrapper.Success<MoviesListModel> -> {
-                        val moviesList = MoviesListModel(
-                            pageNo = result.data.pageNo,
-                            totalPages = result.data.totalPages,
-                            movies = moviesListState.value.movies + result.data.movies
-                        )
-                        _moviesListState.value = moviesList
-                    }
-                }
-            }.invokeOnCompletion {
-                isLoadingMore = false
-            }
-        }
-    }
+    override suspend fun fetchData(params: SeeAllMoviesUseCaseLoadParams): MoviesListModel =
+        useCaseLoad.invoke(params)
+
+
+    override fun mergeData(
+        old: MoviesListModel,
+        new: MoviesListModel
+    ): MoviesListModel =
+        MoviesListModel(
+            pageNo = new.pageNo,
+            totalPages = new.totalPages,
+            movies = old.movies + new.movies
+        )
 
 
     override fun onCleared() {
         super.onCleared()
         navArgsHolder.removeArg(args.argId)
     }
+
+
 }

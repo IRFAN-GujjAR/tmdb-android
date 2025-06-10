@@ -27,7 +27,7 @@ fun SeeAllCelebsScreen(
 ) {
 
     val listState = rememberLazyListState()
-    val celebrities = viewModel.celebsListState.collectAsState().value.celebrities
+    val celebrities = viewModel.state.collectAsState().value.celebrities
 
     if (viewModel.showAlert) {
         LaunchedEffect(Unit) {
@@ -53,7 +53,7 @@ fun SeeAllCelebsScreen(
                 state = listState,
                 values = CelebItemsVerticalListValues.fromCelebs(celebs = celebrities),
                 onScrollThresholdReached = {
-                    viewModel.onLoadMore()
+                    viewModel.loadMore()
                 }
             )
         }

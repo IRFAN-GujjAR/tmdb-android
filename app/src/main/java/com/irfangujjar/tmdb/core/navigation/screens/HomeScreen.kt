@@ -29,18 +29,18 @@ sealed interface HomeScreen {
 
     @Serializable
     data class SeeAllMovies(
-        val argId: String, val category: MoviesCategory,
+        override val argId: String, val category: MoviesCategory,
         val movieId: Int?
-    ) : HomeScreen
+    ) : HomeScreen, HasArgId
 
     @Serializable
     data class SeeAllTvShows(
-        val argId: String, val category: TvShowsCategory,
+        override val argId: String, val category: TvShowsCategory,
         val tvId: Int?
-    ) : HomeScreen
+    ) : HomeScreen, HasArgId
 
     @Serializable
     data class SeeAllCelebs(
-        val argId: String, val category: CelebsCategory
-    ) : HomeScreen
+        override val argId: String, val category: CelebsCategory
+    ) : HomeScreen, HasArgId
 }
