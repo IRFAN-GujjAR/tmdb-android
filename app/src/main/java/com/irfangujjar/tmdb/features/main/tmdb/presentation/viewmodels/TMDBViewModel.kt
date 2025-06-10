@@ -3,11 +3,11 @@ package com.irfangujjar.tmdb.features.main.tmdb.presentation.viewmodels
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.irfangujjar.tmdb.UserSession
 import com.irfangujjar.tmdb.core.api.ResultWrapper
 import com.irfangujjar.tmdb.core.api.safeApiCall
+import com.irfangujjar.tmdb.core.viewmodels.ViewModelWithErrorAlerts
 import com.irfangujjar.tmdb.features.main.tmdb.domain.usecase.AccountDetailsUseCaseLoadWithoutId
 import com.irfangujjar.tmdb.features.main.tmdb.domain.usecase.AccountDetailsUseCaseWatch
 import com.irfangujjar.tmdb.features.main.tmdb.domain.usecase.params.AccountDetailsParams
@@ -25,7 +25,7 @@ class TMDBViewModel @Inject constructor(
     private val userSession: UserSession,
     private val accountDetailsUseCaseWatch: AccountDetailsUseCaseWatch,
     private val accountDetailsUseCaseLoadWithoutId: AccountDetailsUseCaseLoadWithoutId
-) : ViewModel() {
+) : ViewModelWithErrorAlerts() {
 
     private val _state: MutableStateFlow<AccountDetailsState> =
         MutableStateFlow(AccountDetailsState.Loading)
@@ -71,6 +71,7 @@ class TMDBViewModel @Inject constructor(
         firstEmissionDeferred.await()
         if (result is ResultWrapper.Error) {
             if (state.value is AccountDetailsState.Loaded) {
+                showAlert(result.errorEntity.message)
                 _state.value = AccountDetailsState.ErrorWithCache(
                     accountDetails = (state.value as AccountDetailsState.Loaded).accountDetails,
                     error = result.errorEntity

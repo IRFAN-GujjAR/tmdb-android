@@ -66,9 +66,11 @@ fun TvShowsScreen(
                 )
 
                 is TvShowsState.ErrorWithCache -> {
-                    val error = state.error
-                    LaunchedEffect(Unit) {
-                        snackbarHostState?.showSnackbar(error.message)
+                    if (viewModel.showAlert) {
+                        LaunchedEffect(Unit) {
+                            snackbarHostState?.showSnackbar(viewModel.alertMessage)
+                            viewModel.clearAlert()
+                        }
                     }
                     TvShowsScreenBody(
                         preview = preview,
@@ -173,7 +175,7 @@ private fun TvShowsScreenBody(
                 else tvShows.topRated.tvShows,
                 movies = null,
                 onSeeAllClick = {
-                    
+
                 }
             )
             CustomDivider(topPadding = DividerTopPadding.Double)

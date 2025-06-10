@@ -3,11 +3,11 @@ package com.irfangujjar.tmdb.features.main.search.presentation.viewmodels
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.irfangujjar.tmdb.core.api.ResultWrapper
 import com.irfangujjar.tmdb.core.api.safeApiCall
 import com.irfangujjar.tmdb.core.error.ErrorType
+import com.irfangujjar.tmdb.core.viewmodels.ViewModelWithErrorAlerts
 import com.irfangujjar.tmdb.features.main.search.domain.models.SearchDetailsModel
 import com.irfangujjar.tmdb.features.main.search.domain.models.SearchModel
 import com.irfangujjar.tmdb.features.main.search.domain.usecases.SearchDetailsUseCaseLoad
@@ -36,7 +36,7 @@ class SearchViewModel @Inject constructor(
     private val trendingUseCaseWatch: TrendingSearchUseCaseWatch,
     private val searchSuggestionsUseCaseLoad: SearchSuggestionsUseCaseLoad,
     private val searchDetailsUseCaseLoad: SearchDetailsUseCaseLoad
-) : ViewModel() {
+) : ViewModelWithErrorAlerts() {
 
     var showSearchBar by mutableStateOf(false)
         private set
@@ -123,6 +123,7 @@ class SearchViewModel @Inject constructor(
         firstEmissionDeferred.await()
         if (result is ResultWrapper.Error) {
             if (trendingState.value is TrendingSearchState.Loaded) {
+                showAlert(result.errorEntity.message)
                 _trendingState.value = TrendingSearchState.ErrorWithCache(
                     trendingSearch = (trendingState.value as TrendingSearchState.Loaded).trendingSearch,
                     error = result.errorEntity

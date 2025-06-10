@@ -50,9 +50,11 @@ fun TrendingSearches(
         )
 
         is TrendingSearchState.ErrorWithCache -> {
-            val error = state.error
-            LaunchedEffect(Unit) {
-                snackbarHostState?.showSnackbar(error.message)
+            if (viewModel.showAlert) {
+                LaunchedEffect(Unit) {
+                    snackbarHostState?.showSnackbar(viewModel.alertMessage)
+                    viewModel.clearAlert()
+                }
             }
             TrendingSearchBody(
                 outerPaddingValues = outerPaddingValues, innerPaddingValues = innerPaddingValues,

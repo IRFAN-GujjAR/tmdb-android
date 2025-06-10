@@ -3,10 +3,10 @@ package com.irfangujjar.tmdb.features.main.tv_shows.presentation.viewmodels
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.irfangujjar.tmdb.core.api.ResultWrapper
 import com.irfangujjar.tmdb.core.api.safeApiCall
+import com.irfangujjar.tmdb.core.viewmodels.ViewModelWithErrorAlerts
 import com.irfangujjar.tmdb.features.main.tv_shows.domain.usecases.TvShowsUseCaseLoad
 import com.irfangujjar.tmdb.features.main.tv_shows.domain.usecases.TvShowsUseCaseWatch
 import com.irfangujjar.tmdb.features.main.tv_shows.presentation.viewmodels.state.TvShowsState
@@ -22,7 +22,7 @@ import javax.inject.Inject
 class TvShowsViewModel @Inject constructor(
     private val tvShowsUseCaseWatch: TvShowsUseCaseWatch,
     private val tvShowsUseCaseLoad: TvShowsUseCaseLoad
-) : ViewModel() {
+) : ViewModelWithErrorAlerts() {
     private val _state: MutableStateFlow<TvShowsState> = MutableStateFlow(TvShowsState.Loading)
     val state: StateFlow<TvShowsState> = _state
 
@@ -60,6 +60,7 @@ class TvShowsViewModel @Inject constructor(
         firstEmissionDeferred.await()
         if (result is ResultWrapper.Error) {
             if (state.value is TvShowsState.Loaded) {
+                showAlert(result.errorEntity.message)
                 _state.value = TvShowsState.ErrorWithCache(
                     tvShows = (state.value as TvShowsState.Loaded).tvShows,
                     error = result.errorEntity

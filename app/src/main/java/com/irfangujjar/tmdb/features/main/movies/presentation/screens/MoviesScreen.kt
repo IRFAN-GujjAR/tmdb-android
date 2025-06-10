@@ -67,11 +67,10 @@ fun MoviesScreen(
                 )
 
                 is MoviesState.ErrorWithCache -> {
-                    val error = state.error
-                    if (viewModel.showSnackBarErrorMessage)
+                    if (viewModel.showAlert)
                         LaunchedEffect(Unit) {
-                            snackbarHostState?.showSnackbar(error.message)
-                            viewModel.clearSnackBarError()
+                            snackbarHostState?.showSnackbar(viewModel.alertMessage)
+                            viewModel.clearAlert()
                         }
                     MoviesScreenBody(
                         preview = preview,

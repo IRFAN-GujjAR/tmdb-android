@@ -3,10 +3,10 @@ package com.irfangujjar.tmdb.features.main.celebs.presentation.viewmodels
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.irfangujjar.tmdb.core.api.ResultWrapper
 import com.irfangujjar.tmdb.core.api.safeApiCall
+import com.irfangujjar.tmdb.core.viewmodels.ViewModelWithErrorAlerts
 import com.irfangujjar.tmdb.features.main.celebs.domain.usecases.CelebsUseCaseLoad
 import com.irfangujjar.tmdb.features.main.celebs.domain.usecases.CelebsUseCaseWatch
 import com.irfangujjar.tmdb.features.main.celebs.presentation.viewmodels.state.CelebsState
@@ -22,7 +22,7 @@ import javax.inject.Inject
 class CelebsViewModel @Inject constructor(
     private val celebsUseCaseWatch: CelebsUseCaseWatch,
     private val celebsUseCaseLoad: CelebsUseCaseLoad
-) : ViewModel() {
+) : ViewModelWithErrorAlerts() {
     private val _state: MutableStateFlow<CelebsState> = MutableStateFlow(CelebsState.Loading)
     val state: StateFlow<CelebsState> = _state
 
@@ -60,6 +60,7 @@ class CelebsViewModel @Inject constructor(
         firstEmissionDeferred.await()
         if (result is ResultWrapper.Error) {
             if (state.value is CelebsState.Loaded) {
+                showAlert(result.errorEntity.message)
                 _state.value = CelebsState.ErrorWithCache(
                     celebs = (state.value as CelebsState.Loaded).celebs,
                     error = result.errorEntity

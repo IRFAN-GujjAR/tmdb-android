@@ -27,10 +27,10 @@ fun SeeAllMoviesScreen(
     val listState = rememberLazyListState()
     val movies = viewModel.moviesListState.collectAsState().value.movies
 
-    if (viewModel.showSnackBarErrorMessage) {
+    if (viewModel.showAlert) {
         LaunchedEffect(Unit) {
-            snackbarHostState.showSnackbar(viewModel.errorMessage)
-            viewModel.clearSnackBarError()
+            snackbarHostState.showSnackbar(viewModel.alertMessage)
+            viewModel.clearAlert()
         }
     }
 

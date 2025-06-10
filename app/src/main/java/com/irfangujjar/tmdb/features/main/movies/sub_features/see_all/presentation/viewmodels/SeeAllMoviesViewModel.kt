@@ -1,15 +1,12 @@
 package com.irfangujjar.tmdb.features.main.movies.sub_features.see_all.presentation.viewmodels
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.irfangujjar.tmdb.core.api.ResultWrapper
 import com.irfangujjar.tmdb.core.api.safeApiCall
 import com.irfangujjar.tmdb.core.navigation.screens.HomeScreen
+import com.irfangujjar.tmdb.core.viewmodels.ViewModelWithErrorAlerts
 import com.irfangujjar.tmdb.features.main.movies.domain.models.MoviesListModel
 import com.irfangujjar.tmdb.features.main.movies.sub_features.see_all.domain.usecases.SeeAllMoviesUseCaseLoad
 import com.irfangujjar.tmdb.features.main.movies.sub_features.see_all.domain.usecases.params.SeeAllMoviesUseCaseLoadParams
@@ -26,7 +23,7 @@ class SeeAllMoviesViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val navArgsHolder: SeeAllMoviesNavArgsHolder,
     private val useCaseLoad: SeeAllMoviesUseCaseLoad
-) : ViewModel() {
+) : ViewModelWithErrorAlerts() {
 
     val args = savedStateHandle.toRoute<HomeScreen.SeeAllMovies>()
     private val _moviesListState =
@@ -34,16 +31,6 @@ class SeeAllMoviesViewModel @Inject constructor(
     val moviesListState: StateFlow<MoviesListModel> = _moviesListState
 
     private var isLoadingMore = false
-    var errorMessage = ""
-        private set
-    var showSnackBarErrorMessage by mutableStateOf(false)
-        private set
-
-    fun clearSnackBarError() {
-        showSnackBarErrorMessage = false
-        errorMessage = ""
-    }
-
 
     fun onLoadMore() {
         if (!isLoadingMore && moviesListState.value.pageNo < moviesListState.value.totalPages) {
@@ -60,8 +47,7 @@ class SeeAllMoviesViewModel @Inject constructor(
                 }
                 when (result) {
                     is ResultWrapper.Error -> {
-                        errorMessage = result.errorEntity.message
-                        showSnackBarErrorMessage = true
+                        showAlert(result.errorEntity.message)
                     }
 
                     is ResultWrapper.Success<MoviesListModel> -> {
