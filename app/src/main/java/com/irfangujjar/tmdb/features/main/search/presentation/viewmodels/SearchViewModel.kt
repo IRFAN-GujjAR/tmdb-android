@@ -14,8 +14,7 @@ import com.irfangujjar.tmdb.features.main.search.domain.usecases.SearchDetailsUs
 import com.irfangujjar.tmdb.features.main.search.domain.usecases.SearchSuggestionsUseCaseLoad
 import com.irfangujjar.tmdb.features.main.search.domain.usecases.TrendingSearchUseCaseLoad
 import com.irfangujjar.tmdb.features.main.search.domain.usecases.TrendingSearchUseCaseWatch
-import com.irfangujjar.tmdb.features.main.search.domain.usecases.params.SearchDetailsUseCaseLoadParams
-import com.irfangujjar.tmdb.features.main.search.domain.usecases.params.SearchSuggestionUseCaseLoadParams
+import com.irfangujjar.tmdb.features.main.search.domain.usecases.params.SearchUseCaseParams
 import com.irfangujjar.tmdb.features.main.search.presentation.viewmodels.state.SearchDetailsState
 import com.irfangujjar.tmdb.features.main.search.presentation.viewmodels.state.SearchState
 import com.irfangujjar.tmdb.features.main.search.presentation.viewmodels.state.SearchSuggestionState
@@ -66,11 +65,25 @@ class SearchViewModel @Inject constructor(
 
     private var detailsJob: Job? = null
 
+    private fun showTrendingScreen() {
+        if (state.value !is SearchState.Trending)
+            _state.value = SearchState.Trending
+    }
+
+    private fun showSuggestionScreen() {
+        if (state.value !is SearchState.Suggestions)
+            _state.value = SearchState.Suggestions
+    }
+
+    private fun showDetailsScreen() {
+        if (state.value !is SearchState.Details)
+            _state.value = SearchState.Details
+    }
 
     fun updateShowSearchBar(value: Boolean) {
         showSearchBar = value
         if (!showSearchBar) {
-            _state.value = SearchState.Trending
+            showTrendingScreen()
             query = ""
             resetSuggestionAndDetailsState()
         } else {
@@ -80,18 +93,27 @@ class SearchViewModel @Inject constructor(
 
     fun updateQuery(value: String) {
         query = value
+        resetDetailsState()
         if (query.isEmpty()) {
+            showSuggestionScreen()
             resetSuggestionAndDetailsState()
         } else {
             loadSuggestions()
         }
     }
 
-    private fun resetSuggestionAndDetailsState() {
-        suggestionsJob?.cancel()
+    private fun resetDetailsState() {
         detailsJob?.cancel()
-        _suggestionsState.value = SearchSuggestionState.Idle
-        _detailsState.value = SearchDetailsState.Loading
+        if (detailsState.value !is SearchDetailsState.Loading)
+            _detailsState.value = SearchDetailsState.Loading
+    }
+
+
+    private fun resetSuggestionAndDetailsState() {
+        resetDetailsState()
+        suggestionsJob?.cancel()
+        if (suggestionsState.value !is SearchSuggestionState.Idle)
+            _suggestionsState.value = SearchSuggestionState.Idle
     }
 
     init {
@@ -149,12 +171,13 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun loadSuggestions() {
+        showSuggestionScreen()
         detailsJob?.cancel()
         suggestionsJob?.cancel()
         suggestionsJob = viewModelScope.launch(Dispatchers.IO) {
             val result = safeApiCall {
                 _suggestionsState.value = SearchSuggestionState.Loading
-                searchSuggestionsUseCaseLoad.invoke(params = SearchSuggestionUseCaseLoadParams(query))
+                searchSuggestionsUseCaseLoad.invoke(params = SearchUseCaseParams(query))
             }
             when (result) {
                 is ResultWrapper.Error -> {
@@ -182,7 +205,7 @@ class SearchViewModel @Inject constructor(
 
     fun onSuggestionItemSelected(value: String) {
         query = value
-        _state.value = SearchState.Details
+        showDetailsScreen()
         loadDetails()
     }
 
@@ -197,7 +220,7 @@ class SearchViewModel @Inject constructor(
 
     fun onSearch() {
         if (query.isNotEmpty() && query.isNotBlank()) {
-            _state.value = SearchState.Details
+            showDetailsScreen()
             loadDetails()
         }
     }
@@ -208,7 +231,7 @@ class SearchViewModel @Inject constructor(
         detailsJob = viewModelScope.launch(Dispatchers.IO) {
             val result = safeApiCall {
                 _detailsState.value = SearchDetailsState.Loading
-                searchDetailsUseCaseLoad.invoke(params = SearchDetailsUseCaseLoadParams(query = query))
+                searchDetailsUseCaseLoad.invoke(params = SearchUseCaseParams(query = query))
             }
             when (result) {
                 is ResultWrapper.Error -> {
@@ -229,6 +252,7 @@ class SearchViewModel @Inject constructor(
     override fun onCleared() {
         super.onCleared()
         suggestionsJob?.cancel()
+        detailsJob?.cancel()
     }
 
 

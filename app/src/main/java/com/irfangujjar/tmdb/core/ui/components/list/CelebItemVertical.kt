@@ -3,7 +3,6 @@ package com.irfangujjar.tmdb.core.ui.components.list
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -62,7 +61,7 @@ fun CelebItemVertical(preview: Boolean, values: CelebItemVerticalValues) {
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
             )
-            if (values.knownFor != null)
+            if (!values.knownFor.isNullOrBlank())
                 Text(
                     values.knownFor,
                     fontSize = 15.sp,

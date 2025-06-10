@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -70,23 +71,28 @@ fun MediaItemVertical(
                 values.mediaTitle,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.W500,
-                maxLines = 1,
+                maxLines = if (values.voteAverage==null&&values.voteCount==null&&
+                    values.mediaGenre.isNullOrEmpty())2 else 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.padding(start = 8.dp)
             )
-            Text(
-                text = if (values.mediaType.isMovie()) getMovieGenres(values.mediaGenre)
-                else getTvShowsGenres(values.mediaGenre),
-                fontSize = 14.sp,
-                fontWeight = FontWeight.W500,
-                color = Color.Gray,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.padding(start = 8.dp)
-            )
+            if (!values.mediaGenre.isNullOrEmpty())
+                Text(
+                    text = if (values.mediaType.isMovie()) getMovieGenres(values.mediaGenre)
+                    else getTvShowsGenres(values.mediaGenre),
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.W500,
+                    color = Color.Gray,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.padding(start = 8.dp, top = 2.dp)
+                )
+            else
+                Spacer(modifier = Modifier.height(4.dp))
+            if (values.voteAverage!=null&&values.voteCount!=null)
             CustomRating(
                 voteAverage = values.voteAverage, voteCount = values.voteCount,
-                padding = PaddingValues(start = 6.dp)
+                padding = PaddingValues(start = 6.dp, top = 2.dp)
             )
         }
         Spacer(modifier = Modifier.weight(1f))

@@ -63,6 +63,7 @@ fun MediaItemHorizontal(preview: Boolean = false, values: MediaItemHorizontalVal
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.padding(top = 2.dp, start = 1.dp),
             )
+            if (!values.mediaGenre.isNullOrEmpty())
             Text(
                 text = if (values.mediaType.isMovie()) getMovieGenres(values.mediaGenre)
                 else getTvShowsGenres(values.mediaGenre),

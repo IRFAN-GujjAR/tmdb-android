@@ -9,11 +9,11 @@ data class MediaItemVerticalValues(
     val mediaType: MediaType,
     val mediaId: Int,
     val mediaTitle: String,
-    val mediaGenre: List<Int>,
+    val mediaGenre: List<Int>?,
     val posterPath: String?,
     val backdropPath: String?,
-    val voteAverage: Double,
-    val voteCount: Int
+    val voteAverage: Double?,
+    val voteCount: Int?
 ) {
     companion object {
 

@@ -47,7 +47,7 @@ fun CelebItemHorizontal(preview: Boolean = false, values: CelebItemHorizontalVal
             fontSize = values.config.font,
             textAlign = TextAlign.Start,
             modifier = Modifier.padding(top = 4.dp))
-        if(values.knownFor!=null)
+        if(!values.knownFor.isNullOrBlank())
             Text(values.knownFor,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,

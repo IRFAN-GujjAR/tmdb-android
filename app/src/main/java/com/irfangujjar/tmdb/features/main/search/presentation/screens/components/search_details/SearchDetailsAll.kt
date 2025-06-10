@@ -32,7 +32,10 @@ fun SearchDetailsAll(
     tvShowsList: TvShowsListModel,
     celebsList: CelebsListModel,
     topPadding: Dp,
-    bottomPadding: Dp
+    bottomPadding: Dp,
+    onSeeAllMoviesClick: () -> Unit,
+    onSeeAllTvShowsClick: () -> Unit,
+    onSeeAllCelebsClick: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -52,10 +55,9 @@ fun SearchDetailsAll(
                     MoviesCategory.Popular
                 )
             ),
-            title = "Movies"
-        ) {
-
-        }
+            title = "Movies",
+            onSeeAllClick = onSeeAllMoviesClick
+        )
         CustomDivider()
         MediaItemsHorizontalList(
             preview = preview,
@@ -66,10 +68,9 @@ fun SearchDetailsAll(
                     TvShowsCategory.AiringToday
                 )
             ),
-            title = "Tv Shows"
-        ) {
-
-        }
+            title = "Tv Shows",
+            onSeeAllClick = onSeeAllTvShowsClick
+        )
         CustomDivider(topPadding = DividerTopPadding.Double)
         CelebItemsHorizontalList(
             preview = preview,
@@ -78,9 +79,8 @@ fun SearchDetailsAll(
                 config = CelebItemHorizontalConfigValues.fromDefault()
             ),
             title = "Celebrities",
-        ) {
-
-        }
+            onSeeAllClick = onSeeAllCelebsClick
+        )
     }
 }
 
@@ -95,7 +95,10 @@ private fun SearchDetailsAllPreview() {
                 tvShowsList = TvShowsListModel.dummyData(),
                 celebsList = CelebsListModel.dummyData(),
                 topPadding = 0.dp,
-                bottomPadding = 0.dp
+                bottomPadding = 0.dp,
+                onSeeAllMoviesClick = {},
+                onSeeAllTvShowsClick = {},
+                onSeeAllCelebsClick = {}
             )
         }
     }

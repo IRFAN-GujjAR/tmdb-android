@@ -6,8 +6,11 @@ import com.irfangujjar.tmdb.features.main.search.data.data_sources.remote.Search
 import com.irfangujjar.tmdb.features.main.search.data.data_sources.remote.api.SearchApi
 import com.irfangujjar.tmdb.features.main.search.data.repos.SearchRepoImpl
 import com.irfangujjar.tmdb.features.main.search.domain.repos.SearchRepo
+import com.irfangujjar.tmdb.features.main.search.domain.usecases.SearchCelebsUseCase
 import com.irfangujjar.tmdb.features.main.search.domain.usecases.SearchDetailsUseCaseLoad
+import com.irfangujjar.tmdb.features.main.search.domain.usecases.SearchMoviesUseCase
 import com.irfangujjar.tmdb.features.main.search.domain.usecases.SearchSuggestionsUseCaseLoad
+import com.irfangujjar.tmdb.features.main.search.domain.usecases.SearchTvShowsUseCase
 import com.irfangujjar.tmdb.features.main.search.domain.usecases.TrendingSearchUseCaseLoad
 import com.irfangujjar.tmdb.features.main.search.domain.usecases.TrendingSearchUseCaseWatch
 import dagger.Module
@@ -47,4 +50,20 @@ class SearchModule {
     @ViewModelScoped
     fun providesDetailsUseCaseLoad(repo: SearchRepo): SearchDetailsUseCaseLoad =
         SearchDetailsUseCaseLoad(repo = repo)
+
+    @Provides
+    @ViewModelScoped
+    fun providesSearchMoviesUseCase(repo: SearchRepo): SearchMoviesUseCase =
+        SearchMoviesUseCase(repo = repo)
+
+    @Provides
+    @ViewModelScoped
+    fun providesSearchTvShowsUseCase(repo: SearchRepo): SearchTvShowsUseCase =
+        SearchTvShowsUseCase(repo = repo)
+
+    @Provides
+    @ViewModelScoped
+    fun providesSearchCelebsUseCase(repo: SearchRepo): SearchCelebsUseCase =
+        SearchCelebsUseCase(repo = repo)
+
 }

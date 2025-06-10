@@ -10,7 +10,7 @@ data class MediaItemHorizontalValues(
     val mediaType: MediaType,
     val mediaId: Int,
     val mediaTitle: String,
-    val mediaGenre: List<Int>,
+    val mediaGenre: List<Int>?,
     val posterPath: String?,
     val backdropPath: String?,
     val isLandscape: Boolean,

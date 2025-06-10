@@ -58,7 +58,8 @@ fun SearchDetails(
             outerPaddingValues = outerPaddingValues,
             innerPaddingValues = innerPaddingValues,
             searchDetails = state.searchDetails,
-            onNavigateToDetails = onNavigateToDetails
+            onNavigateToDetails = onNavigateToDetails,
+            query = viewModel.query
         )
     }
 }
@@ -70,6 +71,7 @@ private fun SearchDetailsBody(
     outerPaddingValues: PaddingValues,
     innerPaddingValues: PaddingValues,
     searchDetails: SearchDetailsModel,
+    query: String,
     onNavigateToDetails: () -> Unit
 ) {
 
@@ -87,6 +89,7 @@ private fun SearchDetailsBody(
         if (!searchDetails.isMoviesEmpty()) {
             SearchDetailsMovies(
                 preview = preview,
+                query = query,
                 moviesList = searchDetails.moviesList,
                 topPadding = topPadding,
                 bottomPadding = bottomPadding,
@@ -100,7 +103,8 @@ private fun SearchDetailsBody(
                 topPadding = topPadding,
                 bottomPadding = bottomPadding,
                 listState = null,
-                tvShowsList = searchDetails.tvShowsList
+                tvShowsList = searchDetails.tvShowsList,
+                query = query
             )
         } else {
             SearchDetailsCelebs(
@@ -108,7 +112,8 @@ private fun SearchDetailsBody(
                 topPadding = topPadding,
                 bottomPadding = bottomPadding,
                 listState = null,
-                celebsList = searchDetails.celebsList
+                celebsList = searchDetails.celebsList,
+                query = query
             )
         }
     } else {
@@ -119,7 +124,6 @@ private fun SearchDetailsBody(
         val pagerState = rememberPagerState { tabItems.size }
         val listStateSize = if (searchDetails.isAllPresent()) tabItems.size - 1 else tabItems.size
         val listStates = rememberSaveable { List(listStateSize) { LazyListState() } }
-
 
         LaunchedEffect(selectedIndex) {
             pagerState.animateScrollToPage(selectedIndex)
@@ -167,13 +171,23 @@ private fun SearchDetailsBody(
                 userScrollEnabled = !searchDetails.isAllPresent()
             ) { index ->
                 HorizontalPagerBody(
-                    searchDetails,
-                    index,
-                    preview,
-                    topPadding,
-                    bottomPadding,
-                    listStates,
-                    onNavigateToDetails
+                    searchDetails = searchDetails,
+                    index = index,
+                    preview = preview,
+                    topPadding = topPadding,
+                    bottomPadding = bottomPadding,
+                    listStates = listStates,
+                    onNavigateToDetails = onNavigateToDetails,
+                    query = query,
+                    onSeeAllMoviesClick = {
+                        selectedIndex = 1
+                    },
+                    onSeeAllTvShowsClick = {
+                        selectedIndex = 2
+                    },
+                    onSeeAllCelebsClick = {
+                        selectedIndex = 3
+                    }
                 )
             }
         }
@@ -187,7 +201,11 @@ private fun HorizontalPagerBody(
     preview: Boolean,
     topPadding: Dp,
     bottomPadding: Dp,
+    query: String,
     listStates: List<LazyListState>,
+    onSeeAllMoviesClick: () -> Unit,
+    onSeeAllTvShowsClick: () -> Unit,
+    onSeeAllCelebsClick: () -> Unit,
     onNavigateToDetails: () -> Unit
 ) {
     if (searchDetails.isAllPresent()) {
@@ -197,13 +215,17 @@ private fun HorizontalPagerBody(
                 tvShowsList = searchDetails.tvShowsList,
                 celebsList = searchDetails.celebsList,
                 topPadding = topPadding,
-                bottomPadding = bottomPadding
+                bottomPadding = bottomPadding,
+                onSeeAllMoviesClick = onSeeAllMoviesClick,
+                onSeeAllTvShowsClick = onSeeAllTvShowsClick,
+                onSeeAllCelebsClick = onSeeAllCelebsClick
             )
 
             1 -> SearchDetailsMovies(
                 preview = preview,
                 moviesList = searchDetails.moviesList,
                 bottomPadding = bottomPadding,
+                query = query,
                 listState = listStates[0]
             ) {
                 onNavigateToDetails()
@@ -213,14 +235,16 @@ private fun HorizontalPagerBody(
                 preview = preview,
                 bottomPadding = bottomPadding,
                 listState = listStates[1],
-                tvShowsList = searchDetails.tvShowsList
+                tvShowsList = searchDetails.tvShowsList,
+                query = query
             )
 
             3 -> SearchDetailsCelebs(
                 preview = preview,
                 bottomPadding = bottomPadding,
                 listState = listStates[2],
-                celebsList = searchDetails.celebsList
+                celebsList = searchDetails.celebsList,
+                query = query
             )
         }
     } else {
@@ -231,6 +255,7 @@ private fun HorizontalPagerBody(
                         preview = preview,
                         moviesList = searchDetails.moviesList,
                         bottomPadding = bottomPadding,
+                        query = query,
                         listState = listStates[0]
                     ) {
                         onNavigateToDetails()
@@ -240,14 +265,16 @@ private fun HorizontalPagerBody(
                         preview = preview,
                         bottomPadding = bottomPadding,
                         listState = listStates[0],
-                        tvShowsList = searchDetails.tvShowsList
+                        tvShowsList = searchDetails.tvShowsList,
+                        query = query
                     )
                 else
                     SearchDetailsCelebs(
                         preview = preview,
                         listState = listStates[0],
                         bottomPadding = bottomPadding,
-                        celebsList = searchDetails.celebsList
+                        celebsList = searchDetails.celebsList,
+                        query = query
                     )
             }
 
@@ -257,14 +284,16 @@ private fun HorizontalPagerBody(
                         preview = preview,
                         bottomPadding = bottomPadding,
                         listState = listStates[1],
-                        tvShowsList = searchDetails.tvShowsList
+                        tvShowsList = searchDetails.tvShowsList,
+                        query = query
                     )
                 else
                     SearchDetailsCelebs(
                         preview = preview,
                         bottomPadding = bottomPadding,
                         listState = listStates[1],
-                        celebsList = searchDetails.celebsList
+                        celebsList = searchDetails.celebsList,
+                        query = query
                     )
             }
         }

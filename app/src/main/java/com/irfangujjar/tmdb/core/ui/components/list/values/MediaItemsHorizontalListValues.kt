@@ -10,7 +10,7 @@ data class MediaItemsHorizontalListValues(
     val mediaType: MediaType,
     val mediaIds: List<Int>,
     val mediaTitles: List<String>,
-    val mediaGenres: List<List<Int>>,
+    val mediaGenres: List<List<Int>?>,
     val posterPaths: List<String?>,
     val backdropPaths: List<String?>,
     val isLandscape: Boolean,
@@ -82,7 +82,7 @@ data class MediaItemsHorizontalListValues(
         ): MediaItemsHorizontalListValues {
             val mediaIds = arrayListOf<Int>()
             val mediaTitles = arrayListOf<String>()
-            val mediaGenres = arrayListOf<List<Int>>()
+            val mediaGenres = arrayListOf<List<Int>?>()
             val posterPaths = arrayListOf<String?>()
             val backdropPaths = arrayListOf<String?>()
             movies?.forEach {

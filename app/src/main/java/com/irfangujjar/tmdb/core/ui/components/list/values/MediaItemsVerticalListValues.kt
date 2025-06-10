@@ -9,11 +9,11 @@ data class MediaItemsVerticalListValues(
     val mediaType: MediaType,
     val mediaIds: List<Int>,
     val mediaTitles: List<String>,
-    val mediaGenres: List<List<Int>>,
+    val mediaGenres: List<List<Int>?>,
     val posterPaths: List<String?>,
     val backdropPaths: List<String?>,
-    val voteAverages: List<Double>,
-    val voteCounts: List<Int>
+    val voteAverages: List<Double?>,
+    val voteCounts: List<Int?>
 ) {
     companion object {
 
@@ -26,11 +26,11 @@ data class MediaItemsVerticalListValues(
         fun fromMovies(movies: List<MovieModel>): MediaItemsVerticalListValues {
             val mediaIds = mutableListOf<Int>()
             val mediaTitles = mutableListOf<String>()
-            val mediaGenres = mutableListOf<List<Int>>()
+            val mediaGenres = mutableListOf<List<Int>?>()
             val posterPaths = mutableListOf<String?>()
             val backdropPaths = mutableListOf<String?>()
-            val voteAverages = mutableListOf<Double>()
-            val voteCounts = mutableListOf<Int>()
+            val voteAverages = mutableListOf<Double?>()
+            val voteCounts = mutableListOf<Int?>()
 
             movies.forEach {
                 mediaIds.add(it.id)
@@ -57,11 +57,11 @@ data class MediaItemsVerticalListValues(
         fun fromTvShows(tvShows: List<TvShowModel>): MediaItemsVerticalListValues {
             val mediaIds = mutableListOf<Int>()
             val mediaTitles = mutableListOf<String>()
-            val mediaGenres = mutableListOf<List<Int>>()
+            val mediaGenres = mutableListOf<List<Int>?>()
             val posterPaths = mutableListOf<String?>()
             val backdropPaths = mutableListOf<String?>()
-            val voteAverages = mutableListOf<Double>()
-            val voteCounts = mutableListOf<Int>()
+            val voteAverages = mutableListOf<Double?>()
+            val voteCounts = mutableListOf<Int?>()
 
             tvShows.forEach {
                 mediaIds.add(it.id)

@@ -1,22 +1,21 @@
 package com.irfangujjar.tmdb.features.main.movies.domain.models
 
 import JsonKeyNames
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import com.irfangujjar.tmdb.core.entities.MediaModel
-import kotlinx.parcelize.Parcelize
 
-@Parcelize
 data class MovieModel(
-    override val id: Int,
+    val id: Int,
     val title: String,
-    @SerializedName(JsonKeyNames.GENRE_IDS) override val genreIds: List<Int>,
-    @SerializedName(JsonKeyNames.POSTER_PATH) override val posterPath: String?,
-    @SerializedName(JsonKeyNames.BACKDROP_PATH) override val backdropPath: String?,
-    @SerializedName(JsonKeyNames.VOTE_COUNT) override val voteCount: Int,
-    @SerializedName(JsonKeyNames.VOTE_AVERAGE) override val voteAverage: Double,
+    @SerializedName(JsonKeyNames.GENRE_IDS) val genreIds: List<Int>?,
+    @SerializedName(JsonKeyNames.POSTER_PATH) val posterPath: String?,
+    @SerializedName(JsonKeyNames.BACKDROP_PATH) val backdropPath: String?,
+    @SerializedName(JsonKeyNames.VOTE_COUNT) val voteCount: Int?,
+    @SerializedName(JsonKeyNames.VOTE_AVERAGE) val voteAverage: Double?,
     @SerializedName(JsonKeyNames.RELEASE_DATE) val releaseDate: String?
-) : MediaModel, Parcelable {
+) {
+    fun isRatingPresent(): Boolean = voteCount != null && voteAverage != null
+
+
     companion object {
         fun dummyData(): MovieModel = MovieModel(
             id = 238,

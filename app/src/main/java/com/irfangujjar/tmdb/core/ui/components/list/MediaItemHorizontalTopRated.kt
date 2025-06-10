@@ -1,8 +1,10 @@
 package com.irfangujjar.tmdb.core.ui.components.list
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -44,7 +46,7 @@ fun MediaItemHorizontalTopRated(
 
     val posterPath: String?
     val title: String
-    val genreIds: List<Int>
+    val genreIds: List<Int>?
     when (type) {
         MediaType.Movie -> {
             posterPath = movie!!.posterPath
@@ -60,20 +62,24 @@ fun MediaItemHorizontalTopRated(
     }
 
     Row(
-        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.height(60.dp)
     ) {
-        CustomNetworkImage(
-            preview = preview,
-            isLandscape = false,
-            type = type.imageType(),
-            imageUrl = posterPath,
-            width = 40.dp,
-            height = 40.dp,
-            contentScale = ContentScale.Crop,
-            placeHolderSize = 24.dp,
-            posterSize = PosterSizes.w92,
-            backdropSize = BackdropSizes.w300,
-        )
+        Box(
+            modifier = Modifier.align(Alignment.CenterVertically)
+        ) {
+            CustomNetworkImage(
+                preview = preview,
+                isLandscape = false,
+                type = type.imageType(),
+                imageUrl = posterPath,
+                width = 50.dp,
+                height = 50.dp,
+                contentScale = ContentScale.Crop,
+                placeHolderSize = 24.dp,
+                posterSize = PosterSizes.w92,
+                backdropSize = BackdropSizes.w300,
+            )
+        }
         Column(
             modifier = Modifier
                 .padding(start = 8.dp)
@@ -86,22 +92,26 @@ fun MediaItemHorizontalTopRated(
                 overflow = TextOverflow.Ellipsis,
                 fontSize = 13.sp,
                 textAlign = TextAlign.Start,
-                fontWeight = FontWeight.W500
+                fontWeight = FontWeight.W500,
+                modifier = Modifier.padding(top = 5.dp)
             )
-            Text(
-                if (type.isMovie()) getMovieGenres(genreIds) else getTvShowsGenres(genreIds),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                fontSize = 11.sp,
-                textAlign = TextAlign.Start,
-                color = Color.Gray
-            )
+            if (!genreIds.isNullOrEmpty())
+                Text(
+                    if (type.isMovie()) getMovieGenres(genreIds) else getTvShowsGenres(genreIds),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    fontSize = 11.sp,
+                    textAlign = TextAlign.Start,
+                    color = Color.Gray,
+                )
         }
         Spacer(Modifier.width(16.dp))
         Icon(
             imageVector = Icons.AutoMirrored.Default.ArrowForwardIos,
             contentDescription = null,
-            modifier = Modifier.size(18.dp),
+            modifier = Modifier
+                .size(18.dp)
+                .align(Alignment.CenterVertically),
             tint = Color.Gray
         )
     }
