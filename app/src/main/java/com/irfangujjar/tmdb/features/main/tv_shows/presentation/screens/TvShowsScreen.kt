@@ -43,7 +43,8 @@ fun TvShowsScreen(
     preview: Boolean = false, outerPadding: PaddingValues,
     viewModel: TvShowsViewModel = hiltViewModel(),
     userTheme: UserTheme,
-    snackbarHostState: SnackbarHostState?
+    snackbarHostState: SnackbarHostState?,
+    onNavigateToSeeAllTvShows: (String, TvShowsCategories) -> Unit
 ) {
 
     Scaffold(topBar = {
@@ -78,6 +79,13 @@ fun TvShowsScreen(
                         innerPadding = innerPadding,
                         tvShows = state.tvShows,
                         isRefreshing = viewModel.isRefreshing,
+                        onNavigateToSeeAllMovies = {
+                            val argId = viewModel.saveSeeAllTvShowsArg(
+                                category = it,
+                                tvShows = state.tvShows
+                            )
+                            onNavigateToSeeAllTvShows(argId, it)
+                        },
                         onRefresh = { viewModel.refresh() }
                     )
                 }
@@ -88,6 +96,11 @@ fun TvShowsScreen(
                     innerPadding = innerPadding,
                     tvShows = state.tvShows,
                     isRefreshing = viewModel.isRefreshing,
+                    onNavigateToSeeAllMovies = {
+                        val argId =
+                            viewModel.saveSeeAllTvShowsArg(category = it, tvShows = state.tvShows)
+                        onNavigateToSeeAllTvShows(argId, it)
+                    },
                     onRefresh = { viewModel.refresh() }
 
                 )
@@ -107,6 +120,7 @@ private fun TvShowsScreenBody(
     innerPadding: PaddingValues,
     tvShows: TvShowsModel,
     isRefreshing: Boolean,
+    onNavigateToSeeAllMovies: (TvShowsCategories) -> Unit,
     onRefresh: () -> Unit
 ) {
     val scrollState = rememberScrollState()
@@ -148,7 +162,7 @@ private fun TvShowsScreenBody(
                 ),
                 title = TvShowsCategories.AiringToday.name,
             ) {
-
+                onNavigateToSeeAllMovies(TvShowsCategories.AiringToday)
             }
             CustomDivider(topPadding = DividerTopPadding.Double)
             MediaItemsHorizontalList(
@@ -165,7 +179,7 @@ private fun TvShowsScreenBody(
                 ),
                 title = TvShowsCategories.Trending.name
             ) {
-
+                onNavigateToSeeAllMovies(TvShowsCategories.Trending)
             }
             CustomDivider()
             MediaItemsHorizontalTopRatedList(
@@ -175,7 +189,7 @@ private fun TvShowsScreenBody(
                 else tvShows.topRated.tvShows,
                 movies = null,
                 onSeeAllClick = {
-
+                    onNavigateToSeeAllMovies(TvShowsCategories.TopRated)
                 }
             )
             CustomDivider(topPadding = DividerTopPadding.Double)
@@ -192,7 +206,7 @@ private fun TvShowsScreenBody(
                 ),
                 title = TvShowsCategories.Popular.name
             ) {
-
+                onNavigateToSeeAllMovies(TvShowsCategories.Popular)
             }
         }
     }
@@ -216,7 +230,8 @@ private fun PreviewMovieScreen() {
                     topRated = emptyList,
                     popular = emptyList,
                 ),
-                isRefreshing = false
+                isRefreshing = false,
+                onNavigateToSeeAllMovies = {}
             ) { }
         }
     }

@@ -8,6 +8,9 @@ import com.irfangujjar.tmdb.features.main.tv_shows.data.repos.TvShowsRepoImpl
 import com.irfangujjar.tmdb.features.main.tv_shows.domain.repos.TvShowsRepo
 import com.irfangujjar.tmdb.features.main.tv_shows.domain.usecases.TvShowsUseCaseLoad
 import com.irfangujjar.tmdb.features.main.tv_shows.domain.usecases.TvShowsUseCaseWatch
+import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.see_all.data.data_sources.SeeAllTvShowsDataSourceImpl
+import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.see_all.data.repos.SeeAllTvShowsRepoImpl
+import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.see_all.domain.usecases.SeeAllTvShowsUseCaseLoad
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,5 +37,16 @@ class TvShowsModule {
     @ViewModelScoped
     fun providesUseCaseLoad(repo: TvShowsRepo): TvShowsUseCaseLoad =
         TvShowsUseCaseLoad(repo = repo)
+
+    @Provides
+    @ViewModelScoped
+    fun providesSeeAllTvShowsUseCaseLoad(api: TvShowApi): SeeAllTvShowsUseCaseLoad =
+        SeeAllTvShowsUseCaseLoad(
+            repo = SeeAllTvShowsRepoImpl(
+                dataSource = SeeAllTvShowsDataSourceImpl(
+                    api = api
+                )
+            )
+        )
 
 }

@@ -1,4 +1,4 @@
-package com.irfangujjar.tmdb.features.main.movies.sub_features.see_all.presentation.viewmodels
+package com.irfangujjar.tmdb.features.main.tv_shows.sub_features.see_all.presentation.viewmodels
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
@@ -7,10 +7,10 @@ import com.irfangujjar.tmdb.core.api.ResultWrapper
 import com.irfangujjar.tmdb.core.api.safeApiCall
 import com.irfangujjar.tmdb.core.navigation.screens.HomeScreen
 import com.irfangujjar.tmdb.core.viewmodels.ViewModelWithErrorAlerts
-import com.irfangujjar.tmdb.features.main.movies.domain.models.MoviesListModel
-import com.irfangujjar.tmdb.features.main.movies.sub_features.see_all.domain.usecases.SeeAllMoviesUseCaseLoad
-import com.irfangujjar.tmdb.features.main.movies.sub_features.see_all.domain.usecases.params.SeeAllMoviesUseCaseLoadParams
-import com.irfangujjar.tmdb.features.main.movies.sub_features.see_all.presentation.nav_args_holder.SeeAllMoviesNavArgsHolder
+import com.irfangujjar.tmdb.features.main.tv_shows.domain.models.TvShowsListModel
+import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.see_all.domain.usecases.SeeAllTvShowsUseCaseLoad
+import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.see_all.domain.usecases.params.SeeAllTvShowsUseCaseLoadParams
+import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.see_all.presentation.nav_args_holder.SeeAllTvShowsNavArgsHolder
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,29 +19,29 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SeeAllMoviesViewModel @Inject constructor(
+class SeeAllTvShowsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val navArgsHolder: SeeAllMoviesNavArgsHolder,
-    private val useCaseLoad: SeeAllMoviesUseCaseLoad
+    private val navArgsHolder: SeeAllTvShowsNavArgsHolder,
+    private val useCaseLoad: SeeAllTvShowsUseCaseLoad
 ) : ViewModelWithErrorAlerts() {
 
-    val args = savedStateHandle.toRoute<HomeScreen.SeeAllMovies>()
-    private val _moviesListState =
-        MutableStateFlow<MoviesListModel>(navArgsHolder.getArgData(args.argId)!!)
-    val moviesListState: StateFlow<MoviesListModel> = _moviesListState
+    val args = savedStateHandle.toRoute<HomeScreen.SeeAllTvShows>()
+    private val _tvShowsListState =
+        MutableStateFlow<TvShowsListModel>(navArgsHolder.getArgData(args.argId)!!)
+    val tvShowsListState: StateFlow<TvShowsListModel> = _tvShowsListState
 
     private var isLoadingMore = false
 
     fun onLoadMore() {
-        if (!isLoadingMore && moviesListState.value.pageNo < moviesListState.value.totalPages) {
+        if (!isLoadingMore && tvShowsListState.value.pageNo < tvShowsListState.value.totalPages) {
             isLoadingMore = true
             viewModelScope.launch(Dispatchers.IO) {
                 val result = safeApiCall {
                     useCaseLoad.invoke(
-                        params = SeeAllMoviesUseCaseLoadParams(
+                        params = SeeAllTvShowsUseCaseLoadParams(
                             category = args.category,
-                            movieId = args.movieId,
-                            pageNo = moviesListState.value.pageNo + 1
+                            tvId = args.tvId,
+                            pageNo = tvShowsListState.value.pageNo + 1
                         )
                     )
                 }
@@ -50,13 +50,13 @@ class SeeAllMoviesViewModel @Inject constructor(
                         showAlert(result.errorEntity.message)
                     }
 
-                    is ResultWrapper.Success<MoviesListModel> -> {
-                        val moviesList = MoviesListModel(
+                    is ResultWrapper.Success<TvShowsListModel> -> {
+                        val tvShowsList = TvShowsListModel(
                             pageNo = result.data.pageNo,
                             totalPages = result.data.totalPages,
-                            movies = moviesListState.value.movies + result.data.movies
+                            tvShows = tvShowsListState.value.tvShows + result.data.tvShows
                         )
-                        _moviesListState.value = moviesList
+                        _tvShowsListState.value = tvShowsList
                     }
                 }
             }.invokeOnCompletion {

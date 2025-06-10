@@ -18,6 +18,7 @@ import com.irfangujjar.tmdb.features.main.movies.sub_features.see_all.presentati
 import com.irfangujjar.tmdb.features.main.search.presentation.screens.SearchScreen
 import com.irfangujjar.tmdb.features.main.tmdb.presentation.screens.TMDBScreen
 import com.irfangujjar.tmdb.features.main.tv_shows.presentation.screens.TvShowsScreen
+import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.see_all.presentation.screens.SeeAllTvShowsScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,7 +44,7 @@ fun HomeNavGraph(
                         onNavigateToSeeAllMovies = { argId, category ->
                             navController.navigate(
                                 HomeScreen.SeeAllMovies(
-                                    argsId = argId,
+                                    argId = argId,
                                     category = category
                                 )
                             )
@@ -55,7 +56,15 @@ fun HomeNavGraph(
                     TvShowsScreen(
                         outerPadding = outerPadding,
                         userTheme = userTheme,
-                        snackbarHostState = snackbarHostState
+                        snackbarHostState = snackbarHostState,
+                        onNavigateToSeeAllTvShows = { argId, category ->
+                            navController.navigate(
+                                HomeScreen.SeeAllTvShows(
+                                    argId = argId,
+                                    category = category
+                                )
+                            )
+                        }
                     )
                 }
 
@@ -154,7 +163,16 @@ fun HomeNavGraph(
                 snackbarHostState = snackbarHostState,
                 onBackStackPressed = {
                     navController.popBackStack()
+                }
+            )
+        }
 
+        composable<HomeScreen.SeeAllTvShows> {
+            SeeAllTvShowsScreen(
+                outerPadding = outerPadding,
+                snackbarHostState = snackbarHostState,
+                onBackStackPressed = {
+                    navController.popBackStack()
                 }
             )
         }

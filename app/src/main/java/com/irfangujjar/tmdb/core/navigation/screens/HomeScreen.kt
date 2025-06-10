@@ -1,6 +1,7 @@
 package com.irfangujjar.tmdb.core.navigation.screens
 
 import com.irfangujjar.tmdb.core.ui.util.MoviesCategories
+import com.irfangujjar.tmdb.core.ui.util.TvShowsCategories
 import kotlinx.serialization.Serializable
 
 sealed interface HomeScreen {
@@ -27,7 +28,13 @@ sealed interface HomeScreen {
 
     @Serializable
     data class SeeAllMovies(
-        val argsId: String, val category: MoviesCategories,
+        val argId: String, val category: MoviesCategories,
         val movieId: Int? = null
+    ) : HomeScreen
+
+    @Serializable
+    data class SeeAllTvShows(
+        val argId: String, val category: TvShowsCategories,
+        val tvId: Int? = null
     ) : HomeScreen
 }
