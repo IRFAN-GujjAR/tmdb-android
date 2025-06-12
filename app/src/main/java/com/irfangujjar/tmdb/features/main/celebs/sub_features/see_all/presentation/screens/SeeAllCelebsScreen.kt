@@ -11,6 +11,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.irfangujjar.tmdb.core.navigation.nav_keys.HomeNavKey
 import com.irfangujjar.tmdb.core.ui.components.CustomTopAppBar
 import com.irfangujjar.tmdb.core.ui.components.list.CelebItemsVerticalList
 import com.irfangujjar.tmdb.core.ui.components.list.values.CelebItemsVerticalListValues
@@ -22,11 +23,15 @@ fun SeeAllCelebsScreen(
     preview: Boolean = false,
     outerPadding: PaddingValues,
     snackbarHostState: SnackbarHostState,
+    key: HomeNavKey.SeeAllCelebsNavKey,
     viewModel: SeeAllCelebsViewModel = hiltViewModel(),
     onBackStackPressed: () -> Unit
 ) {
 
     val listState = rememberLazyListState()
+
+    viewModel.initialize(key)
+
     val celebrities = viewModel.state.collectAsState().value.celebrities
 
     if (viewModel.showAlert) {
@@ -39,7 +44,7 @@ fun SeeAllCelebsScreen(
     Scaffold(
         topBar = {
             CustomTopAppBar(
-                title = viewModel.args.category.name,
+                title = key.category.name,
                 showBackStack = true,
                 onBackStackPressed = onBackStackPressed
             )

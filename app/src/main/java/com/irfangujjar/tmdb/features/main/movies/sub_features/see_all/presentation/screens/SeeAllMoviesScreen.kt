@@ -11,6 +11,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.irfangujjar.tmdb.core.navigation.nav_keys.HomeNavKey
 import com.irfangujjar.tmdb.core.ui.components.CustomTopAppBar
 import com.irfangujjar.tmdb.core.ui.components.list.MediaItemsVerticalList
 import com.irfangujjar.tmdb.core.ui.components.list.values.MediaItemsVerticalListValues
@@ -21,10 +22,12 @@ fun SeeAllMoviesScreen(
     preview: Boolean = false,
     outerPadding: PaddingValues,
     snackbarHostState: SnackbarHostState,
+    key: HomeNavKey.SeeAllMoviesNavKey,
     viewModel: SeeAllMoviesViewModel = hiltViewModel(),
     onBackStackPressed: () -> Unit
 ) {
     val listState = rememberLazyListState()
+    viewModel.initialize(key = key)
     val movies = viewModel.state.collectAsState().value.movies
 
     if (viewModel.showAlert) {
@@ -37,7 +40,7 @@ fun SeeAllMoviesScreen(
     Scaffold(
         topBar = {
             CustomTopAppBar(
-                title = viewModel.args.category.name,
+                title = key.category.name,
                 showBackStack = true,
                 onBackStackPressed = onBackStackPressed
             )

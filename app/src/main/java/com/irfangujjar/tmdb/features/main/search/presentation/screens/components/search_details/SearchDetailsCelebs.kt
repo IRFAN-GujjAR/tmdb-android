@@ -30,12 +30,10 @@ fun SearchDetailsCelebs(
     viewModel: SearchCelebsViewModel = hiltViewModel(),
 ) {
 
-    if (!viewModel.isInitialized) {
-        viewModel.initializeValues(
-            query = query,
-            celebsList = celebsList
-        )
-    }
+    viewModel.initializeValues(
+        query = query,
+        celebsList = celebsList
+    )
 
     val celebrities = viewModel.state.collectAsState(celebsList).value.celebrities
 

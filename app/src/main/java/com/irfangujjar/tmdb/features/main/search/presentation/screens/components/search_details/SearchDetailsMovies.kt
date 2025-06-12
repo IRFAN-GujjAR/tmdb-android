@@ -30,12 +30,10 @@ fun SearchDetailsMovies(
     viewModel: SearchMoviesViewModel = hiltViewModel(),
     onItemClicked: (Int) -> Unit,
 ) {
-    if (!viewModel.isInitialized) {
-        viewModel.initializeValues(
-            query = query,
-            moviesList = moviesList
-        )
-    }
+    viewModel.initializeValues(
+        query = query,
+        moviesList = moviesList
+    )
 
     val movies = viewModel.state.collectAsState(moviesList).value.movies
 

@@ -15,15 +15,13 @@ class SearchCelebsViewModel @Inject constructor(
         CelebsListModel.dummyData()
 ) {
 
-    var isInitialized: Boolean = false
-        private set
-
     private lateinit var _query: String
 
     fun initializeValues(query: String, celebsList: CelebsListModel) {
-        _query = query
-        updateStateValue(celebsList)
-        isInitialized = true
+        if (!isInitialized) {
+            _query = query
+            initialize(value = celebsList)
+        }
     }
 
 

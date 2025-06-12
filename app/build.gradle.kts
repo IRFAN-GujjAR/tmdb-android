@@ -17,7 +17,6 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
-    id("kotlin-parcelize")
     alias(libs.plugins.serialization)
 }
 
@@ -71,22 +70,13 @@ dependencies {
 
     implementation(libs.androidx.core.splashscreen)
 
-    // ViewModel utilities for Compose
-    implementation(libs.androidx.lifecycle.viewmodel.compose)
-
     // Extended Material Icons
     implementation(libs.androidx.material.icons.extended)
-
-    //Navigation
-    implementation(libs.androidx.navigation.compose)
-    //Serialization
-    implementation(libs.kotlinx.serialization.json)
 
 
     // Hilt Dependency
     implementation(libs.hilt.android)
     implementation(libs.androidx.constraintlayout)
-//    implementation(libs.androidx.navigation.safe.args.generator)
     ksp(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 
@@ -104,11 +94,12 @@ dependencies {
     //Coil for Network Image loading
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
-
-    //Material components such as navbar
-//    implementation(libs.androidx.material)
-//    implementation("androidx.compose.material:material-icons-extended:1.7.8")
-//    implementation("com.google.accompanist:accompanist-systemuicontroller:0.27.0")
+    
+    //Navigation3
+    implementation(libs.androidx.navigation3.ui)
+    implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.lifecycle.viewmodel.navigation3)
+    implementation(libs.kotlinx.serialization.core)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

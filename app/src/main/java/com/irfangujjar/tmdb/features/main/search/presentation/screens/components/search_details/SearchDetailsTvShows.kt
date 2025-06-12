@@ -29,12 +29,11 @@ fun SearchDetailsTvShows(
     viewModel: SearchTvShowsViewModel = hiltViewModel(),
 ) {
 
-    if (!viewModel.isInitialized) {
-        viewModel.initializeValues(
-            query = query,
-            tvShowsList = tvShowsList
-        )
-    }
+    viewModel.initializeValues(
+        query = query,
+        tvShowsList = tvShowsList
+    )
+
 
     val tvShows = viewModel.state.collectAsState(tvShowsList).value.tvShows
 

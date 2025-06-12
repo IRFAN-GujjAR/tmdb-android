@@ -1,8 +1,7 @@
 package com.irfangujjar.tmdb.features.main.tv_shows.sub_features.see_all.presentation.viewmodels
 
-import androidx.lifecycle.SavedStateHandle
-import com.irfangujjar.tmdb.core.navigation.screens.HomeScreen
-import com.irfangujjar.tmdb.core.viewmodels.PaginatedViewModel
+import com.irfangujjar.tmdb.core.navigation.nav_keys.HomeNavKey
+import com.irfangujjar.tmdb.core.viewmodels.PaginatedViewModelWithKey
 import com.irfangujjar.tmdb.features.main.tv_shows.domain.models.TvShowsListModel
 import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.see_all.domain.usecases.SeeAllTvShowsUseCaseLoad
 import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.see_all.domain.usecases.params.SeeAllTvShowsUseCaseLoadParams
@@ -12,26 +11,25 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SeeAllTvShowsViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
     private val navArgsHolder: SeeAllTvShowsNavArgsHolder,
     private val useCaseLoad: SeeAllTvShowsUseCaseLoad
-) : PaginatedViewModel<TvShowsListModel, SeeAllTvShowsUseCaseLoadParams>(
-    initialState = getInitialState<TvShowsListModel, HomeScreen.SeeAllTvShows>(
-        savedStateHandle = savedStateHandle,
-        navArgsHolder = navArgsHolder
-    )!!
+) : PaginatedViewModelWithKey<HomeNavKey.SeeAllTvShowsNavKey, TvShowsListModel, SeeAllTvShowsUseCaseLoadParams>(
+    initialState = TvShowsListModel.dummyData(),
 ) {
 
-    val args = getArgs<HomeScreen.SeeAllTvShows>(savedStateHandle)
+
+    fun initialize(key: HomeNavKey.SeeAllTvShowsNavKey) {
+        initializeWithNavArgsHolder(key = key, navArgsHolder = navArgsHolder)
+    }
 
     override fun canLoadMore(current: TvShowsListModel): Boolean =
         current.pageNo < current.totalPages
 
     override fun nextPageParams(current: TvShowsListModel): SeeAllTvShowsUseCaseLoadParams =
         SeeAllTvShowsUseCaseLoadParams(
-            category = args.category,
+            category = key!!.category,
             pageNo = current.pageNo + 1,
-            tvId = args.tvId
+            tvId = key!!.tvId
         )
 
     override suspend fun fetchData(params: SeeAllTvShowsUseCaseLoadParams): TvShowsListModel =
@@ -51,7 +49,6 @@ class SeeAllTvShowsViewModel @Inject constructor(
 
     override fun onCleared() {
         super.onCleared()
-        navArgsHolder.removeArg(args.argId)
+        navArgsHolder.removeArg(key!!.argId)
     }
-
 }

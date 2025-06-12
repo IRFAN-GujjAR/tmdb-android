@@ -1,31 +1,37 @@
 package com.irfangujjar.tmdb.core.viewmodels
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
 import com.irfangujjar.tmdb.core.api.ResultWrapper
 import com.irfangujjar.tmdb.core.api.safeApiCall
+import com.irfangujjar.tmdb.core.navigation.args_holder.HasArgId
 import com.irfangujjar.tmdb.core.navigation.args_holder.NavArgsHolder
-import com.irfangujjar.tmdb.core.navigation.screens.HasArgId
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-abstract class PaginatedViewModel<Data, Params>(
-    initialState: Data
+abstract class PaginatedViewModel<D, P>(
+    initialState: D,
 ) : ViewModelWithErrorAlerts() {
 
-    private val _state: MutableStateFlow<Data> = MutableStateFlow(initialState)
-    val state: StateFlow<Data> get() = _state
+    private val _state: MutableStateFlow<D> = MutableStateFlow(initialState)
+    val state: StateFlow<D> get() = _state
 
     private var isLoadingMore = false
+    protected var isInitialized = false
 
-    protected abstract fun canLoadMore(current: Data): Boolean
-    protected abstract fun nextPageParams(current: Data): Params
-    protected abstract suspend fun fetchData(params: Params): Data
-    protected abstract fun mergeData(old: Data, new: Data): Data
-    protected fun updateStateValue(value: Data) {
+    fun initialize(value: D) {
+        if (!isInitialized) {
+            updateStateValue(value)
+            isInitialized = true
+        }
+    }
+
+    protected abstract fun canLoadMore(current: D): Boolean
+    protected abstract fun nextPageParams(current: D): P
+    protected abstract suspend fun fetchData(params: P): D
+    protected abstract fun mergeData(old: D, new: D): D
+    protected fun updateStateValue(value: D) {
         _state.value = value
     }
 
@@ -47,19 +53,49 @@ abstract class PaginatedViewModel<Data, Params>(
         }
     }
 
+
     companion object {
-
-        inline fun <reified ScreenType : HasArgId> getArgs(
-            savedStateHandle: SavedStateHandle,
-        ): ScreenType = savedStateHandle.toRoute<ScreenType>()
-
-
-        inline fun <DataType, reified ScreenType : HasArgId> getInitialState(
-            savedStateHandle: SavedStateHandle,
+        fun <DataType> getInitialState(
+            argId: String,
             navArgsHolder: NavArgsHolder<DataType>,
         ): DataType? {
-            val argId = getArgs<ScreenType>(savedStateHandle).argId
             return navArgsHolder.getArgData(argsId = argId)
+        }
+    }
+}
+
+abstract class PaginatedViewModelWithKey<K : HasArgId, D, P>(initialState: D) :
+    PaginatedViewModel<D, P>(initialState = initialState) {
+    protected var key: K? = null
+
+
+    protected fun initializeOnlyKey(key: K) {
+        if (!isInitialized) {
+            this.key = key
+            isInitialized = true
+        }
+    }
+
+    protected fun initializeWithInitialState(
+        key: K,
+        initialState: D
+    ) {
+        if (!isInitialized) {
+            this.key = key
+            updateStateValue(initialState)
+            isInitialized = true
+        }
+    }
+
+    protected fun initializeWithNavArgsHolder(
+        key: K,
+        navArgsHolder: NavArgsHolder<D>
+    ) {
+        if (!isInitialized) {
+            this.key = key
+            val initialData = getInitialState(argId = key.argId, navArgsHolder = navArgsHolder)!!
+            updateStateValue(initialData)
+            isInitialized = true
         }
     }
 }

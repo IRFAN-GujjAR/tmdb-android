@@ -47,6 +47,7 @@ fun MoviesScreen(
     onNavigateToSeeAllMovies: (String, MoviesCategory) -> Unit
 ) {
 
+
     Scaffold(topBar = {
         CustomTopAppBar(
             title = "Movies"
@@ -110,6 +111,7 @@ fun MoviesScreen(
         }
 
     }
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
