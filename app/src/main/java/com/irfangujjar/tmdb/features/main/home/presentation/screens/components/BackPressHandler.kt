@@ -1,51 +1,54 @@
 package com.irfangujjar.tmdb.features.main.home.presentation.screens.components
 
-import androidx.compose.runtime.MutableState
-import androidx.navigation3.runtime.NavBackStack
 import com.irfangujjar.tmdb.core.navigation.nav_keys.BottomNavKey
 
 fun onBackStackPressed(
-    currentKey: MutableState<BottomNavKey>,
-    moviesBackStack: NavBackStack,
-    tvShowsBackStack: NavBackStack,
-    celebsBackStack: NavBackStack,
-    searchBackStack: NavBackStack,
-    tmdbBackStack: NavBackStack
+    currentKey: BottomNavKey,
+    tvShowsBackStackSize: Int,
+    celebsBackStackSize: Int,
+    searchBackStackSize: Int,
+    tmdbBackStackSize: Int,
+    onPopMoviesBackStack: () -> Unit,
+    onPopTvShowsBackStack: () -> Unit,
+    onPopCelebsBackStack: () -> Unit,
+    onPopSearchBackStack: () -> Unit,
+    onPopTMDbBackStack: () -> Unit,
+    onSetMoviesScreen: () -> Unit
 ) {
-    when (currentKey.value) {
+    when (currentKey) {
         BottomNavKey.MoviesNavKey -> {
-            moviesBackStack.removeLastOrNull()
+            onPopMoviesBackStack()
         }
 
         BottomNavKey.TVShowsNavKey -> {
-            if (tvShowsBackStack.size > 1)
-                tvShowsBackStack.removeLastOrNull()
+            if (tvShowsBackStackSize > 1)
+                onPopTvShowsBackStack()
             else {
-                currentKey.value = BottomNavKey.MoviesNavKey
+                onSetMoviesScreen()
             }
         }
 
         BottomNavKey.CelebsNavKey -> {
-            if (celebsBackStack.size > 1)
-                celebsBackStack.removeLastOrNull()
+            if (celebsBackStackSize > 1)
+                onPopCelebsBackStack()
             else {
-                currentKey.value = BottomNavKey.MoviesNavKey
+                onSetMoviesScreen()
             }
         }
 
         BottomNavKey.SearchNavKey -> {
-            if (searchBackStack.size > 1)
-                searchBackStack.removeLastOrNull()
+            if (searchBackStackSize > 1)
+                onPopSearchBackStack()
             else {
-                currentKey.value = BottomNavKey.MoviesNavKey
+                onSetMoviesScreen()
             }
         }
 
         BottomNavKey.TMDBNavKey -> {
-            if (tmdbBackStack.size > 1)
-                tmdbBackStack.removeLastOrNull()
+            if (tmdbBackStackSize > 1)
+                onPopTMDbBackStack()
             else {
-                currentKey.value = BottomNavKey.MoviesNavKey
+                onSetMoviesScreen()
             }
         }
     }
