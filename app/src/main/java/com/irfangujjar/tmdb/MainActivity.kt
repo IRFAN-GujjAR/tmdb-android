@@ -15,7 +15,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation3.runtime.entry
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
@@ -57,19 +56,9 @@ class MainActivity : ComponentActivity() {
                 val userTheme = userThemeViewModel.userTheme.collectAsState()
                 val userThemeValue = userTheme.value ?: appStartupViewModel.userTheme.value
 
-                val navController = rememberNavController()
-
                 val isAppStartedFirstTime = appStartupViewModel.isAppStartedFirstTime.value
 
                 TMDbTheme(userTheme = userThemeValue) {
-//                    AppNavGraph(
-//                        navController = navController,
-//                        startDestination = if (isAppStartedFirstTime)
-//                            AppScreen.Login else
-//                            AppScreen.Main,
-//                        isAppStartedFirstTime = isAppStartedFirstTime,
-//                        userTheme = userThemeValue
-//                    )
                     RootNavDisplay(
                         isAppStartedFirstTime = isAppStartedFirstTime,
                         userTheme = userThemeValue
