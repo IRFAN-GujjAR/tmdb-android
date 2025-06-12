@@ -43,7 +43,7 @@ fun onBackStackPressed(
 
         BottomNavKey.TMDBNavKey -> {
             if (tmdbBackStack.size > 1)
-                tvShowsBackStack.removeLastOrNull()
+                tmdbBackStack.removeLastOrNull()
             else {
                 currentKey.value = BottomNavKey.MoviesNavKey
             }
