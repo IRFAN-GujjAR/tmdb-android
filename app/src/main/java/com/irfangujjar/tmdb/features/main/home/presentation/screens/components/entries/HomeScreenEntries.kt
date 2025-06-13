@@ -8,9 +8,6 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entry
 import com.irfangujjar.tmdb.core.navigation.nav_keys.HomeNavKey
 import com.irfangujjar.tmdb.core.ui.theme.UserTheme
-import com.irfangujjar.tmdb.core.ui.util.CelebsCategory
-import com.irfangujjar.tmdb.core.ui.util.MoviesCategory
-import com.irfangujjar.tmdb.core.ui.util.TvShowsCategory
 import com.irfangujjar.tmdb.features.login.presentation.screens.LoginScreen
 import com.irfangujjar.tmdb.features.main.celebs.sub_features.see_all.presentation.screens.SeeAllCelebsScreen
 import com.irfangujjar.tmdb.features.main.movies.sub_features.see_all.presentation.screens.SeeAllMoviesScreen
@@ -21,9 +18,9 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
     outerPadding: PaddingValues,
     userTheme: UserTheme,
     snackBarHostState: SnackbarHostState,
-    onNavigateToSeeAllMovies: (key: NavKey, argId: String, movieId: Int?, category: MoviesCategory) -> Unit,
-    onNavigateToSeeAllTvShows: (key: NavKey, argId: String, tvId: Int?, category: TvShowsCategory) -> Unit,
-    onNavigateToSeeAllCelebs: (key: NavKey, argId: String, category: CelebsCategory) -> Unit,
+    onNavigateToSeeAllMovies: (HomeNavKey.SeeAllMoviesNavKey) -> Unit,
+    onNavigateToSeeAllTvShows: (HomeNavKey.SeeAllTvShowsNavKey) -> Unit,
+    onNavigateToSeeAllCelebs: (HomeNavKey.SeeAllCelebsNavKey) -> Unit,
     onNavigateToLogin: () -> Unit,
     onBackPressed: () -> Unit
 ) {
@@ -31,12 +28,8 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
         outerPadding = outerPadding,
         userTheme = userTheme,
         snackBarHostState = snackBarHostState,
-        onNavigateToSeeAllMovies = { key, argId, category ->
-            onNavigateToSeeAllMovies(key, argId, null, category)
-        },
-        onNavigateToSeeAllTvShows = { key, argId, category ->
-            onNavigateToSeeAllTvShows(key, argId, null, category)
-        },
+        onNavigateToSeeAllMovies = onNavigateToSeeAllMovies,
+        onNavigateToSeeAllTvShows = onNavigateToSeeAllTvShows,
         onNavigateToSeeCelebs = onNavigateToSeeAllCelebs,
         onNavigateToLogin = onNavigateToLogin
     )

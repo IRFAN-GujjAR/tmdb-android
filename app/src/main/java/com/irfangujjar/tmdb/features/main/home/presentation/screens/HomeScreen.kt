@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
+import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
@@ -36,6 +37,7 @@ fun HomeScreen(
     val celebsBackStack = rememberNavBackStack(BottomNavKey.CelebsNavKey)
     val searchBackStack = rememberNavBackStack(BottomNavKey.SearchNavKey)
     val tmdbBackStack = rememberNavBackStack(BottomNavKey.TMDBNavKey)
+
     val currentBackStack = when (currentKey.value) {
         BottomNavKey.MoviesNavKey -> moviesBackStack
         BottomNavKey.TVShowsNavKey -> tvShowsBackStack
@@ -43,7 +45,6 @@ fun HomeScreen(
         BottomNavKey.SearchNavKey -> searchBackStack
         BottomNavKey.TMDBNavKey -> tmdbBackStack
     }
-
     val addToBackStack: (NavKey) -> Unit = { key ->
         when (currentKey.value) {
             BottomNavKey.CelebsNavKey -> celebsBackStack.add(key)
@@ -53,7 +54,6 @@ fun HomeScreen(
             BottomNavKey.TVShowsNavKey -> tvShowsBackStack.add(key)
         }
     }
-
     val handleBackPressed: () -> Unit = {
         onBackStackPressed(
             currentKey = currentKey.value,
@@ -71,6 +71,10 @@ fun HomeScreen(
             }
         )
     }
+    val resetBackStack: (NavBackStack) -> Unit = {
+        if (it.size > 1)
+            it.removeRange(1, it.size)
+    }
 
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
@@ -79,7 +83,25 @@ fun HomeScreen(
                 currentKey = currentKey.value,
                 currentTopKey = currentBackStack.last(),
                 onBottomNavItemClicked = {
-                    currentKey.value = it
+                    if (currentKey.value != it)
+                        currentKey.value = it
+                    else
+                        when (it) {
+                            BottomNavKey.MoviesNavKey ->
+                                resetBackStack(moviesBackStack)
+
+                            BottomNavKey.TVShowsNavKey ->
+                                resetBackStack(tvShowsBackStack)
+
+                            BottomNavKey.CelebsNavKey ->
+                                resetBackStack(celebsBackStack)
+
+                            BottomNavKey.SearchNavKey ->
+                                resetBackStack(searchBackStack)
+
+                            BottomNavKey.TMDBNavKey ->
+                                resetBackStack(tmdbBackStack)
+                        }
                 })
         }
     ) { outerPadding ->
@@ -95,38 +117,11 @@ fun HomeScreen(
                     outerPadding = outerPadding,
                     userTheme = userTheme,
                     snackBarHostState = snackBarHostState,
-                    onBackPressed = {
-                        handleBackPressed()
-                    },
-                    onNavigateToSeeAllMovies = { key, argId, movieId, category ->
-                        addToBackStack(
-                            HomeNavKey.SeeAllMoviesNavKey(
-                                argId = argId,
-                                movieId = movieId,
-                                category = category
-                            )
-                        )
-                    },
-                    onNavigateToSeeAllTvShows = { key, argId, tvId, category ->
-                        addToBackStack(
-                            HomeNavKey.SeeAllTvShowsNavKey(
-                                argId = argId,
-                                tvId = tvId,
-                                category = category
-                            )
-                        )
-                    },
-                    onNavigateToSeeAllCelebs = { key, argId, category ->
-                        addToBackStack(
-                            HomeNavKey.SeeAllCelebsNavKey(
-                                argId = argId,
-                                category = category
-                            )
-                        )
-                    },
-                    onNavigateToLogin = {
-                        addToBackStack(HomeNavKey.LoginNavKey)
-                    }
+                    onBackPressed = { handleBackPressed() },
+                    onNavigateToSeeAllMovies = { addToBackStack(it) },
+                    onNavigateToSeeAllTvShows = { addToBackStack(it) },
+                    onNavigateToSeeAllCelebs = { addToBackStack(it) },
+                    onNavigateToLogin = { addToBackStack(HomeNavKey.LoginNavKey) }
                 )
             }
         )

@@ -7,10 +7,8 @@ import androidx.navigation3.runtime.EntryProviderBuilder
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entry
 import com.irfangujjar.tmdb.core.navigation.nav_keys.BottomNavKey
+import com.irfangujjar.tmdb.core.navigation.nav_keys.HomeNavKey
 import com.irfangujjar.tmdb.core.ui.theme.UserTheme
-import com.irfangujjar.tmdb.core.ui.util.CelebsCategory
-import com.irfangujjar.tmdb.core.ui.util.MoviesCategory
-import com.irfangujjar.tmdb.core.ui.util.TvShowsCategory
 import com.irfangujjar.tmdb.features.main.celebs.presentation.screens.CelebsScreen
 import com.irfangujjar.tmdb.features.main.movies.presentation.screens.MoviesScreen
 import com.irfangujjar.tmdb.features.main.search.presentation.screens.SearchScreen
@@ -22,9 +20,9 @@ fun EntryProviderBuilder<NavKey>.BottomNavEntries(
     outerPadding: PaddingValues,
     userTheme: UserTheme,
     snackBarHostState: SnackbarHostState,
-    onNavigateToSeeAllMovies: (key: BottomNavKey, argId: String, category: MoviesCategory) -> Unit,
-    onNavigateToSeeAllTvShows: (key: BottomNavKey, argId: String, category: TvShowsCategory) -> Unit,
-    onNavigateToSeeCelebs: (key: BottomNavKey, argId: String, category: CelebsCategory) -> Unit,
+    onNavigateToSeeAllMovies: (HomeNavKey.SeeAllMoviesNavKey) -> Unit,
+    onNavigateToSeeAllTvShows: (HomeNavKey.SeeAllTvShowsNavKey) -> Unit,
+    onNavigateToSeeCelebs: (HomeNavKey.SeeAllCelebsNavKey) -> Unit,
     onNavigateToLogin: () -> Unit
 ) {
     BottomNavKey.items.forEach { bottomNavKey ->
@@ -35,14 +33,13 @@ fun EntryProviderBuilder<NavKey>.BottomNavEntries(
                     userTheme = userTheme,
                     snackbarHostState = snackBarHostState,
                     onNavigateToSeeAllMovies = { argId, category ->
-                        onNavigateToSeeAllMovies(it, argId, category)
-//                        moviesBackStack.add(
-//                            HomeNavKey.SeeAllMoviesNavKey(
-//                                argId = argId,
-//                                category = category,
-//                                movieId = null
-//                            )
-//                        )
+                        onNavigateToSeeAllMovies(
+                            HomeNavKey.SeeAllMoviesNavKey(
+                                argId = argId,
+                                category = category,
+                                movieId = null
+                            )
+                        )
                     }
                 )
             }
@@ -53,15 +50,13 @@ fun EntryProviderBuilder<NavKey>.BottomNavEntries(
                     userTheme = userTheme,
                     snackbarHostState = snackBarHostState,
                     onNavigateToSeeAllTvShows = { argId, category ->
-                        onNavigateToSeeAllTvShows(it, argId, category)
-//                        tvShowsBackStack.add(
-//                            HomeNavKey.SeeAllTvShowsNavKey(
-//                                argId = argId,
-//                                category = category,
-//                                tvId = null
-//                            )
-//                        )
-
+                        onNavigateToSeeAllTvShows(
+                            HomeNavKey.SeeAllTvShowsNavKey(
+                                argId = argId,
+                                category = category,
+                                tvId = null
+                            )
+                        )
                     }
                 )
             }
@@ -72,13 +67,12 @@ fun EntryProviderBuilder<NavKey>.BottomNavEntries(
                     userTheme = userTheme,
                     snackbarHostState = snackBarHostState,
                     onNavigateToSeeAllCelebs = { argId, category ->
-                        onNavigateToSeeCelebs(it, argId, category)
-//                        celebsBackStack.add(
-//                            HomeNavKey.SeeAllCelebsNavKey(
-//                                argId = argId,
-//                                category = category
-//                            )
-//                        )
+                        onNavigateToSeeCelebs(
+                            HomeNavKey.SeeAllCelebsNavKey(
+                                argId = argId,
+                                category = category
+                            )
+                        )
                     },
                 )
             }
