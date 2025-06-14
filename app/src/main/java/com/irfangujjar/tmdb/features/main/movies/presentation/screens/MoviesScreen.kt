@@ -185,7 +185,7 @@ private fun MoviesScreenBody(
                         MoviesCategory.Popular
                     ),
                 ),
-                title = MoviesCategory.Popular.name,
+                title = MoviesCategory.Popular.title,
                 onSeeAllClick = {
                     onNavigateToSeeAllMovies(MoviesCategory.Popular)
                 },
@@ -204,7 +204,7 @@ private fun MoviesScreenBody(
                         MoviesCategory.InTheatres
                     ),
                 ),
-                title = MoviesCategory.InTheatres.name,
+                title = MoviesCategory.InTheatres.title,
                 onSeeAllClick = {
                     onNavigateToSeeAllMovies(MoviesCategory.InTheatres)
                 },
@@ -224,7 +224,7 @@ private fun MoviesScreenBody(
                         MoviesCategory.Trending
                     ),
                 ),
-                title = MoviesCategory.Trending.name,
+                title = MoviesCategory.Trending.title,
                 onSeeAllClick = {
                     onNavigateToSeeAllMovies(MoviesCategory.Trending)
                 },
@@ -252,7 +252,7 @@ private fun MoviesScreenBody(
                     isLandscape = false,
                     configValues = MediaItemsHorizontalListConfigValues.movieConfig(MoviesCategory.Upcoming)
                 ),
-                title = MoviesCategory.Upcoming.name,
+                title = MoviesCategory.Upcoming.title,
                 onSeeAllClick = {
                     onNavigateToSeeAllMovies(MoviesCategory.Upcoming)
                 },

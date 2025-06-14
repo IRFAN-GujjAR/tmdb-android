@@ -3,14 +3,14 @@ package com.irfangujjar.tmdb.core.ui.util
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.platform.SoftwareKeyboardController
 
-enum class MediaType(value: String) {
+enum class MediaType(val title: String) {
     Movie("movie"),
     TvShow("tv");
 
     companion object {
         fun getFromString(value: String): MediaType {
             val movieEntry = entries.first()
-            return if (movieEntry.name == value)
+            return if (movieEntry.title == value)
                 Movie
             else TvShow
         }
@@ -20,18 +20,18 @@ enum class MediaType(value: String) {
 fun MediaType.isMovie() = this == MediaType.Movie
 fun MediaType.imageType() = if (this.isMovie()) MediaImageType.Movie else MediaImageType.TvShow
 
-enum class MoviesCategory(name: String) {
+enum class MoviesCategory(val title: String) {
     Popular("Popular"),
     InTheatres("Playing In Theatres"),
     Trending("Trending"),
     TopRated("Top Rated"),
     Upcoming("Upcoming"),
     DetailsRecommended("Recommended"),
-    DetailsSimilar("Similar"),
+    DetailsSimilar("Similar");
 }
 
 
-enum class TvShowsCategory(name: String) {
+enum class TvShowsCategory(val title: String) {
     AiringToday("Airing Today"),
     Trending("Trending"),
     TopRated("Top Rated"),
@@ -40,7 +40,7 @@ enum class TvShowsCategory(name: String) {
     DetailsSimilar("Similar"),
 }
 
-enum class CelebsCategory(name: String) {
+enum class CelebsCategory(val title: String) {
     Popular("Popular"),
     Trending("Trending")
 }

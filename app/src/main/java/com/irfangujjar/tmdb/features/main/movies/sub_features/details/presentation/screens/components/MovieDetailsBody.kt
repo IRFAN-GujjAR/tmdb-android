@@ -10,12 +10,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.irfangujjar.tmdb.core.navigation.nav_keys.HomeNavKey
 import com.irfangujjar.tmdb.core.ui.ScreenPadding
+import com.irfangujjar.tmdb.core.ui.components.CustomDivider
+import com.irfangujjar.tmdb.core.ui.components.DividerTopPadding
 import com.irfangujjar.tmdb.core.ui.components.details.DetailsBackdropComp
 import com.irfangujjar.tmdb.core.ui.components.details.DetailsCastCrewItemsComp
 import com.irfangujjar.tmdb.core.ui.components.details.YoutubeVideosComp
+import com.irfangujjar.tmdb.core.ui.components.list.MediaItemsHorizontalList
+import com.irfangujjar.tmdb.core.ui.components.list.values.MediaItemsHorizontalListConfigValues
+import com.irfangujjar.tmdb.core.ui.components.list.values.MediaItemsHorizontalListValues
 import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
 import com.irfangujjar.tmdb.core.ui.util.MediaType
+import com.irfangujjar.tmdb.core.ui.util.MoviesCategory
 import com.irfangujjar.tmdb.features.main.movies.sub_features.details.domain.models.MovieDetailsModel
 
 
@@ -24,7 +31,8 @@ fun MovieDetailsBody(
     preview: Boolean,
     outerPadding: PaddingValues,
     innerPadding: PaddingValues,
-    movieDetails: MovieDetailsModel
+    movieDetails: MovieDetailsModel,
+    onNavigateToSeeAllMovies: (HomeNavKey.SeeAllMoviesNavKey) -> Unit
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -71,6 +79,40 @@ fun MovieDetailsBody(
                 preview = preview,
                 videos = movieDetails.videos
             )
+        if (movieDetails.recommendedMovies != null) {
+            CustomDivider(topPadding = DividerTopPadding.Double)
+            MediaItemsHorizontalList(
+                preview = preview,
+                values = MediaItemsHorizontalListValues.fromMovies(
+                    movies = movieDetails.recommendedMovies.movies,
+                    isLandscape = false,
+                    configValues = MediaItemsHorizontalListConfigValues.movieConfig(
+                        category = MoviesCategory.DetailsRecommended
+                    )
+                ),
+                title = MoviesCategory.DetailsRecommended.name,
+                onSeeAllClick = {},
+                onItemTapped = { id, title, posterPath, backdropPath ->
+                }
+            )
+        }
+        if (movieDetails.similarMovies != null) {
+            CustomDivider(topPadding = DividerTopPadding.Double)
+            MediaItemsHorizontalList(
+                preview = preview,
+                values = MediaItemsHorizontalListValues.fromMovies(
+                    movies = movieDetails.similarMovies.movies,
+                    isLandscape = false,
+                    configValues = MediaItemsHorizontalListConfigValues.movieConfig(
+                        category = MoviesCategory.DetailsSimilar
+                    )
+                ),
+                title = MoviesCategory.DetailsSimilar.title,
+                onSeeAllClick = {},
+                onItemTapped = { id, title, posterPath, backdropPath ->
+                }
+            )
+        }
     }
 }
 
@@ -83,7 +125,10 @@ private fun MovieDetailsBodyPreview() {
                 preview = true,
                 outerPadding = PaddingValues(0.dp),
                 innerPadding = PaddingValues(0.dp),
-                movieDetails = MovieDetailsModel.dummyData()
+                movieDetails = MovieDetailsModel.dummyData(),
+                onNavigateToSeeAllMovies = {
+                    
+                }
             )
         }
     }

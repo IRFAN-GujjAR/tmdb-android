@@ -1,9 +1,13 @@
 package com.irfangujjar.tmdb.features.main.celebs.presentation.screens.components
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.irfangujjar.tmdb.core.ui.components.list.CelebItemsHorizontalList
 import com.irfangujjar.tmdb.core.ui.components.list.values.CelebItemHorizontalConfigValues
 import com.irfangujjar.tmdb.core.ui.components.list.values.CelebItemsHorizontalListValues
@@ -33,6 +37,7 @@ fun PopularCelebs(
             title = "Popular",
             onSeeAllClick = onSeeAllClick
         )
+        Spacer(modifier = Modifier.height(8.dp))
         CelebItemsHorizontalList(
             preview = preview,
             values = CelebItemsHorizontalListValues.fromListValues(
