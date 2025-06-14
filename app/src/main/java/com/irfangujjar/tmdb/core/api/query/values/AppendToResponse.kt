@@ -8,3 +8,13 @@ enum class APIQueryFieldValuesMovieTvShowAppendToResponse(name: String) {
     SIMILAR("similar"),
     ALL("credits%2Cimages%2Cvideos%2Crecommendations%2Csimilar"),
 }
+
+object APIQueryFieldValuesMovieTvShowAppendToResponseConstants {
+    const val CREDITS = "credits"
+    const val IMAGES = "images"
+    const val VIDEOS = "videos"
+    const val RECOMMENDATIONS = "recommendations"
+    const val SIMILAR = "similar"
+    const val ALL = "credits%2Cimages%2Cvideos%2Crecommendations%2Csimilar"
+
+}

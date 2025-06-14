@@ -161,9 +161,10 @@ private fun TvShowsScreenBody(
                     ),
                 ),
                 title = TvShowsCategory.AiringToday.name,
-            ) {
-                onNavigateToSeeAllMovies(TvShowsCategory.AiringToday)
-            }
+                onSeeAllClick = {
+                    onNavigateToSeeAllMovies(TvShowsCategory.AiringToday)
+                }
+            )
             CustomDivider(topPadding = DividerTopPadding.Double)
             MediaItemsHorizontalList(
                 preview = preview,
@@ -177,10 +178,11 @@ private fun TvShowsScreenBody(
                         TvShowsCategory.Trending
                     ),
                 ),
-                title = TvShowsCategory.Trending.name
-            ) {
-                onNavigateToSeeAllMovies(TvShowsCategory.Trending)
-            }
+                title = TvShowsCategory.Trending.name,
+                onSeeAllClick = {
+                    onNavigateToSeeAllMovies(TvShowsCategory.Trending)
+                }
+            )
             CustomDivider()
             MediaItemsHorizontalTopRatedList(
                 preview = preview,
@@ -204,10 +206,11 @@ private fun TvShowsScreenBody(
                     isLandscape = false,
                     configValues = MediaItemsHorizontalListConfigValues.tvConfig(TvShowsCategory.Popular)
                 ),
-                title = TvShowsCategory.Popular.name
-            ) {
-                onNavigateToSeeAllMovies(TvShowsCategory.Popular)
-            }
+                title = TvShowsCategory.Popular.name,
+                onSeeAllClick = {
+                    onNavigateToSeeAllMovies(TvShowsCategory.Popular)
+                }
+            )
         }
     }
 

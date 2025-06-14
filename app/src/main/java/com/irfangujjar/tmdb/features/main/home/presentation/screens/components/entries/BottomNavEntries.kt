@@ -23,6 +23,7 @@ fun EntryProviderBuilder<NavKey>.BottomNavEntries(
     onNavigateToSeeAllMovies: (HomeNavKey.SeeAllMoviesNavKey) -> Unit,
     onNavigateToSeeAllTvShows: (HomeNavKey.SeeAllTvShowsNavKey) -> Unit,
     onNavigateToSeeCelebs: (HomeNavKey.SeeAllCelebsNavKey) -> Unit,
+    onNavigateToMovieDetails: (HomeNavKey.MovieDetailsNavKey) -> Unit,
     onNavigateToLogin: () -> Unit
 ) {
     BottomNavKey.items.forEach { bottomNavKey ->
@@ -40,7 +41,8 @@ fun EntryProviderBuilder<NavKey>.BottomNavEntries(
                                 movieId = null
                             )
                         )
-                    }
+                    },
+                    onNavigateToMovieDetails = onNavigateToMovieDetails
                 )
             }
 

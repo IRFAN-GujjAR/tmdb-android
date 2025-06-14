@@ -1,5 +1,6 @@
 package com.irfangujjar.tmdb.core.ui.components.list
 
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -30,10 +32,23 @@ import com.irfangujjar.tmdb.core.ui.util.isMovie
 
 
 @Composable
-fun MediaItemHorizontal(preview: Boolean = false, values: MediaItemHorizontalValues) {
+fun MediaItemHorizontal(
+    preview: Boolean = false, values: MediaItemHorizontalValues,
+    onItemTapped: (Int, String, String?, String?) -> Unit
+) {
     Box(
         modifier = Modifier
             .width(values.configValues.listItemWidth)
+            .pointerInput(Unit) {
+                detectTapGestures(onTap = {
+                    onItemTapped(
+                        values.mediaId,
+                        values.mediaTitle,
+                        values.posterPath,
+                        values.backdropPath
+                    )
+                })
+            }
     ) {
         Column(horizontalAlignment = Alignment.Start) {
             Box(
@@ -64,16 +79,16 @@ fun MediaItemHorizontal(preview: Boolean = false, values: MediaItemHorizontalVal
                 modifier = Modifier.padding(top = 2.dp, start = 1.dp),
             )
             if (!values.mediaGenre.isNullOrEmpty())
-            Text(
-                text = if (values.mediaType.isMovie()) getMovieGenres(values.mediaGenre)
-                else getTvShowsGenres(values.mediaGenre),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                fontSize = if (values.isLandscape) 12.sp else 11.sp,
-                textAlign = TextAlign.Start,
-                color = Color.Gray,
-                modifier = Modifier.padding(start = 1.dp),
-            )
+                Text(
+                    text = if (values.mediaType.isMovie()) getMovieGenres(values.mediaGenre)
+                    else getTvShowsGenres(values.mediaGenre),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    fontSize = if (values.isLandscape) 12.sp else 11.sp,
+                    textAlign = TextAlign.Start,
+                    color = Color.Gray,
+                    modifier = Modifier.padding(start = 1.dp),
+                )
         }
     }
 }
@@ -89,7 +104,8 @@ private fun MediaItemHorizontalPreview() {
                     category =
                         MoviesCategory.Popular,
                     isLandscape = false
-                )
+                ),
+                onItemTapped = { _, _, _, _ -> }
             )
         }
     }

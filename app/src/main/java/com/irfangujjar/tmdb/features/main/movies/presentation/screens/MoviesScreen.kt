@@ -17,6 +17,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.irfangujjar.tmdb.core.navigation.nav_keys.HomeNavKey
 import com.irfangujjar.tmdb.core.ui.ScreenPadding
 import com.irfangujjar.tmdb.core.ui.components.CustomDivider
 import com.irfangujjar.tmdb.core.ui.components.CustomError
@@ -44,7 +45,8 @@ fun MoviesScreen(
     viewModel: MoviesViewModel = hiltViewModel(),
     userTheme: UserTheme,
     snackbarHostState: SnackbarHostState?,
-    onNavigateToSeeAllMovies: (String, MoviesCategory) -> Unit
+    onNavigateToSeeAllMovies: (String, MoviesCategory) -> Unit,
+    onNavigateToMovieDetails: (HomeNavKey.MovieDetailsNavKey) -> Unit
 ) {
 
 
@@ -86,6 +88,16 @@ fun MoviesScreen(
                                 movies = state.movies
                             )
                             onNavigateToSeeAllMovies(argId, it)
+                        },
+                        onItemTapped = { id, title, posterPath, backdropPath ->
+                            onNavigateToMovieDetails(
+                                HomeNavKey.MovieDetailsNavKey(
+                                    movieId = id,
+                                    title = title,
+                                    posterPath = posterPath,
+                                    backdropPath = backdropPath
+                                )
+                            )
                         }
                     )
                 }
@@ -103,6 +115,16 @@ fun MoviesScreen(
                             movies = state.movies
                         )
                         onNavigateToSeeAllMovies(argId, it)
+                    },
+                    onItemTapped = { id, title, posterPath, backdropPath ->
+                        onNavigateToMovieDetails(
+                            HomeNavKey.MovieDetailsNavKey(
+                                movieId = id,
+                                title = title,
+                                posterPath = posterPath,
+                                backdropPath = backdropPath
+                            )
+                        )
                     }
                 )
 
@@ -123,7 +145,8 @@ private fun MoviesScreenBody(
     movies: MoviesModel,
     isRefreshing: Boolean,
     onRefresh: () -> Unit,
-    onNavigateToSeeAllMovies: (MoviesCategory) -> Unit
+    onNavigateToSeeAllMovies: (MoviesCategory) -> Unit,
+    onItemTapped: (Int, String, String?, String?) -> Unit
 ) {
     val scrollState = rememberScrollState()
     PullToRefreshBox(
@@ -163,9 +186,11 @@ private fun MoviesScreenBody(
                     ),
                 ),
                 title = MoviesCategory.Popular.name,
-            ) {
-                onNavigateToSeeAllMovies(MoviesCategory.Popular)
-            }
+                onSeeAllClick = {
+                    onNavigateToSeeAllMovies(MoviesCategory.Popular)
+                },
+                onItemTapped = onItemTapped
+            )
             CustomDivider(topPadding = DividerTopPadding.Double)
             MediaItemsHorizontalList(
                 preview = preview,
@@ -179,10 +204,12 @@ private fun MoviesScreenBody(
                         MoviesCategory.InTheatres
                     ),
                 ),
-                title = MoviesCategory.InTheatres.name
-            ) {
-                onNavigateToSeeAllMovies(MoviesCategory.InTheatres)
-            }
+                title = MoviesCategory.InTheatres.name,
+                onSeeAllClick = {
+                    onNavigateToSeeAllMovies(MoviesCategory.InTheatres)
+                },
+                onItemTapped = onItemTapped
+            )
             CustomDivider(topPadding = DividerTopPadding.Double)
             MediaItemsHorizontalList(
                 preview = preview,
@@ -197,10 +224,12 @@ private fun MoviesScreenBody(
                         MoviesCategory.Trending
                     ),
                 ),
-                title = MoviesCategory.Trending.name
-            ) {
-                onNavigateToSeeAllMovies(MoviesCategory.Trending)
-            }
+                title = MoviesCategory.Trending.name,
+                onSeeAllClick = {
+                    onNavigateToSeeAllMovies(MoviesCategory.Trending)
+                },
+                onItemTapped = onItemTapped
+            )
             CustomDivider(topPadding = DividerTopPadding.Double)
             MediaItemsHorizontalTopRatedList(
                 preview = preview,
@@ -223,10 +252,12 @@ private fun MoviesScreenBody(
                     isLandscape = false,
                     configValues = MediaItemsHorizontalListConfigValues.movieConfig(MoviesCategory.Upcoming)
                 ),
-                title = MoviesCategory.Upcoming.name
-            ) {
-                onNavigateToSeeAllMovies(MoviesCategory.Upcoming)
-            }
+                title = MoviesCategory.Upcoming.name,
+                onSeeAllClick = {
+                    onNavigateToSeeAllMovies(MoviesCategory.Upcoming)
+                },
+                onItemTapped = onItemTapped
+            )
         }
     }
 
@@ -254,7 +285,8 @@ private fun PreviewMovieScreen() {
                 onRefresh = {},
                 onNavigateToSeeAllMovies = {
 
-                }
+                },
+                onItemTapped = { _, _, _, _ -> }
             )
         }
     }

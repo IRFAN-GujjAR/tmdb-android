@@ -3,8 +3,11 @@ package com.irfangujjar.tmdb.core.ui.components.image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -60,7 +63,12 @@ fun CustomNetworkImage(
         )
     } else {
         var modifier = Modifier
-            .size(width = width, height = height)
+            .height(height = height)
+        modifier = if (width == 0.dp) {
+            modifier.fillMaxWidth()
+        } else {
+            modifier.width(width = width)
+        }
         if (movieTvBorderDecoration) {
             modifier = modifier.border(
                 width = 0.5.dp, color = Color.Gray,
@@ -162,7 +170,7 @@ private fun NetworkImage(
     preview: Boolean = false,
     imagePath: String,
     contentScale: ContentScale = ContentScale.Crop,
-    isLandscape: Boolean=false,
+    isLandscape: Boolean = false,
     posterSize: PosterSizes = PosterSizes.w185,
     backdropSizes: BackdropSizes = BackdropSizes.w300,
     profileSize: ProfileSizes = ProfileSizes.w92
@@ -186,7 +194,7 @@ private fun NetworkImage(
 
 private fun dummyPreviewImage(
     mediaImageType: MediaImageType,
-    isLandscape: Boolean=false,
+    isLandscape: Boolean = false,
     backdropSizes: BackdropSizes,
     posterSize: PosterSizes,
     profileSize: ProfileSizes

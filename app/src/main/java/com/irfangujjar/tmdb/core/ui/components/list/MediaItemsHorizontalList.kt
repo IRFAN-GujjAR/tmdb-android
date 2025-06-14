@@ -22,7 +22,8 @@ import com.irfangujjar.tmdb.core.ui.util.MoviesCategory
 fun MediaItemsHorizontalList(
     preview: Boolean = false, values: MediaItemsHorizontalListValues,
     title: String,
-    onSeeAllClick: () -> Unit
+    onSeeAllClick: () -> Unit,
+    onItemTapped:(Int, String, String?, String?)->Unit = { _, _, _, _ -> }
 ) {
     Column {
         TextRow(title = title, onSeeAllClick = onSeeAllClick)
@@ -42,7 +43,8 @@ fun MediaItemsHorizontalList(
                     values = MediaItemHorizontalValues.fromListValues(
                         listValues = values,
                         index = index,
-                    )
+                    ),
+                    onItemTapped = onItemTapped
                 )
             }
         }
@@ -61,7 +63,9 @@ private fun MediaItemsHorizontalPreview() {
                     isLandscape = false
                 ),
                 title = MoviesCategory.Popular.name,
-            ) {}
+                onSeeAllClick = {},
+                onItemTapped = { _, _, _, _ -> }
+            )
         }
     }
 }

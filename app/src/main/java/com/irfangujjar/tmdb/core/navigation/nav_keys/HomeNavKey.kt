@@ -10,10 +10,20 @@ import kotlinx.serialization.Serializable
 
 sealed interface HomeNavKey : NavKey {
     @Serializable
-    data object MovieDetailsNavKey : HomeNavKey
+    data class MovieDetailsNavKey(
+        val movieId: Int,
+        val title: String,
+        val posterPath: String?,
+        val backdropPath: String?
+    ) : HomeNavKey
 
     @Serializable
-    data object TvShowDetailsNavKey : HomeNavKey
+    data class TvShowDetailsNavKey(
+        val tvId: Int,
+        val name: String,
+        val posterPath: String?,
+        val backdropPath: String?
+    ) : HomeNavKey
 
     @Serializable
     data object CelebDetailsNavKey : HomeNavKey

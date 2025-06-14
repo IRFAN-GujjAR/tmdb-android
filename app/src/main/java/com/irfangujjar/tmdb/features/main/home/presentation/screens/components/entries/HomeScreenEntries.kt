@@ -10,6 +10,7 @@ import com.irfangujjar.tmdb.core.navigation.nav_keys.HomeNavKey
 import com.irfangujjar.tmdb.core.ui.theme.UserTheme
 import com.irfangujjar.tmdb.features.login.presentation.screens.LoginScreen
 import com.irfangujjar.tmdb.features.main.celebs.sub_features.see_all.presentation.screens.SeeAllCelebsScreen
+import com.irfangujjar.tmdb.features.main.movies.sub_features.details.presentation.screens.MovieDetailsScreen
 import com.irfangujjar.tmdb.features.main.movies.sub_features.see_all.presentation.screens.SeeAllMoviesScreen
 import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.see_all.presentation.screens.SeeAllTvShowsScreen
 
@@ -21,6 +22,7 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
     onNavigateToSeeAllMovies: (HomeNavKey.SeeAllMoviesNavKey) -> Unit,
     onNavigateToSeeAllTvShows: (HomeNavKey.SeeAllTvShowsNavKey) -> Unit,
     onNavigateToSeeAllCelebs: (HomeNavKey.SeeAllCelebsNavKey) -> Unit,
+    onNavigateToMovieDetails: (HomeNavKey.MovieDetailsNavKey) -> Unit,
     onNavigateToLogin: () -> Unit,
     onBackPressed: () -> Unit
 ) {
@@ -31,7 +33,8 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
         onNavigateToSeeAllMovies = onNavigateToSeeAllMovies,
         onNavigateToSeeAllTvShows = onNavigateToSeeAllTvShows,
         onNavigateToSeeCelebs = onNavigateToSeeAllCelebs,
-        onNavigateToLogin = onNavigateToLogin
+        onNavigateToLogin = onNavigateToLogin,
+        onNavigateToMovieDetails = onNavigateToMovieDetails
     )
     entry<HomeNavKey.SeeAllMoviesNavKey> {
         SeeAllMoviesScreen(
@@ -56,6 +59,15 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
             snackbarHostState = snackBarHostState,
             key = it,
             onBackStackPressed = onBackPressed
+        )
+    }
+
+    entry<HomeNavKey.MovieDetailsNavKey> {
+        MovieDetailsScreen(
+            outerPadding = outerPadding,
+            userTheme = userTheme,
+            key = it,
+            onBackStackPressed = onBackPressed,
         )
     }
 
