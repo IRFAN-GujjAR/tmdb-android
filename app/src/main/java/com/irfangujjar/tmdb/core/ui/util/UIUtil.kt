@@ -2,7 +2,6 @@ package com.irfangujjar.tmdb.core.ui.util
 
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.platform.SoftwareKeyboardController
-import kotlinx.serialization.Serializable
 
 enum class MediaType(value: String) {
     Movie("movie"),
@@ -21,7 +20,6 @@ enum class MediaType(value: String) {
 fun MediaType.isMovie() = this == MediaType.Movie
 fun MediaType.imageType() = if (this.isMovie()) MediaImageType.Movie else MediaImageType.TvShow
 
-@Serializable
 enum class MoviesCategory(name: String) {
     Popular("Popular"),
     InTheatres("Playing In Theatres"),
@@ -31,35 +29,6 @@ enum class MoviesCategory(name: String) {
     DetailsRecommended("Recommended"),
     DetailsSimilar("Similar"),
 }
-
-//@Serializable
-//enum class MoviesCategory {
-//    Popular,
-//    InTheatres,
-//    Trending,
-//    TopRated,
-//    Upcoming,
-//    DetailsRecommended,
-//    DetailsSimilar;
-//
-//    companion object {
-//        fun getFromString(value: String): MoviesCategory {
-//            return entries.firstOrNull { it.name == value } ?: Popular
-//        }
-//    }
-//}
-//
-//// Add an extension or mapping function
-//val MoviesCategory.displayName: String
-//    get() = when (this) {
-//        MoviesCategory.Popular -> "Popular"
-//        MoviesCategory.InTheatres -> "Playing In Theatres"
-//        MoviesCategory.Trending -> "Trending"
-//        MoviesCategory.TopRated -> "Top Rated"
-//        MoviesCategory.Upcoming -> "Upcoming"
-//        MoviesCategory.DetailsRecommended -> "Recommended"
-//        MoviesCategory.DetailsSimilar -> "Similar"
-//    }
 
 
 enum class TvShowsCategory(name: String) {
@@ -133,4 +102,21 @@ fun hideKeyboardAndUnFocus(
 ) {
     keyboardController?.hide()
     focusManager.clearFocus()
+}
+
+data object ThumbnailQuality {
+    /// 120*90
+    const val DEFAULT = "default.jpg"
+
+    /// 320*180
+    const val MEDIUM = "mqdefault.jpg"
+
+    /// 480*360
+    const val HIGH = "hqdefault.jpg"
+
+    /// 640*480
+    const val STANDARD = "sddefault.jpg"
+
+    /// Unscaled thumbnail
+    const val MAX = "maxresdefault.jpg"
 }

@@ -37,7 +37,7 @@ import com.irfangujjar.tmdb.features.main.movies.sub_features.details.domain.mod
 
 
 @Composable
-fun BackdropDetailsComp(
+fun DetailsBackdropComp(
     preview: Boolean,
     type: MediaType,
     backdropDetailsPath: String?,
@@ -142,7 +142,7 @@ private fun InformationComp(
             fontWeight = FontWeight.W500,
             modifier = Modifier.padding(end = ScreenPadding.getEndPadding())
         )
-        if (voteAverage!=null&&voteCount!=null)
+        if (voteAverage != null && voteCount != null)
             CustomRating(
                 voteAverage = voteAverage,
                 voteCount = voteCount,
@@ -185,7 +185,7 @@ private fun BackdropDetailsCompPreview() {
         Surface {
             val movie = MovieModel.dummyData()
             val movieDetails = MovieDetailsModel.dummyData()
-            BackdropDetailsComp(
+            DetailsBackdropComp(
                 preview = true,
                 type = MediaType.Movie,
                 backdropDetailsPath = movieDetails.backdropPath,
