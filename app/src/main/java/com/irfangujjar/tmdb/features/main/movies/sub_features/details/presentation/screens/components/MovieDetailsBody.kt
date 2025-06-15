@@ -102,7 +102,7 @@ fun MovieDetailsBody(
                         category = MoviesCategory.DetailsRecommended
                     )
                 ),
-                title = MoviesCategory.DetailsRecommended.name,
+                title = MoviesCategory.DetailsRecommended.title,
                 onSeeAllClick = {},
                 onItemTapped = { id, title, posterPath, backdropPath ->
                     onNavigateToMovieDetails(
