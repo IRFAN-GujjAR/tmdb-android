@@ -23,7 +23,8 @@ fun MovieDetailsScreen(
     userTheme: UserTheme,
     key: HomeNavKey.MovieDetailsNavKey,
     onBackStackPressed: () -> Unit,
-    viewModel: MovieDetailsViewModel = hiltViewModel()
+    viewModel: MovieDetailsViewModel = hiltViewModel(),
+    onNavigateToMovieDetails: (HomeNavKey.MovieDetailsNavKey) -> Unit
 ) {
     viewModel.initialize(movieId = key.movieId)
 
@@ -53,7 +54,11 @@ fun MovieDetailsScreen(
                     preview = false,
                     outerPadding = outerPadding,
                     innerPadding = innerPadding,
-                    movieDetails = state.movieDetails
+                    movieDetails = state.movieDetails,
+                    onNavigateToSeeAllMovies = {
+
+                    },
+                    onNavigateToMovieDetails = onNavigateToMovieDetails
                 )
             }
         }

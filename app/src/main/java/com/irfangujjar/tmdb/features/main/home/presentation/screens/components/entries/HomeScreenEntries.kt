@@ -68,6 +68,7 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
             userTheme = userTheme,
             key = it,
             onBackStackPressed = onBackPressed,
+            onNavigateToMovieDetails = onNavigateToMovieDetails
         )
     }
 

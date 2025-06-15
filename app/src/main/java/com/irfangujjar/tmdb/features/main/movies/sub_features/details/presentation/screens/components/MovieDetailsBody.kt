@@ -32,7 +32,8 @@ fun MovieDetailsBody(
     outerPadding: PaddingValues,
     innerPadding: PaddingValues,
     movieDetails: MovieDetailsModel,
-    onNavigateToSeeAllMovies: (HomeNavKey.SeeAllMoviesNavKey) -> Unit
+    onNavigateToSeeAllMovies: (HomeNavKey.SeeAllMoviesNavKey) -> Unit,
+    onNavigateToMovieDetails: (HomeNavKey.MovieDetailsNavKey) -> Unit
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -79,8 +80,19 @@ fun MovieDetailsBody(
                 preview = preview,
                 videos = movieDetails.videos
             )
+        if (movieDetails.isInformationPresent())
+            MovieDetailsInformationComp(
+                releaseDate = movieDetails.releaseDate,
+                language = movieDetails.language,
+                budget = movieDetails.budget,
+                revenue = movieDetails.revenue,
+                productionCompanies = movieDetails.productionCompanies
+            )
         if (movieDetails.recommendedMovies != null) {
-            CustomDivider(topPadding = DividerTopPadding.Double)
+            if (movieDetails.isInformationPresent())
+                CustomDivider()
+            else
+                CustomDivider(topPadding = DividerTopPadding.Double)
             MediaItemsHorizontalList(
                 preview = preview,
                 values = MediaItemsHorizontalListValues.fromMovies(
@@ -93,6 +105,14 @@ fun MovieDetailsBody(
                 title = MoviesCategory.DetailsRecommended.name,
                 onSeeAllClick = {},
                 onItemTapped = { id, title, posterPath, backdropPath ->
+                    onNavigateToMovieDetails(
+                        HomeNavKey.MovieDetailsNavKey(
+                            movieId = id,
+                            title = title,
+                            posterPath = posterPath,
+                            backdropPath = backdropPath
+                        )
+                    )
                 }
             )
         }
@@ -110,6 +130,14 @@ fun MovieDetailsBody(
                 title = MoviesCategory.DetailsSimilar.title,
                 onSeeAllClick = {},
                 onItemTapped = { id, title, posterPath, backdropPath ->
+                    onNavigateToMovieDetails(
+                        HomeNavKey.MovieDetailsNavKey(
+                            movieId = id,
+                            title = title,
+                            posterPath = posterPath,
+                            backdropPath = backdropPath
+                        )
+                    )
                 }
             )
         }
@@ -127,7 +155,10 @@ private fun MovieDetailsBodyPreview() {
                 innerPadding = PaddingValues(0.dp),
                 movieDetails = MovieDetailsModel.dummyData(),
                 onNavigateToSeeAllMovies = {
-                    
+
+                },
+                onNavigateToMovieDetails = {
+
                 }
             )
         }

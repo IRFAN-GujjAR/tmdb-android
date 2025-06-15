@@ -32,8 +32,8 @@ data class MovieDetailsModel(
     val releaseDate: String?,
     @SerializedName(JsonKeyNames.LANGUAGE)
     val language: String?,
-    val budget: Int,
-    val revenue: Int,
+    val budget: Long,
+    val revenue: Long,
     @SerializedName(JsonKeyNames.PRODUCTION_COMPANIES)
     val productionCompanies: List<ProductionCompanyModel>,
     @SerializedName(JsonKeyNames.RECOMMENDATIONS)
@@ -41,6 +41,10 @@ data class MovieDetailsModel(
     @SerializedName(JsonKeyNames.SIMILAR)
     val similarMovies: MoviesListModel?
 ) {
+
+    fun isInformationPresent(): Boolean = releaseDate != null || language != null || budget != 0L
+            || revenue != 0L || productionCompanies.isNotEmpty()
+
     companion object {
         fun dummyData(): MovieDetailsModel = MovieDetailsModel(
             backdropPath = "/tmU7GeKVybMWFButWEGl2M4GeiP.jpg",
