@@ -40,7 +40,7 @@ fun SeeAllMoviesScreen(
     Scaffold(
         topBar = {
             CustomTopAppBar(
-                title = key.category.name,
+                title = key.category.title,
                 showBackStack = true,
                 onBackStackPressed = onBackStackPressed
             )

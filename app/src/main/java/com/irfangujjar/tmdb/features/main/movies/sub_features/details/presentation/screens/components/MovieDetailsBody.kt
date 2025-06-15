@@ -32,7 +32,7 @@ fun MovieDetailsBody(
     outerPadding: PaddingValues,
     innerPadding: PaddingValues,
     movieDetails: MovieDetailsModel,
-    onNavigateToSeeAllMovies: (HomeNavKey.SeeAllMoviesNavKey) -> Unit,
+    onNavigateToSeeAllMovies: (MoviesCategory) -> Unit,
     onNavigateToMovieDetails: (HomeNavKey.MovieDetailsNavKey) -> Unit
 ) {
     val scrollState = rememberScrollState()
@@ -103,7 +103,7 @@ fun MovieDetailsBody(
                     )
                 ),
                 title = MoviesCategory.DetailsRecommended.title,
-                onSeeAllClick = {},
+                onSeeAllClick = { onNavigateToSeeAllMovies(MoviesCategory.DetailsRecommended) },
                 onItemTapped = { id, title, posterPath, backdropPath ->
                     onNavigateToMovieDetails(
                         HomeNavKey.MovieDetailsNavKey(
@@ -128,7 +128,7 @@ fun MovieDetailsBody(
                     )
                 ),
                 title = MoviesCategory.DetailsSimilar.title,
-                onSeeAllClick = {},
+                onSeeAllClick = { onNavigateToSeeAllMovies(MoviesCategory.DetailsSimilar) },
                 onItemTapped = { id, title, posterPath, backdropPath ->
                     onNavigateToMovieDetails(
                         HomeNavKey.MovieDetailsNavKey(

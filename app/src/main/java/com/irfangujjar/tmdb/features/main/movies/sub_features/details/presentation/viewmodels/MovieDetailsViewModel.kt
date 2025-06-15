@@ -5,10 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.irfangujjar.tmdb.core.api.ResultWrapper
 import com.irfangujjar.tmdb.core.api.safeApiCall
+import com.irfangujjar.tmdb.features.main.movies.domain.models.MoviesListModel
 import com.irfangujjar.tmdb.features.main.movies.sub_features.details.domain.models.MovieDetailsModel
 import com.irfangujjar.tmdb.features.main.movies.sub_features.details.domain.usecases.MovieDetailsUseCaseLoad
 import com.irfangujjar.tmdb.features.main.movies.sub_features.details.domain.usecases.params.MovieDetailsUseCaseLoadParams
 import com.irfangujjar.tmdb.features.main.movies.sub_features.details.presentation.viewmodels.states.MovieDetailsState
+import com.irfangujjar.tmdb.features.main.movies.sub_features.see_all.presentation.nav_args_holder.SeeAllMoviesNavArgsHolder
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,6 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MovieDetailsViewModel @Inject constructor(
     private val useCase: MovieDetailsUseCaseLoad,
+    private val seeAllMoviesNavArgsHolder: SeeAllMoviesNavArgsHolder
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<MovieDetailsState>(MovieDetailsState.Loading)
@@ -61,4 +64,7 @@ class MovieDetailsViewModel @Inject constructor(
             }
         }
     }
+
+    fun saveSeeAllMoviesArg(moviesList: MoviesListModel): String =
+        seeAllMoviesNavArgsHolder.saveArgData(moviesList)
 }

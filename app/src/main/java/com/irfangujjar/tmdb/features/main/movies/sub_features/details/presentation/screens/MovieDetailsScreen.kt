@@ -13,6 +13,7 @@ import com.irfangujjar.tmdb.core.ui.components.CustomError
 import com.irfangujjar.tmdb.core.ui.components.CustomLoading
 import com.irfangujjar.tmdb.core.ui.components.CustomTopAppBar
 import com.irfangujjar.tmdb.core.ui.theme.UserTheme
+import com.irfangujjar.tmdb.core.ui.util.MoviesCategory
 import com.irfangujjar.tmdb.features.main.movies.sub_features.details.presentation.screens.components.MovieDetailsBody
 import com.irfangujjar.tmdb.features.main.movies.sub_features.details.presentation.viewmodels.MovieDetailsViewModel
 import com.irfangujjar.tmdb.features.main.movies.sub_features.details.presentation.viewmodels.states.MovieDetailsState
@@ -24,7 +25,8 @@ fun MovieDetailsScreen(
     key: HomeNavKey.MovieDetailsNavKey,
     onBackStackPressed: () -> Unit,
     viewModel: MovieDetailsViewModel = hiltViewModel(),
-    onNavigateToMovieDetails: (HomeNavKey.MovieDetailsNavKey) -> Unit
+    onNavigateToSeeAllMovies: (HomeNavKey.SeeAllMoviesNavKey) -> Unit,
+    onNavigateToMovieDetails: (HomeNavKey.MovieDetailsNavKey) -> Unit,
 ) {
     viewModel.initialize(movieId = key.movieId)
 
@@ -56,7 +58,18 @@ fun MovieDetailsScreen(
                     innerPadding = innerPadding,
                     movieDetails = state.movieDetails,
                     onNavigateToSeeAllMovies = {
-
+                        val argId = viewModel.saveSeeAllMoviesArg(
+                            if (it == MoviesCategory.DetailsRecommended)
+                                state.movieDetails.recommendedMovies!! else
+                                state.movieDetails.similarMovies!!
+                        )
+                        onNavigateToSeeAllMovies(
+                            HomeNavKey.SeeAllMoviesNavKey(
+                                argId = argId,
+                                movieId = key.movieId,
+                                category = it
+                            )
+                        )
                     },
                     onNavigateToMovieDetails = onNavigateToMovieDetails
                 )
