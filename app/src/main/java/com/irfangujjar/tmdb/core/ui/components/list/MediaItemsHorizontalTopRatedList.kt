@@ -25,7 +25,8 @@ fun MediaItemsHorizontalTopRatedList(
     mediaType: MediaType,
     movies: List<MovieModel>?,
     tvShows: List<TvShowModel>?,
-    onSeeAllClick: () -> Unit
+    onSeeAllClick: () -> Unit,
+    onItemTapped: (Int, String, String?, String?) -> Unit
 ) {
     Column {
         TextRow(title = "Top Rated", onSeeAllClick = onSeeAllClick)
@@ -59,7 +60,8 @@ fun MediaItemsHorizontalTopRatedList(
                             preview = preview,
                             type = mediaType,
                             movie = movie,
-                            tvShow = tvShow
+                            tvShow = tvShow,
+                            onItemTapped = onItemTapped
                         )
                     }
                 }
@@ -78,7 +80,9 @@ fun MediaItemsHorizontalTopRatedPreview() {
                 mediaType = MediaType.Movie,
                 movies = List(20) { MovieModel.dummyData() },
                 tvShows = null,
-            ){}
+                onSeeAllClick = {},
+                onItemTapped = { _, _, _, _ -> }
+            )
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.irfangujjar.tmdb.core.ui.components.list
 
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -41,28 +43,46 @@ fun MediaItemHorizontalTopRated(
     preview: Boolean = false,
     type: MediaType,
     movie: MovieModel?,
-    tvShow: TvShowModel?
+    tvShow: TvShowModel?,
+    onItemTapped: (Int, String, String?, String?) -> Unit
 ) {
 
+    val id: Int
     val posterPath: String?
+    val backdropPath: String?
     val title: String
     val genreIds: List<Int>?
     when (type) {
         MediaType.Movie -> {
-            posterPath = movie!!.posterPath
+            id = movie!!.id
+            posterPath = movie.posterPath
+            backdropPath = movie.backdropPath
             title = movie.title
             genreIds = movie.genreIds
         }
 
         MediaType.TvShow -> {
-            posterPath = tvShow!!.posterPath
+            id = tvShow!!.id
+            posterPath = tvShow.posterPath
+            backdropPath = tvShow.backdropPath
             title = tvShow.name
             genreIds = tvShow.genreIds
         }
     }
 
     Row(
-        modifier = Modifier.height(60.dp)
+        modifier = Modifier
+            .height(60.dp)
+            .pointerInput(Unit) {
+                detectTapGestures(onTap = {
+                    onItemTapped(
+                        id,
+                        title,
+                        posterPath,
+                        backdropPath
+                    )
+                })
+            }
     ) {
         Box(
             modifier = Modifier.align(Alignment.CenterVertically)
@@ -127,7 +147,8 @@ private fun MediaItemHorizontalTopRatedPreview() {
                 preview = true,
                 type = MediaType.Movie,
                 movie = MovieModel.dummyData(),
-                tvShow = null
+                tvShow = null,
+                onItemTapped = { _, _, _, _ -> }
             )
         }
     }

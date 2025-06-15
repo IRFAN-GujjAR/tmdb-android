@@ -236,10 +236,12 @@ private fun MoviesScreenBody(
                 mediaType = MediaType.Movie,
                 movies = if (preview) List(20) { MovieModel.dummyData() }
                 else movies.topRated.movies,
-                tvShows = null
-            ) {
-                onNavigateToSeeAllMovies(MoviesCategory.TopRated)
-            }
+                tvShows = null,
+                onSeeAllClick = {
+                    onNavigateToSeeAllMovies(MoviesCategory.TopRated)
+                },
+                onItemTapped = onItemTapped
+            )
             CustomDivider(topPadding = DividerTopPadding.Double)
             MediaItemsHorizontalList(
                 preview = preview,

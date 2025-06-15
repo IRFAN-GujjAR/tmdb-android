@@ -192,6 +192,9 @@ private fun TvShowsScreenBody(
                 movies = null,
                 onSeeAllClick = {
                     onNavigateToSeeAllMovies(TvShowsCategory.TopRated)
+                },
+                onItemTapped = { id, title, posterPath, backdropPath ->
+
                 }
             )
             CustomDivider(topPadding = DividerTopPadding.Double)
