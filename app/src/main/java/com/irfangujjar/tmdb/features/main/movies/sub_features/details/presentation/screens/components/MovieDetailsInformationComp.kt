@@ -77,7 +77,7 @@ fun MovieDetailsInformationComp(
 private fun InformationItemTitle(category: String) {
     Text(
         category,
-        textAlign = TextAlign.Center,
+        textAlign = TextAlign.End,
         fontSize = 14.sp,
         fontWeight = FontWeight.W500,
         color = Color.White.copy(alpha = 0.7f),
@@ -88,7 +88,7 @@ private fun InformationItemTitle(category: String) {
 private fun InformationItemData(data: String) {
     Text(
         data,
-        textAlign = TextAlign.Center,
+        textAlign = TextAlign.Start,
         fontSize = 13.sp,
         fontWeight = FontWeight.W500,
         color = Color.Gray,
