@@ -58,6 +58,7 @@ fun TvShowDetailsScreen(
                     preview = false,
                     outerPadding = outerPadding,
                     innerPadding = innerPadding,
+                    tvId = key.tvId,
                     tvShowDetails = state.tvShowDetails,
                     onNavigateToSeeAllTvShows = {
                         val argId = viewModel.saveSeeAllTvShowsArg(

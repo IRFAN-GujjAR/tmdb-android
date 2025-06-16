@@ -26,6 +26,7 @@ import com.irfangujjar.tmdb.core.ui.components.list.values.MediaItemsHorizontalL
 import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
 import com.irfangujjar.tmdb.core.ui.util.MediaType
 import com.irfangujjar.tmdb.core.ui.util.TvShowsCategory
+import com.irfangujjar.tmdb.features.main.tv_shows.domain.models.TvShowModel
 import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.details.domain.models.TvShowDetailsModel
 
 
@@ -34,6 +35,7 @@ fun TvShowDetailsBodyComp(
     preview: Boolean,
     outerPadding: PaddingValues,
     innerPadding: PaddingValues,
+    tvId: Int,
     tvShowDetails: TvShowDetailsModel,
     onNavigateToSeeAllTvShows: (TvShowsCategory) -> Unit,
     onNavigateToTvShowDetails: (HomeNavKey.TvShowDetailsNavKey) -> Unit
@@ -54,7 +56,7 @@ fun TvShowDetailsBodyComp(
     ) {
         DetailsBackdropComp(
             preview = preview,
-            type = MediaType.Movie,
+            type = MediaType.TvShow,
             backdropDetailsPath = tvShowDetails.backdropPath,
             backdropPath = tvShowDetails.backdropPath,
             posterDetailsPath = tvShowDetails.posterPath,
@@ -66,6 +68,18 @@ fun TvShowDetailsBodyComp(
             overview = tvShowDetails.overview,
         )
         Spacer(modifier = Modifier.height(12.dp))
+        if (tvShowDetails.seasons.isNotEmpty())
+            TvShowDetailsSeasonComp(
+                preview = preview,
+                tvId = tvId,
+                tvShowName = tvShowDetails.name,
+                tvShowPosterPath = tvShowDetails.posterPath,
+                episodeImagePlaceHolder = tvShowDetails.backdropPath,
+                seasons = tvShowDetails.seasons,
+                onSeeAllPressed = {
+
+                }
+            )
         if (tvShowDetails.isCastCrewPresent())
             DetailsCastCrewItemsComp(
                 preview = preview,
@@ -145,6 +159,7 @@ private fun TvShowDetailsBodyCompPreview() {
                 preview = true,
                 outerPadding = PaddingValues(0.dp),
                 innerPadding = PaddingValues(0.dp),
+                tvId = TvShowModel.dummyData().id,
                 tvShowDetails = TvShowDetailsModel.dummyData(),
                 onNavigateToSeeAllTvShows = {
 

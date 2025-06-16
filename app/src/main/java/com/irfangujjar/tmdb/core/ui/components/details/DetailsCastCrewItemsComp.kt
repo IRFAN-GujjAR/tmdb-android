@@ -51,7 +51,7 @@ fun DetailsCastCrewItemsComp(
                 DividerBottomPadding.OneAndHalf
         )
         TextRow(
-            title = "Cast & Crew", onSeeAllClick = if (length < 5) null else onSeeAllClicked
+            title = "Cast & Crew", onSeeAllTapped = if (length < 5) null else onSeeAllClicked
         )
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(12.dp),

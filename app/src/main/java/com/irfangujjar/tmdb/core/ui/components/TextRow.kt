@@ -19,8 +19,8 @@ import androidx.compose.ui.unit.sp
 import com.irfangujjar.tmdb.core.ui.ScreenPadding
 
 @Composable
-fun TextRow(title: String, onSeeAllClick: (() -> Unit)? = null) {
-    if (onSeeAllClick == null)
+fun TextRow(title: String, onSeeAllTapped: (() -> Unit)? = null) {
+    if (onSeeAllTapped == null)
         Text(
             title, fontSize = 17.sp, fontWeight = FontWeight.W500,
             modifier = Modifier.padding(
@@ -40,7 +40,7 @@ fun TextRow(title: String, onSeeAllClick: (() -> Unit)? = null) {
                 fontWeight = FontWeight.W500
             )
             Spacer(modifier = Modifier.weight(1f)) // pushes the button to the end
-            TextButton(onClick = onSeeAllClick) {
+            TextButton(onClick = onSeeAllTapped) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         "See all",

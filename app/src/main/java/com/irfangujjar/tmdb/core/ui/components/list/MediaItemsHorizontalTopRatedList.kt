@@ -29,7 +29,7 @@ fun MediaItemsHorizontalTopRatedList(
     onItemTapped: (Int, String, String?, String?) -> Unit
 ) {
     Column {
-        TextRow(title = "Top Rated", onSeeAllClick = onSeeAllClick)
+        TextRow(title = "Top Rated", onSeeAllTapped = onSeeAllClick)
         LazyRow(
             modifier = Modifier.padding(top = 4.dp),
             contentPadding = PaddingValues(

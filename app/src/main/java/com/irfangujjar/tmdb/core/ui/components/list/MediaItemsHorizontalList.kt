@@ -23,10 +23,10 @@ fun MediaItemsHorizontalList(
     preview: Boolean = false, values: MediaItemsHorizontalListValues,
     title: String,
     onSeeAllClick: () -> Unit,
-    onItemTapped:(Int, String, String?, String?)->Unit = { _, _, _, _ -> }
+    onItemTapped: (Int, String, String?, String?) -> Unit = { _, _, _, _ -> }
 ) {
     Column {
-        TextRow(title = title, onSeeAllClick = onSeeAllClick)
+        TextRow(title = title, onSeeAllTapped = onSeeAllClick)
         LazyRow(
             modifier = Modifier
                 .padding(top = 4.dp)

@@ -20,7 +20,7 @@ import com.irfangujjar.tmdb.features.main.celebs.domain.models.CelebModel
 @Composable
 fun TrendingCelebs(preview: Boolean, celebs: List<CelebModel>, onSeeAllClick: () -> Unit) {
     Column {
-        TextRow(title = "Trending", onSeeAllClick = onSeeAllClick)
+        TextRow(title = "Trending", onSeeAllTapped = onSeeAllClick)
         LazyRow(
             modifier = Modifier.padding(top = 4.dp),
             contentPadding = PaddingValues(

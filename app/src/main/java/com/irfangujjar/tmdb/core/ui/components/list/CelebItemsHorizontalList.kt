@@ -25,7 +25,7 @@ fun CelebItemsHorizontalList(
 ) {
     if (title != null && onSeeAllClick != null)
         Column {
-            TextRow(title = title, onSeeAllClick = onSeeAllClick)
+            TextRow(title = title, onSeeAllTapped = onSeeAllClick)
             HorizontalRow(values, preview)
         }
     else
