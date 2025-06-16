@@ -20,7 +20,8 @@ import com.irfangujjar.tmdb.features.main.celebs.domain.models.CelebsListModel
 fun PopularCelebs(
     preview: Boolean,
     popularCelebs: CelebsListModel,
-    onSeeAllClick: () -> Unit
+    onSeeAllClick: () -> Unit,
+    onCelebItemTapped: (Int, String) -> Unit
 ) {
     val size = popularCelebs.celebrities.size
     val firsListLastIndex = (size / 2) - 1
@@ -35,15 +36,17 @@ fun PopularCelebs(
                 config = CelebItemHorizontalConfigValues.fromDefault()
             ),
             title = "Popular",
-            onSeeAllClick = onSeeAllClick
+            onSeeAllClick = onSeeAllClick,
+            onItemTapped = onCelebItemTapped
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(10.dp))
         CelebItemsHorizontalList(
             preview = preview,
             values = CelebItemsHorizontalListValues.fromListValues(
                 celebs = secondList,
                 config = CelebItemHorizontalConfigValues.fromDefault()
             ),
+            onItemTapped = onCelebItemTapped
         )
     }
 }
@@ -57,8 +60,10 @@ private fun PopularCelebsPreview() {
                 preview = true,
                 popularCelebs = CelebsListModel(
                     pageNo = 1, totalPages = 2,
-                    celebrities = List(20) { CelebModel.dummyData() })
-            ) {}
+                    celebrities = List(20) { CelebModel.dummyData() }),
+                onSeeAllClick = {},
+                onCelebItemTapped = { _, _ -> }
+            )
         }
     }
 }

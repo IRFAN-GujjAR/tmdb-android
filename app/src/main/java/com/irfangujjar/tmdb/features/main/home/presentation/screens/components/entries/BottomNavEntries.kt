@@ -25,6 +25,7 @@ fun EntryProviderBuilder<NavKey>.BottomNavEntries(
     onNavigateToSeeCelebs: (HomeNavKey.SeeAllCelebsNavKey) -> Unit,
     onNavigateToMovieDetails: (HomeNavKey.MovieDetailsNavKey) -> Unit,
     onNavigateToTvShowDetails: (HomeNavKey.TvShowDetailsNavKey) -> Unit,
+    onNavigateToCelebDetails: (HomeNavKey.CelebDetailsNavKey) -> Unit,
     onNavigateToLogin: () -> Unit
 ) {
     BottomNavKey.items.forEach { bottomNavKey ->
@@ -54,14 +55,8 @@ fun EntryProviderBuilder<NavKey>.BottomNavEntries(
                     outerPadding = outerPadding,
                     userTheme = userTheme,
                     snackbarHostState = snackBarHostState,
-                    onNavigateToSeeAllCelebs = { argId, category ->
-                        onNavigateToSeeCelebs(
-                            HomeNavKey.SeeAllCelebsNavKey(
-                                argId = argId,
-                                category = category
-                            )
-                        )
-                    },
+                    onNavigateToSeeAllCelebs = onNavigateToSeeCelebs,
+                    onNavigateToCelebDetails = onNavigateToCelebDetails
                 )
             }
 

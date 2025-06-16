@@ -1,5 +1,6 @@
 package com.irfangujjar.tmdb.core.ui.components.list
 
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -8,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -19,14 +21,21 @@ import com.irfangujjar.tmdb.core.ui.components.image.CustomNetworkImage
 import com.irfangujjar.tmdb.core.ui.components.list.values.CelebItemHorizontalValues
 import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
 import com.irfangujjar.tmdb.core.ui.util.MediaImageType
-import com.irfangujjar.tmdb.core.ui.util.ProfileSizes
 
 
 @Composable
-fun CelebItemHorizontal(preview: Boolean = false, values: CelebItemHorizontalValues) {
+fun CelebItemHorizontal(
+    preview: Boolean = false, values: CelebItemHorizontalValues,
+    onItemTapped: (Int, String) -> Unit
+) {
     Column(
         modifier = Modifier
             .width(values.config.listItemWidth)
+            .pointerInput(Unit) {
+                detectTapGestures(onTap = {
+                    onItemTapped(values.id, values.name)
+                })
+            }
     ) {
         CustomNetworkImage(
             preview = preview,
@@ -40,21 +49,25 @@ fun CelebItemHorizontal(preview: Boolean = false, values: CelebItemHorizontalVal
             placeHolderSize = 85.dp,
             profileSize = values.config.profileSize
         )
-        Text(values.name,
+        Text(
+            values.name,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
             fontWeight = FontWeight.W500,
             fontSize = values.config.font,
             textAlign = TextAlign.Start,
-            modifier = Modifier.padding(top = 4.dp))
-        if(!values.knownFor.isNullOrBlank())
-            Text(values.knownFor,
+            modifier = Modifier.padding(top = 4.dp)
+        )
+        if (!values.knownFor.isNullOrBlank())
+            Text(
+                values.knownFor,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 fontWeight = FontWeight.W500,
                 color = Color.Gray,
                 fontSize = 11.sp,
-                textAlign = TextAlign.Start)
+                textAlign = TextAlign.Start
+            )
     }
 }
 
@@ -66,7 +79,8 @@ private fun CelebHorizontalPreview() {
         Surface {
             CelebItemHorizontal(
                 preview = true,
-                values = CelebItemHorizontalValues.dummyData()
+                values = CelebItemHorizontalValues.dummyData(),
+                onItemTapped = {id,name->}
             )
         }
     }

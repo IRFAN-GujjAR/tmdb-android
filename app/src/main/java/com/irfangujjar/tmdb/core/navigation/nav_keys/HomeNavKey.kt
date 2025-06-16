@@ -26,7 +26,10 @@ sealed interface HomeNavKey : NavKey {
     ) : HomeNavKey
 
     @Serializable
-    data object CelebDetailsNavKey : HomeNavKey
+    data class CelebDetailsNavKey(
+        val celebId: Int,
+        val name: String
+    ) : HomeNavKey
 
     @Serializable
     data object SearchDetailsNavKey : HomeNavKey

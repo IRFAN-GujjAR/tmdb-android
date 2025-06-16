@@ -11,45 +11,45 @@ import retrofit2.http.Query
 interface MovieApi {
     @GET("movie/popular")
     suspend fun popularMovies(
-        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.name,
+        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.title,
         @Query(APIQueryFields.PAGE) pageNo: Int
     ): MoviesListModel
 
     @GET("movie/now_playing")
     suspend fun inTheatreMovies(
-        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.name,
+        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.title,
         @Query(APIQueryFields.PAGE) pageNo: Int
     ): MoviesListModel
 
     @GET("trending/movie/day")
     suspend fun trendingMovies(
-        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.name,
+        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.title,
         @Query(APIQueryFields.PAGE) pageNo: Int
     ): MoviesListModel
 
     @GET("movie/top_rated")
     suspend fun topRatedMovies(
-        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.name,
+        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.title,
         @Query(APIQueryFields.PAGE) pageNo: Int
     ): MoviesListModel
 
     @GET("movie/upcoming")
     suspend fun upcomingMovies(
-        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.name,
+        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.title,
         @Query(APIQueryFields.PAGE) pageNo: Int
     ): MoviesListModel
 
     @GET("movie/{${ApiPathFields.MOVIE_ID}}/recommendations")
     suspend fun recommendedMovies(
         @Path(ApiPathFields.MOVIE_ID) movieId: Int,
-        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.name,
+        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.title,
         @Query(APIQueryFields.PAGE) pageNo: Int
     ): MoviesListModel
 
     @GET("movie/{${ApiPathFields.MOVIE_ID}}/similar")
     suspend fun similarMovies(
         @Path(ApiPathFields.MOVIE_ID) movieId: Int,
-        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.name,
+        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.title,
         @Query(APIQueryFields.PAGE) pageNo: Int
     ): MoviesListModel
 }

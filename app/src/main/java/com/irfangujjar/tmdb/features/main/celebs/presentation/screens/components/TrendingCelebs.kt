@@ -18,7 +18,10 @@ import com.irfangujjar.tmdb.features.main.celebs.domain.models.CelebModel
 
 
 @Composable
-fun TrendingCelebs(preview: Boolean, celebs: List<CelebModel>, onSeeAllClick: () -> Unit) {
+fun TrendingCelebs(
+    preview: Boolean, celebs: List<CelebModel>, onSeeAllClick: () -> Unit,
+    onCelebItemTapped: (Int, String) -> Unit
+) {
     Column {
         TextRow(title = "Trending", onSeeAllTapped = onSeeAllClick)
         LazyRow(
@@ -40,7 +43,8 @@ fun TrendingCelebs(preview: Boolean, celebs: List<CelebModel>, onSeeAllClick: ()
                         }
                         TrendingCelebItem(
                             preview = preview,
-                            celeb = celebs[itemIndex]
+                            celeb = celebs[itemIndex],
+                            onCelebItemTapped = onCelebItemTapped
                         )
                     }
                 }
@@ -56,7 +60,8 @@ private fun TrendingCelebsPreview() {
         Surface {
             TrendingCelebs(
                 preview = true, celebs = List(20) { CelebModel.dummyData() },
-                onSeeAllClick = {})
+                onSeeAllClick = {},
+                onCelebItemTapped = { _, _ -> })
         }
     }
 }

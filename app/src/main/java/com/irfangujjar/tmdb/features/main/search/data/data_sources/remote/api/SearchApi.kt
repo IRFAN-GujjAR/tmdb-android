@@ -12,34 +12,34 @@ import retrofit2.http.Query
 interface SearchApi {
     @GET("trending/all/day")
     suspend fun trendingSearch(
-        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.name,
+        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.title,
     ): SearchResponse
 
     @GET("search/multi")
     suspend fun multiSearch(
         @Query(APIQueryFields.SEARCH_QUERY) query: String,
-        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.name,
+        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.title,
         @Query(APIQueryFields.PAGE) pageNo: Int
     ): SearchResponse
 
     @GET("search/movie")
     suspend fun searchMovies(
         @Query(APIQueryFields.SEARCH_QUERY) query: String,
-        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.name,
+        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.title,
         @Query(APIQueryFields.PAGE) pageNo: Int
     ): MoviesListModel
 
     @GET("search/tv")
     suspend fun searchTvShows(
         @Query(APIQueryFields.SEARCH_QUERY) query: String,
-        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.name,
+        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.title,
         @Query(APIQueryFields.PAGE) pageNo: Int
     ): TvShowsListModel
 
     @GET("search/person")
     suspend fun searchCelebs(
         @Query(APIQueryFields.SEARCH_QUERY) query: String,
-        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.name,
+        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.title,
         @Query(APIQueryFields.PAGE) pageNo: Int
     ): CelebsListModel
 }

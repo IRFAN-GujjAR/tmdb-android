@@ -1,10 +1,11 @@
 package com.irfangujjar.tmdb.features.main.movies.sub_features.details.presentation.viewmodels
 
 import android.util.Log
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.irfangujjar.tmdb.core.api.ResultWrapper
 import com.irfangujjar.tmdb.core.api.safeApiCall
+import com.irfangujjar.tmdb.core.navigation.nav_keys.HomeNavKey
+import com.irfangujjar.tmdb.core.viewmodels.ViewModelWithKey
 import com.irfangujjar.tmdb.features.main.movies.domain.models.MoviesListModel
 import com.irfangujjar.tmdb.features.main.movies.sub_features.details.domain.models.MovieDetailsModel
 import com.irfangujjar.tmdb.features.main.movies.sub_features.details.domain.usecases.MovieDetailsUseCaseLoad
@@ -22,27 +23,20 @@ import javax.inject.Inject
 class MovieDetailsViewModel @Inject constructor(
     private val useCase: MovieDetailsUseCaseLoad,
     private val seeAllMoviesNavArgsHolder: SeeAllMoviesNavArgsHolder
-) : ViewModel() {
+) : ViewModelWithKey<HomeNavKey.MovieDetailsNavKey>() {
 
     private val _state = MutableStateFlow<MovieDetailsState>(MovieDetailsState.Loading)
     val state: StateFlow<MovieDetailsState> = _state
 
-    private var isInitialized = false
+    override fun doInitial() = loadMovieDetails()
 
-    fun initialize(movieId: Int) {
-        if (!isInitialized) {
-            isInitialized = true
-            loadMovieDetails(movieId = movieId)
-        }
-    }
-
-    fun loadMovieDetails(movieId: Int) {
+    fun loadMovieDetails() {
         viewModelScope.launch(Dispatchers.IO) {
             _state.value = MovieDetailsState.Loading
             val result = safeApiCall {
                 useCase.invoke(
                     params = MovieDetailsUseCaseLoadParams(
-                        movieId = movieId
+                        movieId = key!!.movieId
                     )
                 )
             }
@@ -67,4 +61,6 @@ class MovieDetailsViewModel @Inject constructor(
 
     fun saveSeeAllMoviesArg(moviesList: MoviesListModel): String =
         seeAllMoviesNavArgsHolder.saveArgData(moviesList)
+
+
 }

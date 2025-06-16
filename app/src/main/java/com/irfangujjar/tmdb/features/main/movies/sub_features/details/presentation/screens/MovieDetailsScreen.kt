@@ -28,7 +28,7 @@ fun MovieDetailsScreen(
     onNavigateToSeeAllMovies: (HomeNavKey.SeeAllMoviesNavKey) -> Unit,
     onNavigateToMovieDetails: (HomeNavKey.MovieDetailsNavKey) -> Unit,
 ) {
-    viewModel.initialize(movieId = key.movieId)
+    viewModel.initialize(key = key)
 
     val state = viewModel.state.collectAsState().value
 
@@ -48,7 +48,7 @@ fun MovieDetailsScreen(
                     error = state.error,
                     userTheme = userTheme,
                     onRetry = {
-                        viewModel.loadMovieDetails(movieId = key.movieId)
+                        viewModel.loadMovieDetails()
                     }
                 )
 

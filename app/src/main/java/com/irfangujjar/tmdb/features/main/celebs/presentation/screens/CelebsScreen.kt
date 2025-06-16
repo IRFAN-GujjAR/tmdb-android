@@ -17,6 +17,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.irfangujjar.tmdb.core.navigation.nav_keys.HomeNavKey
 import com.irfangujjar.tmdb.core.ui.ScreenPadding
 import com.irfangujjar.tmdb.core.ui.components.CustomDivider
 import com.irfangujjar.tmdb.core.ui.components.CustomError
@@ -38,7 +39,8 @@ fun CelebsScreen(
     outerPadding: PaddingValues,
     userTheme: UserTheme,
     snackbarHostState: SnackbarHostState?,
-    onNavigateToSeeAllCelebs: (String, CelebsCategory) -> Unit,
+    onNavigateToSeeAllCelebs: (HomeNavKey.SeeAllCelebsNavKey) -> Unit,
+    onNavigateToCelebDetails: (HomeNavKey.CelebDetailsNavKey) -> Unit,
     viewModel: CelebsViewModel = hiltViewModel()
 ) {
     Scaffold(topBar = {
@@ -60,45 +62,49 @@ fun CelebsScreen(
                     }
                 )
 
+                is CelebsState.Loaded,
                 is CelebsState.ErrorWithCache -> {
-                    if (viewModel.showAlert) {
-                        LaunchedEffect(Unit) {
-                            snackbarHostState?.showSnackbar(viewModel.alertMessage)
-                            viewModel.clearAlert()
+                    val celebs: CelebsModel
+                    if (state is CelebsState.ErrorWithCache) {
+                        celebs = state.celebs
+                        if (viewModel.showAlert) {
+                            LaunchedEffect(Unit) {
+                                snackbarHostState?.showSnackbar(viewModel.alertMessage)
+                                viewModel.clearAlert()
+                            }
                         }
+                    } else {
+                        celebs = (state as CelebsState.Loaded).celebs
                     }
                     CelebsScreenBody(
                         preview = preview,
                         paddingValues = outerPadding,
                         innerPadding = innerPadding,
-                        celebs = state.celebs,
+                        celebs = celebs,
                         isRefreshing = viewModel.isRefreshing,
                         onRefresh = { viewModel.refresh() },
                         onNavigateToSeeAllCelebs = {
                             val argId = viewModel.saveSeeAllCelebsArg(
                                 category = it,
-                                celebs = state.celebs
+                                celebs = celebs
                             )
-                            onNavigateToSeeAllCelebs(argId, it)
+                            onNavigateToSeeAllCelebs(
+                                HomeNavKey.SeeAllCelebsNavKey(
+                                    argId = argId,
+                                    category = it
+                                )
+                            )
+                        },
+                        onCelebItemTapped = { celebId, name ->
+                            onNavigateToCelebDetails(
+                                HomeNavKey.CelebDetailsNavKey(
+                                    celebId = celebId,
+                                    name = name
+                                )
+                            )
                         }
                     )
                 }
-
-                is CelebsState.Loaded -> CelebsScreenBody(
-                    preview = preview,
-                    paddingValues = outerPadding,
-                    innerPadding = innerPadding,
-                    celebs = state.celebs,
-                    isRefreshing = viewModel.isRefreshing,
-                    onRefresh = { viewModel.refresh() },
-                    onNavigateToSeeAllCelebs = {
-                        val argId = viewModel.saveSeeAllCelebsArg(
-                            category = it,
-                            celebs = state.celebs
-                        )
-                        onNavigateToSeeAllCelebs(argId, it)
-                    }
-                )
 
                 CelebsState.Loading -> CustomLoading()
             }
@@ -116,6 +122,7 @@ private fun CelebsScreenBody(
     celebs: CelebsModel,
     isRefreshing: Boolean,
     onNavigateToSeeAllCelebs: (CelebsCategory) -> Unit,
+    onCelebItemTapped: (Int, String) -> Unit,
     onRefresh: () -> Unit
 ) {
     val scrollState = rememberScrollState()
@@ -146,13 +153,17 @@ private fun CelebsScreenBody(
                 preview = preview, popularCelebs = celebs.popular,
                 onSeeAllClick = {
                     onNavigateToSeeAllCelebs(CelebsCategory.Popular)
-                })
+                },
+                onCelebItemTapped = onCelebItemTapped
+            )
             CustomDivider()
             TrendingCelebs(
                 preview = preview, celebs = celebs.trending.celebrities,
                 onSeeAllClick = {
                     onNavigateToSeeAllCelebs(CelebsCategory.Trending)
-                })
+                },
+                onCelebItemTapped = onCelebItemTapped
+            )
         }
     }
 }
@@ -170,8 +181,9 @@ private fun CelebsScreenBodyPreview() {
                 isRefreshing = false,
                 onRefresh = {},
                 onNavigateToSeeAllCelebs = {
-                    
-                }
+
+                },
+                onCelebItemTapped = { _, _ -> }
             )
         }
     }

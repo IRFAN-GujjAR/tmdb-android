@@ -79,7 +79,8 @@ fun SearchDetailsAll(
                 config = CelebItemHorizontalConfigValues.fromDefault()
             ),
             title = "Celebrities",
-            onSeeAllClick = onSeeAllCelebsClick
+            onSeeAllClick = onSeeAllCelebsClick,
+            onItemTapped = {celebId,name->}
         )
     }
 }

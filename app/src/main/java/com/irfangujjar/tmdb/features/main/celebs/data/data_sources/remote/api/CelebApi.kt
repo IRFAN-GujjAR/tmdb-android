@@ -10,13 +10,13 @@ interface CelebApi {
 
     @GET("trending/person/day")
     suspend fun trendingCelebs(
-        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.name,
+        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.title,
         @Query(APIQueryFields.PAGE) pageNo: Int
     ): CelebsListModel
 
     @GET("person/popular")
     suspend fun popularCelebs(
-        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.name,
+        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.title,
         @Query(APIQueryFields.PAGE) pageNo: Int
     ): CelebsListModel
 }

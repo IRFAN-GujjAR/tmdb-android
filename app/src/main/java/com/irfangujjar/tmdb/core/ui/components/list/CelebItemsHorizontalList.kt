@@ -22,21 +22,23 @@ fun CelebItemsHorizontalList(
     preview: Boolean = false, values: CelebItemsHorizontalListValues,
     title: String? = null,
     onSeeAllClick: (() -> Unit)? = null,
+    onItemTapped: (Int, String) -> Unit
 ) {
     if (title != null && onSeeAllClick != null)
         Column {
             TextRow(title = title, onSeeAllTapped = onSeeAllClick)
-            HorizontalRow(values, preview)
+            HorizontalRow(values, preview, onItemTapped)
         }
     else
-        HorizontalRow(values, preview)
+        HorizontalRow(values, preview, onItemTapped)
 
 }
 
 @Composable
 private fun HorizontalRow(
     values: CelebItemsHorizontalListValues,
-    preview: Boolean
+    preview: Boolean,
+    onItemTapped: (Int, String) -> Unit
 ) {
     LazyRow(
         modifier = Modifier
@@ -54,7 +56,8 @@ private fun HorizontalRow(
                 values = CelebItemHorizontalValues.fromListValues(
                     values = values,
                     index = it
-                )
+                ),
+                onItemTapped = onItemTapped
             )
         }
     }
@@ -69,7 +72,8 @@ private fun CelebItemsHorizontalPreview() {
                 preview = true,
                 values = CelebItemsHorizontalListValues.dummyData(),
                 title = "Popular",
-                onSeeAllClick = {}
+                onSeeAllClick = {},
+                onItemTapped = {_,_->}
             )
         }
     }

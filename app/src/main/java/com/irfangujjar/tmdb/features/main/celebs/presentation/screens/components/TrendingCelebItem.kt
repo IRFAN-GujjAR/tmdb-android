@@ -1,5 +1,6 @@
 package com.irfangujjar.tmdb.features.main.celebs.presentation.screens.components
 
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -31,10 +33,18 @@ import com.irfangujjar.tmdb.features.main.celebs.domain.models.CelebModel
 
 
 @Composable
-fun TrendingCelebItem(preview: Boolean = false, celeb: CelebModel) {
+fun TrendingCelebItem(
+    preview: Boolean = false, celeb: CelebModel,
+    onCelebItemTapped: (Int, String) -> Unit
+) {
     Row(
         modifier = Modifier
-            .height(80.dp),
+            .height(80.dp)
+            .pointerInput(Unit) {
+                detectTapGestures(onTap = {
+                    onCelebItemTapped(celeb.id, celeb.name)
+                })
+            },
         verticalAlignment = Alignment.CenterVertically
     ) {
         CustomNetworkImage(
@@ -92,7 +102,8 @@ private fun TrendingCelebItemPreview() {
         Surface {
             TrendingCelebItem(
                 preview = true,
-                celeb = CelebModel.dummyData()
+                celeb = CelebModel.dummyData(),
+                onCelebItemTapped = { _, _ -> }
             )
         }
     }

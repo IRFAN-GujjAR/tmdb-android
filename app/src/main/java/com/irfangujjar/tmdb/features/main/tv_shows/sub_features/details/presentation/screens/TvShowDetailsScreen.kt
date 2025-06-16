@@ -30,7 +30,7 @@ fun TvShowDetailsScreen(
     onNavigateToTvShowDetails: (HomeNavKey.TvShowDetailsNavKey) -> Unit,
 ) {
 
-    viewModel.initialize(key.tvId)
+    viewModel.initialize(key)
 
     val state = viewModel.state.collectAsState().value
 
@@ -50,7 +50,7 @@ fun TvShowDetailsScreen(
                     error = state.error,
                     userTheme = userTheme,
                     onRetry = {
-                        viewModel.loadTvShowDetails(tvId = key.tvId)
+                        viewModel.loadTvShowDetails()
                     }
                 )
 

@@ -11,39 +11,39 @@ import retrofit2.http.Query
 interface TvShowApi {
     @GET("tv/airing_today")
     suspend fun airingTodayTvShows(
-        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.name,
+        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.title,
         @Query(APIQueryFields.PAGE) pageNo: Int
     ): TvShowsListModel
 
     @GET("trending/tv/day")
     suspend fun trendingTvShows(
-        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.name,
+        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.title,
         @Query(APIQueryFields.PAGE) pageNo: Int
     ): TvShowsListModel
 
     @GET("tv/top_rated")
     suspend fun topRatedTvShows(
-        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.name,
+        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.title,
         @Query(APIQueryFields.PAGE) pageNo: Int
     ): TvShowsListModel
 
     @GET("tv/popular")
     suspend fun popularTvShows(
-        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.name,
+        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.title,
         @Query(APIQueryFields.PAGE) pageNo: Int
     ): TvShowsListModel
 
     @GET("tv/{${ApiPathFields.TV_ID}}/recommendations")
     suspend fun recommendedTvShows(
         @Path(ApiPathFields.TV_ID) tvId: Int,
-        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.name,
+        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.title,
         @Query(APIQueryFields.PAGE) pageNo: Int
     ): TvShowsListModel
 
     @GET("tv/{${ApiPathFields.TV_ID}}/similar")
     suspend fun similarTvShows(
         @Path(ApiPathFields.TV_ID) tvId: Int,
-        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.name,
+        @Query(APIQueryFields.LANGUAGE) language: String = APIQueryFieldValuesLanguage.ENGLISH.title,
         @Query(APIQueryFields.PAGE) pageNo: Int
     ): TvShowsListModel
 

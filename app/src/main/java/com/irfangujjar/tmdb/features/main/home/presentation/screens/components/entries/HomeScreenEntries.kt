@@ -9,6 +9,7 @@ import androidx.navigation3.runtime.entry
 import com.irfangujjar.tmdb.core.navigation.nav_keys.HomeNavKey
 import com.irfangujjar.tmdb.core.ui.theme.UserTheme
 import com.irfangujjar.tmdb.features.login.presentation.screens.LoginScreen
+import com.irfangujjar.tmdb.features.main.celebs.sub_features.details.presentation.screens.CelebDetailsScreen
 import com.irfangujjar.tmdb.features.main.celebs.sub_features.see_all.presentation.screens.SeeAllCelebsScreen
 import com.irfangujjar.tmdb.features.main.movies.sub_features.details.presentation.screens.MovieDetailsScreen
 import com.irfangujjar.tmdb.features.main.movies.sub_features.see_all.presentation.screens.SeeAllMoviesScreen
@@ -25,6 +26,7 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
     onNavigateToSeeAllCelebs: (HomeNavKey.SeeAllCelebsNavKey) -> Unit,
     onNavigateToMovieDetails: (HomeNavKey.MovieDetailsNavKey) -> Unit,
     onNavigateToTvShowDetails: (HomeNavKey.TvShowDetailsNavKey) -> Unit,
+    onNavigateToCelebDetails: (HomeNavKey.CelebDetailsNavKey) -> Unit,
     onNavigateToLogin: () -> Unit,
     onBackPressed: () -> Unit
 ) {
@@ -37,7 +39,8 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
         onNavigateToSeeCelebs = onNavigateToSeeAllCelebs,
         onNavigateToLogin = onNavigateToLogin,
         onNavigateToMovieDetails = onNavigateToMovieDetails,
-        onNavigateToTvShowDetails = onNavigateToTvShowDetails
+        onNavigateToTvShowDetails = onNavigateToTvShowDetails,
+        onNavigateToCelebDetails = onNavigateToCelebDetails
     )
     entry<HomeNavKey.SeeAllMoviesNavKey> {
         SeeAllMoviesScreen(
@@ -83,6 +86,17 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
             key = it,
             onBackStackPressed = onBackPressed,
             onNavigateToSeeAllTvShows = onNavigateToSeeAllTvShows,
+            onNavigateToTvShowDetails = onNavigateToTvShowDetails
+        )
+    }
+
+    entry<HomeNavKey.CelebDetailsNavKey> {
+        CelebDetailsScreen(
+            outerPadding = outerPadding,
+            userTheme = userTheme,
+            key = it,
+            onBackStackPressed = onBackPressed,
+            onNavigateToMovieDetails = onNavigateToMovieDetails,
             onNavigateToTvShowDetails = onNavigateToTvShowDetails
         )
     }
