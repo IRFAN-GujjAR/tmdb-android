@@ -17,6 +17,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.irfangujjar.tmdb.core.navigation.nav_keys.HomeNavKey
 import com.irfangujjar.tmdb.core.ui.ScreenPadding
 import com.irfangujjar.tmdb.core.ui.components.CustomDivider
 import com.irfangujjar.tmdb.core.ui.components.CustomError
@@ -44,7 +45,8 @@ fun TvShowsScreen(
     viewModel: TvShowsViewModel = hiltViewModel(),
     userTheme: UserTheme,
     snackbarHostState: SnackbarHostState?,
-    onNavigateToSeeAllTvShows: (String, TvShowsCategory) -> Unit
+    onNavigateToSeeAllTvShows: (HomeNavKey.SeeAllTvShowsNavKey) -> Unit,
+    onNavigateToTvShowDetails: (HomeNavKey.TvShowDetailsNavKey) -> Unit
 ) {
 
     Scaffold(topBar = {
@@ -66,44 +68,52 @@ fun TvShowsScreen(
                     }
                 )
 
+                is TvShowsState.Loaded,
                 is TvShowsState.ErrorWithCache -> {
-                    if (viewModel.showAlert) {
-                        LaunchedEffect(Unit) {
-                            snackbarHostState?.showSnackbar(viewModel.alertMessage)
-                            viewModel.clearAlert()
+                    val tvShows: TvShowsModel
+                    if (state is TvShowsState.ErrorWithCache) {
+                        tvShows = state.tvShows
+                        if (viewModel.showAlert) {
+                            LaunchedEffect(Unit) {
+                                snackbarHostState?.showSnackbar(viewModel.alertMessage)
+                                viewModel.clearAlert()
+                            }
                         }
+                    } else {
+                        tvShows = (state as TvShowsState.Loaded).tvShows
                     }
                     TvShowsScreenBody(
                         preview = preview,
                         paddingValues = outerPadding,
                         innerPadding = innerPadding,
-                        tvShows = state.tvShows,
+                        tvShows = tvShows,
                         isRefreshing = viewModel.isRefreshing,
                         onNavigateToSeeAllMovies = {
                             val argId = viewModel.saveSeeAllTvShowsArg(
                                 category = it,
-                                tvShows = state.tvShows
+                                tvShows = tvShows
                             )
-                            onNavigateToSeeAllTvShows(argId, it)
+                            onNavigateToSeeAllTvShows(
+                                HomeNavKey.SeeAllTvShowsNavKey(
+                                    argId = argId,
+                                    category = it,
+                                    tvId = null
+                                )
+                            )
                         },
-                        onRefresh = { viewModel.refresh() }
+                        onRefresh = { viewModel.refresh() },
+                        onItemTapped = { tvId, name, posterPath, backdropPath ->
+                            onNavigateToTvShowDetails(
+                                HomeNavKey.TvShowDetailsNavKey(
+                                    tvId = tvId,
+                                    name = name,
+                                    posterPath = posterPath,
+                                    backdropPath = backdropPath
+                                )
+                            )
+                        }
                     )
                 }
-
-                is TvShowsState.Loaded -> TvShowsScreenBody(
-                    preview = preview,
-                    paddingValues = outerPadding,
-                    innerPadding = innerPadding,
-                    tvShows = state.tvShows,
-                    isRefreshing = viewModel.isRefreshing,
-                    onNavigateToSeeAllMovies = {
-                        val argId =
-                            viewModel.saveSeeAllTvShowsArg(category = it, tvShows = state.tvShows)
-                        onNavigateToSeeAllTvShows(argId, it)
-                    },
-                    onRefresh = { viewModel.refresh() }
-
-                )
 
                 TvShowsState.Loading -> CustomLoading()
             }
@@ -121,7 +131,8 @@ private fun TvShowsScreenBody(
     tvShows: TvShowsModel,
     isRefreshing: Boolean,
     onNavigateToSeeAllMovies: (TvShowsCategory) -> Unit,
-    onRefresh: () -> Unit
+    onRefresh: () -> Unit,
+    onItemTapped: (Int, String, String?, String?) -> Unit
 ) {
     val scrollState = rememberScrollState()
     PullToRefreshBox(
@@ -163,7 +174,8 @@ private fun TvShowsScreenBody(
                 title = TvShowsCategory.AiringToday.name,
                 onSeeAllClick = {
                     onNavigateToSeeAllMovies(TvShowsCategory.AiringToday)
-                }
+                },
+                onItemTapped = onItemTapped
             )
             CustomDivider(topPadding = DividerTopPadding.Double)
             MediaItemsHorizontalList(
@@ -181,7 +193,8 @@ private fun TvShowsScreenBody(
                 title = TvShowsCategory.Trending.name,
                 onSeeAllClick = {
                     onNavigateToSeeAllMovies(TvShowsCategory.Trending)
-                }
+                },
+                onItemTapped
             )
             CustomDivider()
             MediaItemsHorizontalTopRatedList(
@@ -193,9 +206,7 @@ private fun TvShowsScreenBody(
                 onSeeAllClick = {
                     onNavigateToSeeAllMovies(TvShowsCategory.TopRated)
                 },
-                onItemTapped = { id, title, posterPath, backdropPath ->
-
-                }
+                onItemTapped = onItemTapped,
             )
             CustomDivider(topPadding = DividerTopPadding.Double)
             MediaItemsHorizontalList(
@@ -212,7 +223,8 @@ private fun TvShowsScreenBody(
                 title = TvShowsCategory.Popular.name,
                 onSeeAllClick = {
                     onNavigateToSeeAllMovies(TvShowsCategory.Popular)
-                }
+                },
+                onItemTapped = onItemTapped
             )
         }
     }
@@ -237,8 +249,10 @@ private fun PreviewMovieScreen() {
                     popular = emptyList,
                 ),
                 isRefreshing = false,
-                onNavigateToSeeAllMovies = {}
-            ) { }
+                onNavigateToSeeAllMovies = {},
+                onRefresh = {},
+                onItemTapped = { _, _, _, _ -> }
+            )
         }
     }
 }

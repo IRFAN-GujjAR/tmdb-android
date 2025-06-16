@@ -22,6 +22,8 @@ import com.irfangujjar.tmdb.core.models.CollectionModel
 import com.irfangujjar.tmdb.core.models.GenreModel
 import com.irfangujjar.tmdb.core.ui.ScreenPadding
 import com.irfangujjar.tmdb.core.ui.components.CustomDivider
+import com.irfangujjar.tmdb.core.ui.components.DividerBottomPadding
+import com.irfangujjar.tmdb.core.ui.components.DividerTopPadding
 import com.irfangujjar.tmdb.core.ui.components.TextRow
 import com.irfangujjar.tmdb.core.ui.components.image.CustomNetworkImage
 import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
@@ -49,17 +51,17 @@ fun CollectionComp(
         }
     }
 
-    Column(
-        Modifier.padding(top = 12.dp)
-    ) {
-        CustomDivider()
+    Column {
+        CustomDivider(
+            topPadding = DividerTopPadding.OneAndHalf,
+            bottomPadding = DividerBottomPadding.OneAndHalf
+        )
         TextRow("Collection")
         Row(
             modifier = Modifier.padding(
                 start =
                     ScreenPadding.getStartPadding(),
                 end = ScreenPadding.getEndPadding(),
-                top = 12.dp
             )
         ) {
             CustomNetworkImage(
@@ -74,9 +76,11 @@ fun CollectionComp(
                 placeHolderSize = 60.dp,
                 posterSize = PosterSizes.w185,
             )
-            Column(modifier = Modifier
-                .padding(start = 8.dp)
-                .weight(1f)) {
+            Column(
+                modifier = Modifier
+                    .padding(start = 8.dp)
+                    .weight(1f)
+            ) {
                 Text(
                     collection.name,
                     maxLines = 2,

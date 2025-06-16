@@ -24,6 +24,7 @@ fun EntryProviderBuilder<NavKey>.BottomNavEntries(
     onNavigateToSeeAllTvShows: (HomeNavKey.SeeAllTvShowsNavKey) -> Unit,
     onNavigateToSeeCelebs: (HomeNavKey.SeeAllCelebsNavKey) -> Unit,
     onNavigateToMovieDetails: (HomeNavKey.MovieDetailsNavKey) -> Unit,
+    onNavigateToTvShowDetails: (HomeNavKey.TvShowDetailsNavKey) -> Unit,
     onNavigateToLogin: () -> Unit
 ) {
     BottomNavKey.items.forEach { bottomNavKey ->
@@ -33,15 +34,7 @@ fun EntryProviderBuilder<NavKey>.BottomNavEntries(
                     outerPadding = outerPadding,
                     userTheme = userTheme,
                     snackbarHostState = snackBarHostState,
-                    onNavigateToSeeAllMovies = { argId, category ->
-                        onNavigateToSeeAllMovies(
-                            HomeNavKey.SeeAllMoviesNavKey(
-                                argId = argId,
-                                category = category,
-                                movieId = null
-                            )
-                        )
-                    },
+                    onNavigateToSeeAllMovies = onNavigateToSeeAllMovies,
                     onNavigateToMovieDetails = onNavigateToMovieDetails
                 )
             }
@@ -51,15 +44,8 @@ fun EntryProviderBuilder<NavKey>.BottomNavEntries(
                     outerPadding = outerPadding,
                     userTheme = userTheme,
                     snackbarHostState = snackBarHostState,
-                    onNavigateToSeeAllTvShows = { argId, category ->
-                        onNavigateToSeeAllTvShows(
-                            HomeNavKey.SeeAllTvShowsNavKey(
-                                argId = argId,
-                                category = category,
-                                tvId = null
-                            )
-                        )
-                    }
+                    onNavigateToSeeAllTvShows = onNavigateToSeeAllTvShows,
+                    onNavigateToTvShowDetails = onNavigateToTvShowDetails
                 )
             }
 

@@ -45,10 +45,9 @@ fun MoviesScreen(
     viewModel: MoviesViewModel = hiltViewModel(),
     userTheme: UserTheme,
     snackbarHostState: SnackbarHostState?,
-    onNavigateToSeeAllMovies: (String, MoviesCategory) -> Unit,
+    onNavigateToSeeAllMovies: (HomeNavKey.SeeAllMoviesNavKey) -> Unit,
     onNavigateToMovieDetails: (HomeNavKey.MovieDetailsNavKey) -> Unit
 ) {
-
 
     Scaffold(topBar = {
         CustomTopAppBar(
@@ -69,25 +68,39 @@ fun MoviesScreen(
                     }
                 )
 
+                is MoviesState.Loaded,
                 is MoviesState.ErrorWithCache -> {
-                    if (viewModel.showAlert)
-                        LaunchedEffect(Unit) {
-                            snackbarHostState?.showSnackbar(viewModel.alertMessage)
-                            viewModel.clearAlert()
-                        }
+                    val movies: MoviesModel
+                    if (state is MoviesState.ErrorWithCache) {
+                        movies = state.movies
+                        if (viewModel.showAlert)
+                            LaunchedEffect(Unit) {
+                                snackbarHostState?.showSnackbar(viewModel.alertMessage)
+                                viewModel.clearAlert()
+                            }
+                    } else {
+                        movies = (state as MoviesState.Loaded).movies
+                    }
+
                     MoviesScreenBody(
                         preview = preview,
                         paddingValues = outerPadding,
                         innerPadding = innerPadding,
-                        movies = state.movies,
+                        movies = movies,
                         isRefreshing = viewModel.isRefreshing,
                         onRefresh = { viewModel.refresh() },
                         onNavigateToSeeAllMovies = {
                             val argId = viewModel.saveSeeAllMoviesArg(
                                 category = it,
-                                movies = state.movies
+                                movies = movies
                             )
-                            onNavigateToSeeAllMovies(argId, it)
+                            onNavigateToSeeAllMovies(
+                                HomeNavKey.SeeAllMoviesNavKey(
+                                    argId = argId,
+                                    category = it,
+                                    movieId = null
+                                )
+                            )
                         },
                         onItemTapped = { id, title, posterPath, backdropPath ->
                             onNavigateToMovieDetails(
@@ -102,37 +115,12 @@ fun MoviesScreen(
                     )
                 }
 
-                is MoviesState.Loaded -> MoviesScreenBody(
-                    preview = preview,
-                    paddingValues = outerPadding,
-                    innerPadding = innerPadding,
-                    movies = state.movies,
-                    isRefreshing = viewModel.isRefreshing,
-                    onRefresh = { viewModel.refresh() },
-                    onNavigateToSeeAllMovies = {
-                        val argId = viewModel.saveSeeAllMoviesArg(
-                            category = it,
-                            movies = state.movies
-                        )
-                        onNavigateToSeeAllMovies(argId, it)
-                    },
-                    onItemTapped = { id, title, posterPath, backdropPath ->
-                        onNavigateToMovieDetails(
-                            HomeNavKey.MovieDetailsNavKey(
-                                movieId = id,
-                                title = title,
-                                posterPath = posterPath,
-                                backdropPath = backdropPath
-                            )
-                        )
-                    }
-                )
-
                 MoviesState.Loading -> CustomLoading()
             }
         }
 
     }
+
 
 }
 

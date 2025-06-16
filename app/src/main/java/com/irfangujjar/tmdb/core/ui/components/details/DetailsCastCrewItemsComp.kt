@@ -3,8 +3,6 @@ package com.irfangujjar.tmdb.core.ui.components.details
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Surface
@@ -22,6 +20,8 @@ import androidx.compose.ui.unit.sp
 import com.irfangujjar.tmdb.core.models.CreditsModel
 import com.irfangujjar.tmdb.core.ui.ScreenPadding
 import com.irfangujjar.tmdb.core.ui.components.CustomDivider
+import com.irfangujjar.tmdb.core.ui.components.DividerBottomPadding
+import com.irfangujjar.tmdb.core.ui.components.DividerTopPadding
 import com.irfangujjar.tmdb.core.ui.components.TextRow
 import com.irfangujjar.tmdb.core.ui.components.image.CustomNetworkImage
 import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
@@ -31,22 +31,47 @@ import com.irfangujjar.tmdb.core.ui.util.ProfileSizes
 
 
 @Composable
-fun DetailsCastCrewItemsComp(preview: Boolean, credits: CreditsModel) {
-    val cast = credits.cast
-    val length = if (cast.size <= 15) cast.size else 15
+fun DetailsCastCrewItemsComp(
+    preview: Boolean, credits: CreditsModel,
+    onSeeAllClicked: () -> Unit
+) {
+    val castItems = credits.cast
+    val crewItems = credits.crew
+    val length = if (castItems.isNotEmpty()) {
+        if (castItems.size <= 15) castItems.size else 15
+    } else {
+        if (crewItems.size <= 15) crewItems.size else 15
+    }
+    val showSeeAll = length >= 5
 
     Column {
-        Spacer(modifier = Modifier.height(3.dp))
-        CustomDivider()
-        TextRow(title = "Cast & Crew", onSeeAllClick = {
-
-        })
+        CustomDivider(
+            topPadding = DividerTopPadding.OneAndHalf,
+            bottomPadding = if (showSeeAll) DividerBottomPadding.Half else
+                DividerBottomPadding.OneAndHalf
+        )
+        TextRow(
+            title = "Cast & Crew", onSeeAllClick = if (length < 5) null else onSeeAllClicked
+        )
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             contentPadding = PaddingValues(horizontal = ScreenPadding.getHorizontalPadding())
         ) {
             items(length) { index ->
-                val castItem = cast[index]
+                val profilePath: String?
+                val name: String
+                val character: String?
+                if (castItems.isNotEmpty()) {
+                    val castItem = castItems[index]
+                    profilePath = castItem.profilePath
+                    name = castItem.name
+                    character = castItem.character
+                } else {
+                    val crewItem = crewItems[index]
+                    profilePath = crewItem.profilePath
+                    name = crewItem.name
+                    character = crewItem.job ?: crewItem.department
+                }
                 Column(
                     modifier = Modifier.width(102.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -55,7 +80,7 @@ fun DetailsCastCrewItemsComp(preview: Boolean, credits: CreditsModel) {
                         preview = preview,
                         isLandscape = false,
                         type = MediaImageType.Celebrity,
-                        imageUrl = castItem.profilePath,
+                        imageUrl = profilePath,
                         width = 92.dp,
                         height = 92.dp,
                         contentScale = ContentScale.Crop,
@@ -65,14 +90,14 @@ fun DetailsCastCrewItemsComp(preview: Boolean, credits: CreditsModel) {
                         profileSize = ProfileSizes.w185
                     )
                     Text(
-                        castItem.name,
+                        name,
                         fontSize = 12.sp,
                         textAlign = TextAlign.Center,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
                     Text(
-                        castItem.character,
+                        character,
                         fontSize = 11.sp,
                         color = Color.Gray,
                         textAlign = TextAlign.Center,
@@ -93,7 +118,8 @@ private fun DetailsCastCrewItemsCompPreview() {
         Surface {
             DetailsCastCrewItemsComp(
                 preview = true,
-                credits = CreditsModel.dummyData(type = MediaType.Movie)
+                credits = CreditsModel.dummyData(type = MediaType.Movie),
+                onSeeAllClicked = {}
             )
         }
     }

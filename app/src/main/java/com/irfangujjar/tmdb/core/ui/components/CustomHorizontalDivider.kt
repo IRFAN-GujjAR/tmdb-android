@@ -13,13 +13,15 @@ fun CustomDivider(
     topPadding: DividerTopPadding = DividerTopPadding.Default,
     startPadding: DividerStartPadding = DividerStartPadding.Default,
     endPadding: DividerEndPadding = DividerEndPadding.Zero,
-    bottomPadding: DividerBottomPadding = DividerBottomPadding.Default
+    bottomPadding: DividerBottomPadding = DividerBottomPadding.Default,
 ) {
 
     val topPad = when (topPadding) {
         DividerTopPadding.Default -> 12.dp
         DividerTopPadding.Double -> 24.dp
         DividerTopPadding.Zero -> 0.dp
+        DividerTopPadding.OneAndHalf -> 18.dp
+        DividerTopPadding.Half -> 6.dp
     }
     val startPad = when (startPadding) {
         DividerStartPadding.Default -> ScreenPadding.getStartPadding()
@@ -32,6 +34,9 @@ fun CustomDivider(
     val bottomPad = when (bottomPadding) {
         DividerBottomPadding.Default -> 12.dp
         DividerBottomPadding.Zero -> 0.dp
+        DividerBottomPadding.OneAndHalf -> 18.dp
+        DividerBottomPadding.Half -> 6.dp
+        DividerBottomPadding.Double -> 24.dp
     }
 
     HorizontalDivider(
@@ -48,12 +53,17 @@ fun CustomDivider(
 enum class DividerTopPadding {
     Default,
     Double,
-    Zero
+    Half,
+    Zero,
+    OneAndHalf
 }
 
 enum class DividerBottomPadding {
     Default,
-    Zero
+    Double,
+    Half,
+    Zero,
+    OneAndHalf
 }
 
 enum class DividerStartPadding {

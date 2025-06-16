@@ -12,6 +12,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextOverflow
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -41,7 +42,7 @@ fun CustomTopAppBar(
         actions = actions,
         title = {
             if (title != null)
-                Text(title)
+                Text(title, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
     )
 }

@@ -6,6 +6,7 @@ import com.irfangujjar.tmdb.core.models.BackdropImagesModel
 import com.irfangujjar.tmdb.core.models.CollectionModel
 import com.irfangujjar.tmdb.core.models.CreditsModel
 import com.irfangujjar.tmdb.core.models.GenreModel
+import com.irfangujjar.tmdb.core.models.MovieTvDetailsModel
 import com.irfangujjar.tmdb.core.models.ProductionCompanyModel
 import com.irfangujjar.tmdb.core.models.VideosModel
 import com.irfangujjar.tmdb.core.ui.util.MediaType
@@ -40,10 +41,21 @@ data class MovieDetailsModel(
     val recommendedMovies: MoviesListModel?,
     @SerializedName(JsonKeyNames.SIMILAR)
     val similarMovies: MoviesListModel?
-) {
+) : MovieTvDetailsModel {
 
     fun isInformationPresent(): Boolean = releaseDate != null || language != null || budget != 0L
             || revenue != 0L || productionCompanies.isNotEmpty()
+
+    override fun isCastCrewPresent(): Boolean = (credits != null && (credits.cast.isNotEmpty()
+            || credits.crew.isNotEmpty()))
+
+    override fun isVideosPresent(): Boolean = videos != null && videos.videos.isNotEmpty()
+
+    override fun isRecommendationsPresent(): Boolean =
+        recommendedMovies != null && recommendedMovies.movies.isNotEmpty()
+
+    override fun isSimilarPresent(): Boolean =
+        similarMovies != null && similarMovies.movies.isNotEmpty()
 
     companion object {
         fun dummyData(): MovieDetailsModel = MovieDetailsModel(

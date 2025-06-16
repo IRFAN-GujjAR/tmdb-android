@@ -6,6 +6,7 @@ import com.irfangujjar.tmdb.core.models.BackdropImagesModel
 import com.irfangujjar.tmdb.core.models.CreatorModel
 import com.irfangujjar.tmdb.core.models.CreditsModel
 import com.irfangujjar.tmdb.core.models.GenreModel
+import com.irfangujjar.tmdb.core.models.MovieTvDetailsModel
 import com.irfangujjar.tmdb.core.models.NetworkModel
 import com.irfangujjar.tmdb.core.models.ProductionCompanyModel
 import com.irfangujjar.tmdb.core.models.SeasonModel
@@ -28,7 +29,7 @@ data class TvShowDetailsModel(
     val seasons: List<SeasonModel>,
     val credits: CreditsModel?,
     val images: BackdropImagesModel,
-    val videos: VideosModel,
+    val videos: VideosModel?,
     @SerializedName(JsonKeyNames.CREATED_BY)
     val createdBy: List<CreatorModel>,
     @SerializedName(JsonKeyNames.FIRST_AIR_DATE)
@@ -44,7 +45,19 @@ data class TvShowDetailsModel(
     val recommendedTvShows: TvShowsListModel?,
     @SerializedName(JsonKeyNames.SIMILAR)
     val similarTvShows: TvShowsListModel?
-) {
+) : MovieTvDetailsModel {
+
+    override fun isCastCrewPresent(): Boolean = (credits != null && (credits.cast.isNotEmpty()
+            || credits.crew.isNotEmpty()))
+
+    override fun isVideosPresent(): Boolean = videos != null && videos.videos.isNotEmpty()
+    override fun isRecommendationsPresent(): Boolean =
+        recommendedTvShows != null && recommendedTvShows.tvShows.isNotEmpty()
+
+    override fun isSimilarPresent(): Boolean =
+        similarTvShows != null && similarTvShows.tvShows.isNotEmpty()
+
+
     companion object {
         fun dummyData(): TvShowDetailsModel =
             TvShowDetailsModel(

@@ -12,6 +12,7 @@ import com.irfangujjar.tmdb.features.login.presentation.screens.LoginScreen
 import com.irfangujjar.tmdb.features.main.celebs.sub_features.see_all.presentation.screens.SeeAllCelebsScreen
 import com.irfangujjar.tmdb.features.main.movies.sub_features.details.presentation.screens.MovieDetailsScreen
 import com.irfangujjar.tmdb.features.main.movies.sub_features.see_all.presentation.screens.SeeAllMoviesScreen
+import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.details.presentation.screens.TvShowDetailsScreen
 import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.see_all.presentation.screens.SeeAllTvShowsScreen
 
 @Composable
@@ -23,6 +24,7 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
     onNavigateToSeeAllTvShows: (HomeNavKey.SeeAllTvShowsNavKey) -> Unit,
     onNavigateToSeeAllCelebs: (HomeNavKey.SeeAllCelebsNavKey) -> Unit,
     onNavigateToMovieDetails: (HomeNavKey.MovieDetailsNavKey) -> Unit,
+    onNavigateToTvShowDetails: (HomeNavKey.TvShowDetailsNavKey) -> Unit,
     onNavigateToLogin: () -> Unit,
     onBackPressed: () -> Unit
 ) {
@@ -34,7 +36,8 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
         onNavigateToSeeAllTvShows = onNavigateToSeeAllTvShows,
         onNavigateToSeeCelebs = onNavigateToSeeAllCelebs,
         onNavigateToLogin = onNavigateToLogin,
-        onNavigateToMovieDetails = onNavigateToMovieDetails
+        onNavigateToMovieDetails = onNavigateToMovieDetails,
+        onNavigateToTvShowDetails = onNavigateToTvShowDetails
     )
     entry<HomeNavKey.SeeAllMoviesNavKey> {
         SeeAllMoviesScreen(
@@ -70,6 +73,17 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
             onBackStackPressed = onBackPressed,
             onNavigateToSeeAllMovies = onNavigateToSeeAllMovies,
             onNavigateToMovieDetails = onNavigateToMovieDetails
+        )
+    }
+
+    entry<HomeNavKey.TvShowDetailsNavKey> {
+        TvShowDetailsScreen(
+            outerPadding = outerPadding,
+            userTheme = userTheme,
+            key = it,
+            onBackStackPressed = onBackPressed,
+            onNavigateToSeeAllTvShows = onNavigateToSeeAllTvShows,
+            onNavigateToTvShowDetails = onNavigateToTvShowDetails
         )
     }
 

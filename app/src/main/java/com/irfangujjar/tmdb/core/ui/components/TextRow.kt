@@ -23,7 +23,11 @@ fun TextRow(title: String, onSeeAllClick: (() -> Unit)? = null) {
     if (onSeeAllClick == null)
         Text(
             title, fontSize = 17.sp, fontWeight = FontWeight.W500,
-            modifier = Modifier.padding(horizontal = ScreenPadding.getHorizontalPadding())
+            modifier = Modifier.padding(
+                start = ScreenPadding.getStartPadding(),
+                end = ScreenPadding.getEndPadding(),
+                bottom = 12.dp
+            )
         )
     else
         Row(

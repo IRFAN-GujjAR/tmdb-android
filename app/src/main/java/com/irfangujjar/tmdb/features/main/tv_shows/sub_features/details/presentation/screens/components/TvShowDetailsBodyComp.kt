@@ -1,4 +1,4 @@
-package com.irfangujjar.tmdb.features.main.movies.sub_features.details.presentation.screens.components
+package com.irfangujjar.tmdb.features.main.tv_shows.sub_features.details.presentation.screens.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -25,18 +25,18 @@ import com.irfangujjar.tmdb.core.ui.components.list.values.MediaItemsHorizontalL
 import com.irfangujjar.tmdb.core.ui.components.list.values.MediaItemsHorizontalListValues
 import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
 import com.irfangujjar.tmdb.core.ui.util.MediaType
-import com.irfangujjar.tmdb.core.ui.util.MoviesCategory
-import com.irfangujjar.tmdb.features.main.movies.sub_features.details.domain.models.MovieDetailsModel
+import com.irfangujjar.tmdb.core.ui.util.TvShowsCategory
+import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.details.domain.models.TvShowDetailsModel
 
 
 @Composable
-fun MovieDetailsBody(
+fun TvShowDetailsBodyComp(
     preview: Boolean,
     outerPadding: PaddingValues,
     innerPadding: PaddingValues,
-    movieDetails: MovieDetailsModel,
-    onNavigateToSeeAllMovies: (MoviesCategory) -> Unit,
-    onNavigateToMovieDetails: (HomeNavKey.MovieDetailsNavKey) -> Unit
+    tvShowDetails: TvShowDetailsModel,
+    onNavigateToSeeAllTvShows: (TvShowsCategory) -> Unit,
+    onNavigateToTvShowDetails: (HomeNavKey.TvShowDetailsNavKey) -> Unit
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -55,65 +55,49 @@ fun MovieDetailsBody(
         DetailsBackdropComp(
             preview = preview,
             type = MediaType.Movie,
-            backdropDetailsPath = movieDetails.backdropPath,
-            backdropPath = movieDetails.backdropPath,
-            posterDetailsPath = movieDetails.posterPath,
-            posterPath = movieDetails.posterPath,
-            title = movieDetails.title,
-            voteAverage = movieDetails.voteAverage,
-            voteCount = movieDetails.voteCount,
-            genres = movieDetails.genres,
-            overview = movieDetails.overview,
+            backdropDetailsPath = tvShowDetails.backdropPath,
+            backdropPath = tvShowDetails.backdropPath,
+            posterDetailsPath = tvShowDetails.posterPath,
+            posterPath = tvShowDetails.posterPath,
+            title = tvShowDetails.name,
+            voteAverage = tvShowDetails.voteAverage,
+            voteCount = tvShowDetails.voteCount,
+            genres = tvShowDetails.genres,
+            overview = tvShowDetails.overview,
         )
         Spacer(modifier = Modifier.height(12.dp))
-        if (movieDetails.collection != null)
-            CollectionComp(
-                preview = preview,
-                collection = movieDetails.collection,
-                genres = movieDetails.genres,
-                posterPath = movieDetails.posterPath,
-                backdropPath = movieDetails.backdropPath
-            )
-        if (movieDetails.isCastCrewPresent())
+        if (tvShowDetails.isCastCrewPresent())
             DetailsCastCrewItemsComp(
                 preview = preview,
-                credits = movieDetails.credits!!,
+                credits = tvShowDetails.credits!!,
                 onSeeAllClicked = {}
             )
-        if (movieDetails.isVideosPresent())
+        if (tvShowDetails.isVideosPresent())
             YoutubeVideosComp(
                 preview = preview,
-                videos = movieDetails.videos!!
+                videos = tvShowDetails.videos!!
             )
-        if (movieDetails.isInformationPresent())
-            MovieDetailsInformationComp(
-                releaseDate = movieDetails.releaseDate,
-                language = movieDetails.language,
-                budget = movieDetails.budget,
-                revenue = movieDetails.revenue,
-                productionCompanies = movieDetails.productionCompanies
-            )
-        if (movieDetails.isRecommendationsPresent()) {
+        if (tvShowDetails.isRecommendationsPresent()) {
             CustomDivider(
                 topPadding = DividerTopPadding.OneAndHalf,
                 bottomPadding = DividerBottomPadding.Half
             )
             MediaItemsHorizontalList(
                 preview = preview,
-                values = MediaItemsHorizontalListValues.fromMovies(
-                    movies = movieDetails.recommendedMovies!!.movies,
+                values = MediaItemsHorizontalListValues.fromTvShows(
+                    tvShows = tvShowDetails.recommendedTvShows!!.tvShows,
                     isLandscape = false,
-                    configValues = MediaItemsHorizontalListConfigValues.movieConfig(
-                        category = MoviesCategory.DetailsRecommended
+                    configValues = MediaItemsHorizontalListConfigValues.tvConfig(
+                        category = TvShowsCategory.DetailsRecommended
                     )
                 ),
-                title = MoviesCategory.DetailsRecommended.title,
-                onSeeAllClick = { onNavigateToSeeAllMovies(MoviesCategory.DetailsRecommended) },
+                title = TvShowsCategory.DetailsRecommended.title,
+                onSeeAllClick = { onNavigateToSeeAllTvShows(TvShowsCategory.DetailsRecommended) },
                 onItemTapped = { id, title, posterPath, backdropPath ->
-                    onNavigateToMovieDetails(
-                        HomeNavKey.MovieDetailsNavKey(
-                            movieId = id,
-                            title = title,
+                    onNavigateToTvShowDetails(
+                        HomeNavKey.TvShowDetailsNavKey(
+                            tvId = id,
+                            name = title,
                             posterPath = posterPath,
                             backdropPath = backdropPath
                         )
@@ -121,27 +105,27 @@ fun MovieDetailsBody(
                 }
             )
         }
-        if (movieDetails.isSimilarPresent()) {
+        if (tvShowDetails.isSimilarPresent()) {
             CustomDivider(
                 topPadding = DividerTopPadding.OneAndHalf,
                 bottomPadding = DividerBottomPadding.Half
             )
             MediaItemsHorizontalList(
                 preview = preview,
-                values = MediaItemsHorizontalListValues.fromMovies(
-                    movies = movieDetails.similarMovies!!.movies,
+                values = MediaItemsHorizontalListValues.fromTvShows(
+                    tvShows = tvShowDetails.similarTvShows!!.tvShows,
                     isLandscape = false,
-                    configValues = MediaItemsHorizontalListConfigValues.movieConfig(
-                        category = MoviesCategory.DetailsSimilar
+                    configValues = MediaItemsHorizontalListConfigValues.tvConfig(
+                        category = TvShowsCategory.DetailsSimilar
                     )
                 ),
-                title = MoviesCategory.DetailsSimilar.title,
-                onSeeAllClick = { onNavigateToSeeAllMovies(MoviesCategory.DetailsSimilar) },
+                title = TvShowsCategory.DetailsSimilar.title,
+                onSeeAllClick = { onNavigateToSeeAllTvShows(TvShowsCategory.DetailsSimilar) },
                 onItemTapped = { id, title, posterPath, backdropPath ->
-                    onNavigateToMovieDetails(
-                        HomeNavKey.MovieDetailsNavKey(
-                            movieId = id,
-                            title = title,
+                    onNavigateToTvShowDetails(
+                        HomeNavKey.TvShowDetailsNavKey(
+                            tvId = id,
+                            name = title,
                             posterPath = posterPath,
                             backdropPath = backdropPath
                         )
@@ -154,18 +138,18 @@ fun MovieDetailsBody(
 
 @Preview
 @Composable
-private fun MovieDetailsBodyPreview() {
+private fun TvShowDetailsBodyCompPreview() {
     TMDbTheme {
         Surface {
-            MovieDetailsBody(
+            TvShowDetailsBodyComp(
                 preview = true,
                 outerPadding = PaddingValues(0.dp),
                 innerPadding = PaddingValues(0.dp),
-                movieDetails = MovieDetailsModel.dummyData(),
-                onNavigateToSeeAllMovies = {
+                tvShowDetails = TvShowDetailsModel.dummyData(),
+                onNavigateToSeeAllTvShows = {
 
                 },
-                onNavigateToMovieDetails = {
+                onNavigateToTvShowDetails = {
 
                 }
             )

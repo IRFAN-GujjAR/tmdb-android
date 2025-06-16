@@ -32,6 +32,8 @@ import com.irfangujjar.tmdb.R
 import com.irfangujjar.tmdb.core.models.VideosModel
 import com.irfangujjar.tmdb.core.ui.ScreenPadding
 import com.irfangujjar.tmdb.core.ui.components.CustomDivider
+import com.irfangujjar.tmdb.core.ui.components.DividerBottomPadding
+import com.irfangujjar.tmdb.core.ui.components.DividerTopPadding
 import com.irfangujjar.tmdb.core.ui.components.TextRow
 import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
 import com.irfangujjar.tmdb.core.ui.util.MediaType
@@ -45,10 +47,12 @@ fun YoutubeVideosComp(
 ) {
     val context = LocalContext.current
     Column {
-        CustomDivider()
+        CustomDivider(
+            topPadding = DividerTopPadding.OneAndHalf,
+            bottomPadding = DividerBottomPadding.OneAndHalf
+        )
         TextRow(title = "Videos")
         LazyRow(
-            modifier = Modifier.padding(top = 12.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             contentPadding = PaddingValues(horizontal = ScreenPadding.getHorizontalPadding())
         ) {

@@ -2,7 +2,6 @@ package com.irfangujjar.tmdb.features.main.movies.sub_features.details.presentat
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -12,10 +11,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.irfangujjar.tmdb.core.models.ProductionCompanyModel
 import com.irfangujjar.tmdb.core.ui.components.CustomDivider
+import com.irfangujjar.tmdb.core.ui.components.DividerBottomPadding
 import com.irfangujjar.tmdb.core.ui.components.DividerTopPadding
 import com.irfangujjar.tmdb.core.ui.components.TextRow
 import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
@@ -33,9 +32,12 @@ fun MovieDetailsInformationComp(
     productionCompanies: List<ProductionCompanyModel>
 ) {
     Column {
-        CustomDivider(topPadding = DividerTopPadding.Double)
+        CustomDivider(
+            topPadding = DividerTopPadding.OneAndHalf,
+            bottomPadding = DividerBottomPadding.OneAndHalf
+        )
         TextRow("Information")
-        Row(modifier = Modifier.padding(top = 8.dp)) {
+        Row {
             Column(
                 horizontalAlignment = Alignment.End,
                 modifier = Modifier.weight(1f)

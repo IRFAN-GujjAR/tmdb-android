@@ -122,7 +122,8 @@ fun HomeScreen(
                     onNavigateToSeeAllTvShows = { addToBackStack(it) },
                     onNavigateToSeeAllCelebs = { addToBackStack(it) },
                     onNavigateToLogin = { addToBackStack(HomeNavKey.LoginNavKey) },
-                    onNavigateToMovieDetails = { addToBackStack(it) }
+                    onNavigateToMovieDetails = { addToBackStack(it) },
+                    onNavigateToTvShowDetails = { addToBackStack(it) }
                 )
             }
         )
