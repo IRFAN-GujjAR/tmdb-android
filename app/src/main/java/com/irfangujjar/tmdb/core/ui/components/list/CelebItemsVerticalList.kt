@@ -32,7 +32,8 @@ fun CelebItemsVerticalList(
     innerPadding: PaddingValues? = null,
     state: LazyListState? = null,
     onScrollThresholdReached: () -> Unit = {},
-    values: CelebItemsVerticalListValues
+    values: CelebItemsVerticalListValues,
+    onItemTapped: (Int, String) -> Unit
 ) {
     val padding = ScreenPadding.getPadding(
         outerPaddingValues = outerPadding,
@@ -43,7 +44,10 @@ fun CelebItemsVerticalList(
         LazyColumn(
             contentPadding = padding
         ) {
-            itemContent(preview = preview, values = values)
+            itemContent(
+                preview = preview, values = values,
+                onItemTapped = onItemTapped
+            )
         }
     } else {
         val hasAlreadyTriggered = rememberSaveable { mutableStateOf(false) }
@@ -86,7 +90,10 @@ fun CelebItemsVerticalList(
             contentPadding = padding,
             modifier = Modifier.nestedScroll(overScrollConnection)
         ) {
-            itemContent(preview = preview, values = values)
+            itemContent(
+                preview = preview, values = values,
+                onItemTapped = onItemTapped
+            )
         }
     }
 }
@@ -94,13 +101,15 @@ fun CelebItemsVerticalList(
 private fun LazyListScope.itemContent(
     preview: Boolean,
     values: CelebItemsVerticalListValues,
+    onItemTapped: (Int, String) -> Unit
 ) {
     items(values.celebsIds.size) { index ->
         CelebItemVertical(
             preview = preview, values = CelebItemVerticalValues.fromListValues(
                 values = values,
                 index = index
-            )
+            ),
+            onItemTapped = onItemTapped
         )
         if (index < values.celebsIds.size - 1) {
             CustomDivider(
@@ -125,7 +134,8 @@ private fun CelebItemsVerticalListPreview() {
         Surface {
             CelebItemsVerticalList(
                 preview = true,
-                values = CelebItemsVerticalListValues.dummyData()
+                values = CelebItemsVerticalListValues.dummyData(),
+                onItemTapped = { id, name -> }
             )
         }
     }

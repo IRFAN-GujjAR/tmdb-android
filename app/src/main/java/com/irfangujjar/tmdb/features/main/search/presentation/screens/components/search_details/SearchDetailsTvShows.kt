@@ -27,6 +27,7 @@ fun SearchDetailsTvShows(
     tvShowsList: TvShowsListModel,
     query: String,
     viewModel: SearchTvShowsViewModel = hiltViewModel(),
+    onTvShowItemTapped: (Int, String, String?, String?) -> Unit
 ) {
 
     viewModel.initializeValues(
@@ -48,10 +49,9 @@ fun SearchDetailsTvShows(
             values = MediaItemsVerticalListValues.fromTvShows(tvShows = tvShows),
             onScrollThresholdReached = {
                 viewModel.loadMore()
-            }
-        ) {
-
-        }
+            },
+            onItemTapped = onTvShowItemTapped
+        )
     }
 }
 
@@ -65,7 +65,8 @@ private fun SearchDetailsTvShowsPreview() {
                 bottomPadding = 0.dp,
                 listState = null,
                 tvShowsList = TvShowsListModel.dummyData(),
-                query = ""
+                query = "",
+                onTvShowItemTapped = {_,_,_,_->}
             )
         }
     }

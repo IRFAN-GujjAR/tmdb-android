@@ -119,6 +119,7 @@ private fun Celebrity(
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
+                .size(width = width, height = height)
                 .clip(CircleShape)
                 .border(
                     width = 0.5.dp,

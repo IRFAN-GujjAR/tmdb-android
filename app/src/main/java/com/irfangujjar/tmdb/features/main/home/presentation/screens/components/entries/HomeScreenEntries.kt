@@ -48,6 +48,7 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
             snackbarHostState = snackBarHostState,
             key = it,
             onBackStackPressed = onBackPressed,
+            onNavigateToMovieDetails = onNavigateToMovieDetails
         )
     }
     entry<HomeNavKey.SeeAllTvShowsNavKey> {
@@ -55,7 +56,8 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
             outerPadding = outerPadding,
             snackbarHostState = snackBarHostState,
             key = it,
-            onBackStackPressed = onBackPressed
+            onBackStackPressed = onBackPressed,
+            onNavigateToTvShowDetails = onNavigateToTvShowDetails
         )
     }
 
@@ -64,7 +66,8 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
             outerPadding = outerPadding,
             snackbarHostState = snackBarHostState,
             key = it,
-            onBackStackPressed = onBackPressed
+            onBackStackPressed = onBackPressed,
+            onNavigateToCelebDetails = onNavigateToCelebDetails
         )
     }
 

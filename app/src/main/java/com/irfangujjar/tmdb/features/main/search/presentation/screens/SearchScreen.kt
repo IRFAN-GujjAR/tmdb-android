@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.irfangujjar.tmdb.core.navigation.nav_keys.HomeNavKey
 import com.irfangujjar.tmdb.core.ui.components.CustomTopAppBar
 import com.irfangujjar.tmdb.core.ui.theme.UserTheme
 import com.irfangujjar.tmdb.core.ui.util.hideKeyboardAndUnFocus
@@ -34,7 +35,9 @@ fun SearchScreen(
     outerPadding: PaddingValues,
     snackbarHostState: SnackbarHostState?,
     viewModel: SearchViewModel = hiltViewModel(),
-    onNavigateToDetailsPage: () -> Unit
+    onNavigateToMovieDetails: (HomeNavKey.MovieDetailsNavKey) -> Unit,
+    onNavigateToTvShowDetails: (HomeNavKey.TvShowDetailsNavKey) -> Unit,
+    onNavigateToCelebDetails: (HomeNavKey.CelebDetailsNavKey) -> Unit
 ) {
     val state = viewModel.state.collectAsState()
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -97,7 +100,34 @@ fun SearchScreen(
                     outerPaddingValues = outerPadding,
                     innerPaddingValues = innerPadding,
                     viewModel = viewModel,
-                    onNavigateToDetails = onNavigateToDetailsPage
+                    onMovieItemTapped = { movieId, title, posterPath, backdropPath ->
+                        onNavigateToMovieDetails(
+                            HomeNavKey.MovieDetailsNavKey(
+                                movieId = movieId,
+                                title = title,
+                                posterPath = posterPath,
+                                backdropPath = backdropPath
+                            )
+                        )
+                    },
+                    onTvShowItemTapped = { tvId, name, posterPath, backdropPath ->
+                        onNavigateToTvShowDetails(
+                            HomeNavKey.TvShowDetailsNavKey(
+                                tvId = tvId,
+                                name = name,
+                                posterPath = posterPath,
+                                backdropPath = backdropPath
+                            )
+                        )
+                    },
+                    onCelebItemTapped = { celebId, name ->
+                        onNavigateToCelebDetails(
+                            HomeNavKey.CelebDetailsNavKey(
+                                celebId = celebId,
+                                name = name
+                            )
+                        )
+                    }
                 )
             }
         }

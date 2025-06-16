@@ -28,7 +28,7 @@ fun SearchDetailsMovies(
     listState: LazyListState?,
     query: String,
     viewModel: SearchMoviesViewModel = hiltViewModel(),
-    onItemClicked: (Int) -> Unit,
+    onMovieItemTapped: (Int, String, String?, String?) -> Unit
 ) {
     viewModel.initializeValues(
         query = query,
@@ -48,11 +48,9 @@ fun SearchDetailsMovies(
             values = MediaItemsVerticalListValues.fromMovies(movies = movies),
             onScrollThresholdReached = {
                 viewModel.loadMore()
-            }
-        ) {
-//            viewModel.updateQuery("New Hello")
-//            onItemClicked(it)
-        }
+            },
+            onItemTapped = onMovieItemTapped
+        )
     }
 }
 
@@ -66,10 +64,9 @@ private fun SearchDetailsMoviesPreview() {
                 bottomPadding = 0.dp,
                 listState = null,
                 moviesList = MoviesListModel.dummyData(),
-                query = ""
-            ) {
-
-            }
+                query = "",
+                onMovieItemTapped = { _, _, _, _->}
+            )
         }
     }
 }

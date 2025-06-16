@@ -2,16 +2,16 @@ package com.irfangujjar.tmdb.features.main.celebs.presentation.screens.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.irfangujjar.tmdb.core.ui.ScreenPadding
 import com.irfangujjar.tmdb.core.ui.components.TextRow
 import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
 import com.irfangujjar.tmdb.features.main.celebs.domain.models.CelebModel
@@ -24,30 +24,18 @@ fun TrendingCelebs(
 ) {
     Column {
         TextRow(title = "Trending", onSeeAllTapped = onSeeAllClick)
-        LazyRow(
-            modifier = Modifier.padding(top = 4.dp),
-            contentPadding = PaddingValues(
-                horizontal = ScreenPadding.getHorizontalPadding(),
-            ),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            items(4) { outerIndex ->
-                Column(
-                    modifier = Modifier.width(310.dp),
-                    verticalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    repeat(5) { innerIndex ->
-                        var itemIndex = innerIndex
-                        if (outerIndex != 0) {
-                            itemIndex = (outerIndex * 5) + innerIndex
-                        }
-                        TrendingCelebItem(
-                            preview = preview,
-                            celeb = celebs[itemIndex],
-                            onCelebItemTapped = onCelebItemTapped
-                        )
-                    }
-                }
+        LazyHorizontalGrid(
+            modifier = Modifier.fillMaxWidth()
+                .height(350.dp),
+            rows = GridCells.Fixed(4),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+            items(celebs){
+                TrendingCelebItem(
+                    preview = preview,
+                    celeb=it,
+                    onCelebItemTapped = onCelebItemTapped
+                )
             }
         }
     }

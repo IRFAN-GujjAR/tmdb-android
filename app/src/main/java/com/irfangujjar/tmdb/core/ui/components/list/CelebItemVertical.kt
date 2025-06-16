@@ -1,5 +1,6 @@
 package com.irfangujjar.tmdb.core.ui.components.list
 
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -29,9 +31,17 @@ import com.irfangujjar.tmdb.core.ui.util.ProfileSizes
 
 
 @Composable
-fun CelebItemVertical(preview: Boolean, values: CelebItemVerticalValues) {
+fun CelebItemVertical(
+    preview: Boolean, values: CelebItemVerticalValues,
+    onItemTapped: (Int, String) -> Unit
+) {
     Row(
         modifier = Modifier
+            .pointerInput(Unit) {
+                detectTapGestures(onTap = {
+                    onItemTapped(values.id, values.name)
+                })
+            }
             .padding(end = 24.dp)
     ) {
         CustomNetworkImage(
@@ -92,7 +102,8 @@ private fun CelebItemVerticalPreview() {
         Surface {
             CelebItemVertical(
                 preview = true,
-                values = CelebItemVerticalValues.dummyData()
+                values = CelebItemVerticalValues.dummyData(),
+                onItemTapped = {id,name->}
             )
         }
     }

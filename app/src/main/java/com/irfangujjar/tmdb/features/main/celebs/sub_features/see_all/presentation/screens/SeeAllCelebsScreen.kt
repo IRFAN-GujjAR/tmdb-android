@@ -25,7 +25,8 @@ fun SeeAllCelebsScreen(
     snackbarHostState: SnackbarHostState,
     key: HomeNavKey.SeeAllCelebsNavKey,
     viewModel: SeeAllCelebsViewModel = hiltViewModel(),
-    onBackStackPressed: () -> Unit
+    onBackStackPressed: () -> Unit,
+    onNavigateToCelebDetails: (HomeNavKey.CelebDetailsNavKey) -> Unit
 ) {
 
     val listState = rememberLazyListState()
@@ -59,6 +60,14 @@ fun SeeAllCelebsScreen(
                 values = CelebItemsVerticalListValues.fromCelebs(celebs = celebrities),
                 onScrollThresholdReached = {
                     viewModel.loadMore()
+                },
+                onItemTapped = { celebId, name ->
+                    onNavigateToCelebDetails(
+                        HomeNavKey.CelebDetailsNavKey(
+                            celebId = celebId,
+                            name = name
+                        )
+                    )
                 }
             )
         }

@@ -38,7 +38,9 @@ fun SearchDetails(
     outerPaddingValues: PaddingValues,
     innerPaddingValues: PaddingValues,
     viewModel: SearchViewModel,
-    onNavigateToDetails: () -> Unit
+    onMovieItemTapped: (Int, String, String?, String?) -> Unit,
+    onTvShowItemTapped: (Int, String, String?, String?) -> Unit,
+    onCelebItemTapped: (Int, String) -> Unit
 ) {
 
     val state = viewModel.detailsState.collectAsState().value
@@ -58,8 +60,10 @@ fun SearchDetails(
             outerPaddingValues = outerPaddingValues,
             innerPaddingValues = innerPaddingValues,
             searchDetails = state.searchDetails,
-            onNavigateToDetails = onNavigateToDetails,
-            query = viewModel.query
+            query = viewModel.query,
+            onMovieItemTapped = onMovieItemTapped,
+            onTvShowItemTapped = onTvShowItemTapped,
+            onCelebItemTapped = onCelebItemTapped
         )
     }
 }
@@ -72,7 +76,9 @@ private fun SearchDetailsBody(
     innerPaddingValues: PaddingValues,
     searchDetails: SearchDetailsModel,
     query: String,
-    onNavigateToDetails: () -> Unit
+    onMovieItemTapped: (Int, String, String?, String?) -> Unit,
+    onTvShowItemTapped: (Int, String, String?, String?) -> Unit,
+    onCelebItemTapped: (Int, String) -> Unit
 ) {
 
     val bottomPadding = ScreenPadding.getBottomPadding(
@@ -93,10 +99,9 @@ private fun SearchDetailsBody(
                 moviesList = searchDetails.moviesList,
                 topPadding = topPadding,
                 bottomPadding = bottomPadding,
-                listState = null
-            ) {
-                onNavigateToDetails()
-            }
+                listState = null,
+                onMovieItemTapped = onMovieItemTapped
+            )
         } else if (!searchDetails.isTvShowsEmpty()) {
             SearchDetailsTvShows(
                 preview = preview,
@@ -104,7 +109,8 @@ private fun SearchDetailsBody(
                 bottomPadding = bottomPadding,
                 listState = null,
                 tvShowsList = searchDetails.tvShowsList,
-                query = query
+                query = query,
+                onTvShowItemTapped = onTvShowItemTapped
             )
         } else {
             SearchDetailsCelebs(
@@ -113,7 +119,8 @@ private fun SearchDetailsBody(
                 bottomPadding = bottomPadding,
                 listState = null,
                 celebsList = searchDetails.celebsList,
-                query = query
+                query = query,
+                onCelebItemTapped = onCelebItemTapped
             )
         }
     } else {
@@ -177,7 +184,6 @@ private fun SearchDetailsBody(
                     topPadding = topPadding,
                     bottomPadding = bottomPadding,
                     listStates = listStates,
-                    onNavigateToDetails = onNavigateToDetails,
                     query = query,
                     onSeeAllMoviesClick = {
                         selectedIndex = 1
@@ -187,7 +193,10 @@ private fun SearchDetailsBody(
                     },
                     onSeeAllCelebsClick = {
                         selectedIndex = 3
-                    }
+                    },
+                    onMovieItemTapped = onMovieItemTapped,
+                    onTvShowItemTapped = onTvShowItemTapped,
+                    onCelebItemTapped = onCelebItemTapped
                 )
             }
         }
@@ -206,7 +215,9 @@ private fun HorizontalPagerBody(
     onSeeAllMoviesClick: () -> Unit,
     onSeeAllTvShowsClick: () -> Unit,
     onSeeAllCelebsClick: () -> Unit,
-    onNavigateToDetails: () -> Unit
+    onMovieItemTapped: (Int, String, String?, String?) -> Unit,
+    onTvShowItemTapped: (Int, String, String?, String?) -> Unit,
+    onCelebItemTapped: (Int, String) -> Unit
 ) {
     if (searchDetails.isAllPresent()) {
         when (index) {
@@ -218,7 +229,10 @@ private fun HorizontalPagerBody(
                 bottomPadding = bottomPadding,
                 onSeeAllMoviesClick = onSeeAllMoviesClick,
                 onSeeAllTvShowsClick = onSeeAllTvShowsClick,
-                onSeeAllCelebsClick = onSeeAllCelebsClick
+                onSeeAllCelebsClick = onSeeAllCelebsClick,
+                onMovieItemTapped = onMovieItemTapped,
+                onTvShowItemTapped = onTvShowItemTapped,
+                onCelebItemTapped = onCelebItemTapped
             )
 
             1 -> SearchDetailsMovies(
@@ -226,17 +240,17 @@ private fun HorizontalPagerBody(
                 moviesList = searchDetails.moviesList,
                 bottomPadding = bottomPadding,
                 query = query,
-                listState = listStates[0]
-            ) {
-                onNavigateToDetails()
-            }
+                listState = listStates[0],
+                onMovieItemTapped = onMovieItemTapped
+            )
 
             2 -> SearchDetailsTvShows(
                 preview = preview,
                 bottomPadding = bottomPadding,
                 listState = listStates[1],
                 tvShowsList = searchDetails.tvShowsList,
-                query = query
+                query = query,
+                onTvShowItemTapped = onTvShowItemTapped
             )
 
             3 -> SearchDetailsCelebs(
@@ -244,7 +258,8 @@ private fun HorizontalPagerBody(
                 bottomPadding = bottomPadding,
                 listState = listStates[2],
                 celebsList = searchDetails.celebsList,
-                query = query
+                query = query,
+                onCelebItemTapped = onCelebItemTapped
             )
         }
     } else {
@@ -256,17 +271,17 @@ private fun HorizontalPagerBody(
                         moviesList = searchDetails.moviesList,
                         bottomPadding = bottomPadding,
                         query = query,
-                        listState = listStates[0]
-                    ) {
-                        onNavigateToDetails()
-                    }
+                        listState = listStates[0],
+                        onMovieItemTapped = onMovieItemTapped
+                    )
                 else if (!searchDetails.isTvShowsEmpty())
                     SearchDetailsTvShows(
                         preview = preview,
                         bottomPadding = bottomPadding,
                         listState = listStates[0],
                         tvShowsList = searchDetails.tvShowsList,
-                        query = query
+                        query = query,
+                        onTvShowItemTapped = onTvShowItemTapped
                     )
                 else
                     SearchDetailsCelebs(
@@ -274,7 +289,8 @@ private fun HorizontalPagerBody(
                         listState = listStates[0],
                         bottomPadding = bottomPadding,
                         celebsList = searchDetails.celebsList,
-                        query = query
+                        query = query,
+                        onCelebItemTapped = onCelebItemTapped
                     )
             }
 
@@ -285,7 +301,8 @@ private fun HorizontalPagerBody(
                         bottomPadding = bottomPadding,
                         listState = listStates[1],
                         tvShowsList = searchDetails.tvShowsList,
-                        query = query
+                        query = query,
+                        onTvShowItemTapped = onTvShowItemTapped
                     )
                 else
                     SearchDetailsCelebs(
@@ -293,7 +310,8 @@ private fun HorizontalPagerBody(
                         bottomPadding = bottomPadding,
                         listState = listStates[1],
                         celebsList = searchDetails.celebsList,
-                        query = query
+                        query = query,
+                        onCelebItemTapped = onCelebItemTapped
                     )
             }
         }

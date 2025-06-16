@@ -24,7 +24,8 @@ fun SeeAllMoviesScreen(
     snackbarHostState: SnackbarHostState,
     key: HomeNavKey.SeeAllMoviesNavKey,
     viewModel: SeeAllMoviesViewModel = hiltViewModel(),
-    onBackStackPressed: () -> Unit
+    onBackStackPressed: () -> Unit,
+    onNavigateToMovieDetails: (HomeNavKey.MovieDetailsNavKey) -> Unit
 ) {
     val listState = rememberLazyListState()
     viewModel.initialize(key = key)
@@ -57,8 +58,18 @@ fun SeeAllMoviesScreen(
                 state = listState,
                 onScrollThresholdReached = {
                     viewModel.loadMore()
+                },
+                onItemTapped = { movieId, title, posterPath, backdropPath ->
+                    onNavigateToMovieDetails(
+                        HomeNavKey.MovieDetailsNavKey(
+                            movieId = movieId,
+                            title = title,
+                            posterPath = posterPath,
+                            backdropPath = backdropPath
+                        )
+                    )
                 }
-            ) { }
+            )
         }
     }
 }

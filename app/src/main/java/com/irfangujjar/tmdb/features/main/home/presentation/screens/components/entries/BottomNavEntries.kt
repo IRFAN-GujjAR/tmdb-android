@@ -65,9 +65,9 @@ fun EntryProviderBuilder<NavKey>.BottomNavEntries(
                     userTheme = userTheme,
                     outerPadding = outerPadding,
                     snackbarHostState = snackBarHostState,
-                    onNavigateToDetailsPage = {
-
-                    }
+                    onNavigateToMovieDetails = onNavigateToMovieDetails,
+                    onNavigateToTvShowDetails = onNavigateToTvShowDetails,
+                    onNavigateToCelebDetails = onNavigateToCelebDetails
                 )
             }
 

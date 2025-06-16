@@ -34,7 +34,7 @@ fun MediaItemsVerticalList(
     values: MediaItemsVerticalListValues,
     state: LazyListState? = null,
     onScrollThresholdReached: () -> Unit = {},
-    onItemClicked: (Int) -> Unit
+    onItemTapped: (Int, String, String?, String?) -> Unit
 ) {
     val padding = ScreenPadding.getPadding(
         outerPaddingValues = outerPadding,
@@ -85,13 +85,13 @@ fun MediaItemsVerticalList(
             contentPadding = padding,
             modifier = Modifier.nestedScroll(overScrollConnection)
         ) {
-            itemContent(values, preview, onItemClicked)
+            itemContent(values, preview, onItemTapped)
         }
     } else {
         LazyColumn(
             contentPadding = padding
         ) {
-            itemContent(values, preview, onItemClicked)
+            itemContent(values, preview, onItemTapped)
         }
     }
 }
@@ -99,15 +99,14 @@ fun MediaItemsVerticalList(
 private fun LazyListScope.itemContent(
     values: MediaItemsVerticalListValues,
     preview: Boolean,
-    onItemClicked: (Int) -> Unit
+    onItemTapped: (Int, String, String?, String?) -> Unit
 ) {
     items(values.mediaIds.size) { index ->
         MediaItemVertical(
             preview = preview,
-            values = MediaItemVerticalValues.fromListValues(values, index)
-        ) {
-            onItemClicked(it)
-        }
+            values = MediaItemVerticalValues.fromListValues(values, index),
+            onItemTapped = onItemTapped
+        )
         if (index < values.mediaIds.size - 1) {
             CustomDivider(startPadding = DividerStartPadding.Zero)
         }
@@ -129,8 +128,9 @@ private fun MediaItemsVerticalListPreview() {
         Surface {
             MediaItemsVerticalList(
                 preview = true,
-                values = MediaItemsVerticalListValues.dummyData(MediaType.Movie)
-            ) {}
+                values = MediaItemsVerticalListValues.dummyData(MediaType.Movie),
+                onItemTapped = {_,_,_,_->}
+            )
         }
     }
 }

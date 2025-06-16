@@ -23,7 +23,7 @@ fun MediaItemsHorizontalList(
     preview: Boolean = false, values: MediaItemsHorizontalListValues,
     title: String,
     onSeeAllClick: () -> Unit,
-    onItemTapped: (Int, String, String?, String?) -> Unit = { _, _, _, _ -> }
+    onItemTapped: (Int, String, String?, String?) -> Unit
 ) {
     Column {
         TextRow(title = title, onSeeAllTapped = onSeeAllClick)

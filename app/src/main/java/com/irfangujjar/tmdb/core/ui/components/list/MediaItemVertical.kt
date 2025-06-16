@@ -40,14 +40,19 @@ import com.irfangujjar.tmdb.core.ui.util.isMovie
 @Composable
 fun MediaItemVertical(
     preview: Boolean, values: MediaItemVerticalValues,
-    onItemClicked: (Int) -> Unit
+    onItemTapped: (Int, String, String?, String?) -> Unit
 ) {
     Row(
         modifier = Modifier
             .clickable(
                 indication = null,
                 interactionSource = remember { MutableInteractionSource() }, onClick = {
-                    onItemClicked(values.mediaId)
+                    onItemTapped(
+                        values.mediaId,
+                        values.mediaTitle,
+                        values.posterPath,
+                        values.backdropPath
+                    )
                 })
             .padding(end = 24.dp),
     ) {
@@ -71,8 +76,9 @@ fun MediaItemVertical(
                 values.mediaTitle,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.W500,
-                maxLines = if (values.voteAverage==null&&values.voteCount==null&&
-                    values.mediaGenre.isNullOrEmpty())2 else 1,
+                maxLines = if (values.voteAverage == null && values.voteCount == null &&
+                    values.mediaGenre.isNullOrEmpty()
+                ) 2 else 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.padding(start = 8.dp)
             )
@@ -89,11 +95,11 @@ fun MediaItemVertical(
                 )
             else
                 Spacer(modifier = Modifier.height(4.dp))
-            if (values.voteAverage!=null&&values.voteCount!=null)
-            CustomRating(
-                voteAverage = values.voteAverage, voteCount = values.voteCount,
-                padding = PaddingValues(start = 6.dp, top = 2.dp)
-            )
+            if (values.voteAverage != null && values.voteCount != null)
+                CustomRating(
+                    voteAverage = values.voteAverage, voteCount = values.voteCount,
+                    padding = PaddingValues(start = 6.dp, top = 2.dp)
+                )
         }
         Spacer(modifier = Modifier.weight(1f))
         Icon(
@@ -114,10 +120,9 @@ private fun MediaItemVerticalPreview() {
         Surface {
             MediaItemVertical(
                 preview = true,
-                values = MediaItemVerticalValues.dummyData(mediaType = MediaType.Movie)
-            ) {
-
-            }
+                values = MediaItemVerticalValues.dummyData(mediaType = MediaType.Movie),
+                onItemTapped = { _, _, _, _ -> }
+            )
         }
     }
 }

@@ -28,6 +28,7 @@ fun SearchDetailsCelebs(
     celebsList: CelebsListModel,
     query: String,
     viewModel: SearchCelebsViewModel = hiltViewModel(),
+    onCelebItemTapped: (Int, String) -> Unit
 ) {
 
     viewModel.initializeValues(
@@ -45,7 +46,8 @@ fun SearchDetailsCelebs(
             values = CelebItemsVerticalListValues.fromCelebs(celebs = celebrities),
             onScrollThresholdReached = {
                 viewModel.loadMore()
-            }
+            },
+            onItemTapped = onCelebItemTapped
         )
     }
 }
@@ -60,7 +62,8 @@ private fun SearchDetailsCelebsPreview() {
                 bottomPadding = 0.dp,
                 listState = null,
                 celebsList = CelebsListModel.dummyData(),
-                query = ""
+                query = "",
+                onCelebItemTapped = {id,name->}
             )
         }
     }

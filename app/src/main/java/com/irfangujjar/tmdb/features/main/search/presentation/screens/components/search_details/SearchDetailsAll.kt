@@ -36,6 +36,9 @@ fun SearchDetailsAll(
     onSeeAllMoviesClick: () -> Unit,
     onSeeAllTvShowsClick: () -> Unit,
     onSeeAllCelebsClick: () -> Unit,
+    onMovieItemTapped: (Int, String, String?, String?) -> Unit,
+    onTvShowItemTapped: (Int, String, String?, String?) -> Unit,
+    onCelebItemTapped: (Int, String) -> Unit
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -56,7 +59,8 @@ fun SearchDetailsAll(
                 )
             ),
             title = "Movies",
-            onSeeAllClick = onSeeAllMoviesClick
+            onSeeAllClick = onSeeAllMoviesClick,
+            onItemTapped = onMovieItemTapped
         )
         CustomDivider()
         MediaItemsHorizontalList(
@@ -69,7 +73,8 @@ fun SearchDetailsAll(
                 )
             ),
             title = "Tv Shows",
-            onSeeAllClick = onSeeAllTvShowsClick
+            onSeeAllClick = onSeeAllTvShowsClick,
+            onItemTapped = onTvShowItemTapped
         )
         CustomDivider(topPadding = DividerTopPadding.Double)
         CelebItemsHorizontalList(
@@ -80,7 +85,7 @@ fun SearchDetailsAll(
             ),
             title = "Celebrities",
             onSeeAllClick = onSeeAllCelebsClick,
-            onItemTapped = {celebId,name->}
+            onItemTapped = onCelebItemTapped
         )
     }
 }
@@ -99,7 +104,10 @@ private fun SearchDetailsAllPreview() {
                 bottomPadding = 0.dp,
                 onSeeAllMoviesClick = {},
                 onSeeAllTvShowsClick = {},
-                onSeeAllCelebsClick = {}
+                onSeeAllCelebsClick = {},
+                onMovieItemTapped = { _, _, _, _ -> },
+                onTvShowItemTapped = { _, _, _, _ -> },
+                onCelebItemTapped = { _, _ -> }
             )
         }
     }

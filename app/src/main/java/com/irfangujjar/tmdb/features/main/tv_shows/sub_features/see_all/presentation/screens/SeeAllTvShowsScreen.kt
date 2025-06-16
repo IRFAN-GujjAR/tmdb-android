@@ -24,7 +24,8 @@ fun SeeAllTvShowsScreen(
     snackbarHostState: SnackbarHostState,
     key: HomeNavKey.SeeAllTvShowsNavKey,
     viewModel: SeeAllTvShowsViewModel = hiltViewModel(),
-    onBackStackPressed: () -> Unit
+    onBackStackPressed: () -> Unit,
+    onNavigateToTvShowDetails: (HomeNavKey.TvShowDetailsNavKey) -> Unit
 ) {
     val listState = rememberLazyListState()
 
@@ -59,8 +60,18 @@ fun SeeAllTvShowsScreen(
                 state = listState,
                 onScrollThresholdReached = {
                     viewModel.loadMore()
+                },
+                onItemTapped = { tvId, name, posterPath, backdropPath ->
+                    onNavigateToTvShowDetails(
+                        HomeNavKey.TvShowDetailsNavKey(
+                            tvId = tvId,
+                            name = name,
+                            posterPath = posterPath,
+                            backdropPath = backdropPath
+                        )
+                    )
                 }
-            ) { }
+            )
         }
     }
 }
