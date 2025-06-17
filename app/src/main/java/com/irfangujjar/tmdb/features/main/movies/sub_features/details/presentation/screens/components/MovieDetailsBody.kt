@@ -38,6 +38,7 @@ fun MovieDetailsBody(
     movieDetails: MovieDetailsModel,
     onNavigateToSeeAllMovies: (MoviesCategory) -> Unit,
     onNavigateToMovieDetails: (HomeNavKey.MovieDetailsNavKey) -> Unit,
+    onNavigateToCollectionDetails: (HomeNavKey.CollectionDetailsNavKey) -> Unit,
     onCastCrewSeeAllClick: (CreditsModel) -> Unit
 ) {
     val scrollState = rememberScrollState()
@@ -74,7 +75,17 @@ fun MovieDetailsBody(
                 collection = movieDetails.collection,
                 genres = movieDetails.genres,
                 posterPath = movieDetails.posterPath,
-                backdropPath = movieDetails.backdropPath
+                backdropPath = movieDetails.backdropPath,
+                onCollectionTapped = { collectionId, name, posterPath, backdropPath ->
+                    onNavigateToCollectionDetails(
+                        HomeNavKey.CollectionDetailsNavKey(
+                            collectionId = collectionId,
+                            name = name,
+                            posterPath = posterPath,
+                            backdropPath = backdropPath
+                        )
+                    )
+                }
             )
         if (movieDetails.isCastCrewPresent())
             DetailsCastCrewItemsComp(
@@ -172,7 +183,8 @@ private fun MovieDetailsBodyPreview() {
                 onNavigateToMovieDetails = {
 
                 },
-                onCastCrewSeeAllClick = {}
+                onCastCrewSeeAllClick = {},
+                onNavigateToCollectionDetails = {}
             )
         }
     }

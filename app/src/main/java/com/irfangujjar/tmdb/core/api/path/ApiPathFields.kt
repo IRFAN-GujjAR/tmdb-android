@@ -4,4 +4,5 @@ object ApiPathFields {
     const val MOVIE_ID = "movie_id"
     const val TV_ID = "tv_id"
     const val CELEB_ID = "celeb_id"
+    const val COLLECTION_ID = "collection_id"
 }

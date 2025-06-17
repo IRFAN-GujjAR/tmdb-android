@@ -59,4 +59,12 @@ sealed interface HomeNavKey : NavKey {
 
     @Serializable
     data class CastCrewNavKey(override val argId: String) : HomeNavKey, HasArgId
+
+    @Serializable
+    data class CollectionDetailsNavKey(
+        val collectionId: Int,
+        val name: String,
+        val posterPath: String?,
+        val backdropPath: String?
+    ) : HomeNavKey
 }

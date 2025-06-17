@@ -13,9 +13,6 @@ data class MovieModel(
     @SerializedName(JsonKeyNames.VOTE_AVERAGE) val voteAverage: Double?,
     @SerializedName(JsonKeyNames.RELEASE_DATE) val releaseDate: String?
 ) {
-    fun isRatingPresent(): Boolean = voteCount != null && voteAverage != null
-
-
     companion object {
         fun dummyData(): MovieModel = MovieModel(
             id = 238,

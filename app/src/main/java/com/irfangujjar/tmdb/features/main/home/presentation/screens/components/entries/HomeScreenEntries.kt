@@ -12,6 +12,7 @@ import com.irfangujjar.tmdb.features.login.presentation.screens.LoginScreen
 import com.irfangujjar.tmdb.features.main.cast_crew.presentation.screens.CastCrewScreen
 import com.irfangujjar.tmdb.features.main.celebs.sub_features.details.presentation.screens.CelebDetailsScreen
 import com.irfangujjar.tmdb.features.main.celebs.sub_features.see_all.presentation.screens.SeeAllCelebsScreen
+import com.irfangujjar.tmdb.features.main.movies.sub_features.collection.presentation.screens.CollectionDetailsScreen
 import com.irfangujjar.tmdb.features.main.movies.sub_features.details.presentation.screens.MovieDetailsScreen
 import com.irfangujjar.tmdb.features.main.movies.sub_features.see_all.presentation.screens.SeeAllMoviesScreen
 import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.details.presentation.screens.TvShowDetailsScreen
@@ -28,6 +29,7 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
     onNavigateToMovieDetails: (HomeNavKey.MovieDetailsNavKey) -> Unit,
     onNavigateToTvShowDetails: (HomeNavKey.TvShowDetailsNavKey) -> Unit,
     onNavigateToCelebDetails: (HomeNavKey.CelebDetailsNavKey) -> Unit,
+    onNavigateToCollectionDetails: (HomeNavKey.CollectionDetailsNavKey) -> Unit,
     onNavigateToCastCrew: (HomeNavKey.CastCrewNavKey) -> Unit,
     onNavigateToLogin: () -> Unit,
     onBackPressed: () -> Unit
@@ -81,7 +83,8 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
             onBackStackPressed = onBackPressed,
             onNavigateToSeeAllMovies = onNavigateToSeeAllMovies,
             onNavigateToMovieDetails = onNavigateToMovieDetails,
-            onNavigateToCastCrewDetails = onNavigateToCastCrew
+            onNavigateToCastCrewDetails = onNavigateToCastCrew,
+            onNavigateToCollectionDetails = onNavigateToCollectionDetails
         )
     }
 
@@ -105,6 +108,15 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
             onBackStackPressed = onBackPressed,
             onNavigateToMovieDetails = onNavigateToMovieDetails,
             onNavigateToTvShowDetails = onNavigateToTvShowDetails
+        )
+    }
+
+    entry<HomeNavKey.CollectionDetailsNavKey> {
+        CollectionDetailsScreen(
+            outerPadding = outerPadding,
+            userTheme = userTheme,
+            onBackPressed = onBackPressed,
+            key = it,
         )
     }
 

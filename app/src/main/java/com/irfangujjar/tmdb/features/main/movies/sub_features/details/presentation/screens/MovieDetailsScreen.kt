@@ -27,6 +27,7 @@ fun MovieDetailsScreen(
     viewModel: MovieDetailsViewModel = hiltViewModel(),
     onNavigateToSeeAllMovies: (HomeNavKey.SeeAllMoviesNavKey) -> Unit,
     onNavigateToMovieDetails: (HomeNavKey.MovieDetailsNavKey) -> Unit,
+    onNavigateToCollectionDetails: (HomeNavKey.CollectionDetailsNavKey) -> Unit,
     onNavigateToCastCrewDetails: (HomeNavKey.CastCrewNavKey) -> Unit
 ) {
     viewModel.initialize(key = key)
@@ -80,7 +81,8 @@ fun MovieDetailsScreen(
                                 argId = argId
                             )
                         )
-                    }
+                    },
+                    onNavigateToCollectionDetails = onNavigateToCollectionDetails
                 )
             }
         }

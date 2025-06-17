@@ -1,5 +1,6 @@
 package com.irfangujjar.tmdb.features.main.movies.sub_features.details.presentation.screens.components
 
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,6 +41,7 @@ fun CollectionComp(
     genres: List<GenreModel>,
     posterPath: String?,
     backdropPath: String?,
+    onCollectionTapped: (Int, String, String?, String?) -> Unit
 ) {
     var genresText = ""
     if (genres.isNotEmpty()) {
@@ -58,11 +61,20 @@ fun CollectionComp(
         )
         TextRow("Collection")
         Row(
-            modifier = Modifier.padding(
-                start =
-                    ScreenPadding.getStartPadding(),
-                end = ScreenPadding.getEndPadding(),
-            )
+            modifier = Modifier
+                .pointerInput(Unit) {
+                    detectTapGestures(onTap = {
+                        onCollectionTapped(
+                            collection.id, collection.name, collection.posterPath ?: posterPath,
+                            collection.backdropPath ?: backdropPath
+                        )
+                    })
+                }
+                .padding(
+                    start =
+                        ScreenPadding.getStartPadding(),
+                    end = ScreenPadding.getEndPadding(),
+                )
         ) {
             CustomNetworkImage(
                 preview = preview,
@@ -118,7 +130,8 @@ private fun CollectionCompPreview() {
                 collection = movie.collection!!,
                 genres = movie.genres,
                 posterPath = movie.posterPath,
-                backdropPath = movie.backdropPath
+                backdropPath = movie.backdropPath,
+                onCollectionTapped = { _, _, _, _ -> }
             )
         }
     }
