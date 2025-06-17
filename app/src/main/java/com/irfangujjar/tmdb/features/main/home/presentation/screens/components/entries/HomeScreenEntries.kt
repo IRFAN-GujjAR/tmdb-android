@@ -84,7 +84,8 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
             onNavigateToSeeAllMovies = onNavigateToSeeAllMovies,
             onNavigateToMovieDetails = onNavigateToMovieDetails,
             onNavigateToCastCrewDetails = onNavigateToCastCrew,
-            onNavigateToCollectionDetails = onNavigateToCollectionDetails
+            onNavigateToCollectionDetails = onNavigateToCollectionDetails,
+            onNavigateToCelebDetails = onNavigateToCelebDetails
         )
     }
 
@@ -96,7 +97,8 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
             onBackStackPressed = onBackPressed,
             onNavigateToSeeAllTvShows = onNavigateToSeeAllTvShows,
             onNavigateToTvShowDetails = onNavigateToTvShowDetails,
-            onNavigateToCastCrew = onNavigateToCastCrew
+            onNavigateToCastCrew = onNavigateToCastCrew,
+            onNavigateToCelebDetails = onNavigateToCelebDetails
         )
     }
 

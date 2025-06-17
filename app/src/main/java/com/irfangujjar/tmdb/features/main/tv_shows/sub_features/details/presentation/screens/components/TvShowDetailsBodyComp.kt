@@ -40,7 +40,8 @@ fun TvShowDetailsBodyComp(
     tvShowDetails: TvShowDetailsModel,
     onNavigateToSeeAllTvShows: (TvShowsCategory) -> Unit,
     onNavigateToTvShowDetails: (HomeNavKey.TvShowDetailsNavKey) -> Unit,
-    onCastCrewSeeAllClick: (CreditsModel) -> Unit
+    onCastCrewSeeAllClick: (CreditsModel) -> Unit,
+    onNavigateToCelebDetails: (HomeNavKey.CelebDetailsNavKey) -> Unit
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -88,6 +89,14 @@ fun TvShowDetailsBodyComp(
                 credits = tvShowDetails.credits!!,
                 onSeeAllClicked = {
                     onCastCrewSeeAllClick(tvShowDetails.credits)
+                },
+                onItemTapped = { id, name ->
+                    onNavigateToCelebDetails(
+                        HomeNavKey.CelebDetailsNavKey(
+                            celebId = id,
+                            name = name
+                        )
+                    )
                 }
             )
         if (tvShowDetails.isVideosPresent())
@@ -173,7 +182,8 @@ private fun TvShowDetailsBodyCompPreview() {
                 },
                 onCastCrewSeeAllClick = {
 
-                }
+                },
+                onNavigateToCelebDetails = {}
             )
         }
     }

@@ -1,5 +1,6 @@
 package com.irfangujjar.tmdb.core.ui.components.details
 
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -33,7 +35,8 @@ import com.irfangujjar.tmdb.core.ui.util.ProfileSizes
 @Composable
 fun DetailsCastCrewItemsComp(
     preview: Boolean, credits: CreditsModel,
-    onSeeAllClicked: () -> Unit
+    onSeeAllClicked: () -> Unit,
+    onItemTapped: (Int, String) -> Unit
 ) {
     val castItems = credits.cast
     val crewItems = credits.crew
@@ -58,22 +61,31 @@ fun DetailsCastCrewItemsComp(
             contentPadding = PaddingValues(horizontal = ScreenPadding.getHorizontalPadding())
         ) {
             items(length) { index ->
+                val id: Int
                 val profilePath: String?
                 val name: String
                 val character: String?
                 if (castItems.isNotEmpty()) {
                     val castItem = castItems[index]
+                    id = castItem.id
                     profilePath = castItem.profilePath
                     name = castItem.name
                     character = castItem.character
                 } else {
                     val crewItem = crewItems[index]
+                    id = crewItem.id
                     profilePath = crewItem.profilePath
                     name = crewItem.name
                     character = crewItem.job ?: crewItem.department
                 }
                 Column(
-                    modifier = Modifier.width(102.dp),
+                    modifier = Modifier
+                        .width(102.dp)
+                        .pointerInput(Unit) {
+                            detectTapGestures(onTap = {
+                                onItemTapped(id, name)
+                            })
+                        },
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     CustomNetworkImage(
@@ -119,7 +131,8 @@ private fun DetailsCastCrewItemsCompPreview() {
             DetailsCastCrewItemsComp(
                 preview = true,
                 credits = CreditsModel.dummyData(type = MediaType.Movie),
-                onSeeAllClicked = {}
+                onSeeAllClicked = {},
+                onItemTapped = { id, name -> }
             )
         }
     }

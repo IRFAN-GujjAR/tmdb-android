@@ -28,7 +28,8 @@ fun TvShowDetailsScreen(
     viewModel: TvShowDetailsViewModel = hiltViewModel(),
     onNavigateToSeeAllTvShows: (HomeNavKey.SeeAllTvShowsNavKey) -> Unit,
     onNavigateToTvShowDetails: (HomeNavKey.TvShowDetailsNavKey) -> Unit,
-    onNavigateToCastCrew: (HomeNavKey.CastCrewNavKey) -> Unit
+    onNavigateToCastCrew: (HomeNavKey.CastCrewNavKey) -> Unit,
+    onNavigateToCelebDetails: (HomeNavKey.CelebDetailsNavKey) -> Unit
 ) {
 
     viewModel.initialize(key)
@@ -83,7 +84,8 @@ fun TvShowDetailsScreen(
                                 argId = argId
                             )
                         )
-                    }
+                    },
+                    onNavigateToCelebDetails = onNavigateToCelebDetails
                 )
             }
         }

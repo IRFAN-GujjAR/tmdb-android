@@ -39,7 +39,8 @@ fun MovieDetailsBody(
     onNavigateToSeeAllMovies: (MoviesCategory) -> Unit,
     onNavigateToMovieDetails: (HomeNavKey.MovieDetailsNavKey) -> Unit,
     onNavigateToCollectionDetails: (HomeNavKey.CollectionDetailsNavKey) -> Unit,
-    onCastCrewSeeAllClick: (CreditsModel) -> Unit
+    onCastCrewSeeAllClick: (CreditsModel) -> Unit,
+    onNavigateToCelebDetails: (HomeNavKey.CelebDetailsNavKey) -> Unit
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -93,6 +94,14 @@ fun MovieDetailsBody(
                 credits = movieDetails.credits!!,
                 onSeeAllClicked = {
                     onCastCrewSeeAllClick(movieDetails.credits)
+                },
+                onItemTapped = { id, name ->
+                    onNavigateToCelebDetails(
+                        HomeNavKey.CelebDetailsNavKey(
+                            celebId = id,
+                            name = name
+                        )
+                    )
                 }
             )
         if (movieDetails.isVideosPresent())
@@ -184,7 +193,8 @@ private fun MovieDetailsBodyPreview() {
 
                 },
                 onCastCrewSeeAllClick = {},
-                onNavigateToCollectionDetails = {}
+                onNavigateToCollectionDetails = {},
+                onNavigateToCelebDetails = {}
             )
         }
     }

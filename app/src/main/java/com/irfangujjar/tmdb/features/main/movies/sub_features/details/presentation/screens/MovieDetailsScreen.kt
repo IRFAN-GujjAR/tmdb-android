@@ -28,7 +28,8 @@ fun MovieDetailsScreen(
     onNavigateToSeeAllMovies: (HomeNavKey.SeeAllMoviesNavKey) -> Unit,
     onNavigateToMovieDetails: (HomeNavKey.MovieDetailsNavKey) -> Unit,
     onNavigateToCollectionDetails: (HomeNavKey.CollectionDetailsNavKey) -> Unit,
-    onNavigateToCastCrewDetails: (HomeNavKey.CastCrewNavKey) -> Unit
+    onNavigateToCastCrewDetails: (HomeNavKey.CastCrewNavKey) -> Unit,
+    onNavigateToCelebDetails: (HomeNavKey.CelebDetailsNavKey) -> Unit
 ) {
     viewModel.initialize(key = key)
 
@@ -82,7 +83,8 @@ fun MovieDetailsScreen(
                             )
                         )
                     },
-                    onNavigateToCollectionDetails = onNavigateToCollectionDetails
+                    onNavigateToCollectionDetails = onNavigateToCollectionDetails,
+                    onNavigateToCelebDetails = onNavigateToCelebDetails
                 )
             }
         }
