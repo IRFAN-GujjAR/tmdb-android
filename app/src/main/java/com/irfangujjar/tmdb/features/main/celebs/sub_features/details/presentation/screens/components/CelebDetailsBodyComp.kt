@@ -66,7 +66,7 @@ fun CelebDetailsBodyComp(
                 height = 194.dp,
                 contentScale = ContentScale.Crop,
                 borderRadius = 8.dp,
-                celebrityPlaceHolderCircularShape = true,
+                celebrityPlaceHolderCircularShape = false,
                 placeHolderSize = 50.dp,
                 profileSize = ProfileSizes.w185
             )

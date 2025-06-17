@@ -28,6 +28,7 @@ fun TvShowDetailsScreen(
     viewModel: TvShowDetailsViewModel = hiltViewModel(),
     onNavigateToSeeAllTvShows: (HomeNavKey.SeeAllTvShowsNavKey) -> Unit,
     onNavigateToTvShowDetails: (HomeNavKey.TvShowDetailsNavKey) -> Unit,
+    onNavigateToCastCrew: (HomeNavKey.CastCrewNavKey) -> Unit
 ) {
 
     viewModel.initialize(key)
@@ -74,7 +75,15 @@ fun TvShowDetailsScreen(
                             )
                         )
                     },
-                    onNavigateToTvShowDetails = onNavigateToTvShowDetails
+                    onNavigateToTvShowDetails = onNavigateToTvShowDetails,
+                    onCastCrewSeeAllClick = {
+                        val argId = viewModel.saveCastCrewArgs(it)
+                        onNavigateToCastCrew(
+                            HomeNavKey.CastCrewNavKey(
+                                argId = argId
+                            )
+                        )
+                    }
                 )
             }
         }

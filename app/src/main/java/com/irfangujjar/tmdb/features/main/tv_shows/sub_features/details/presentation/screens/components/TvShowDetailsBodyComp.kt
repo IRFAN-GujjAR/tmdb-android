@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.irfangujjar.tmdb.core.models.CreditsModel
 import com.irfangujjar.tmdb.core.navigation.nav_keys.HomeNavKey
 import com.irfangujjar.tmdb.core.ui.ScreenPadding
 import com.irfangujjar.tmdb.core.ui.components.CustomDivider
@@ -38,7 +39,8 @@ fun TvShowDetailsBodyComp(
     tvId: Int,
     tvShowDetails: TvShowDetailsModel,
     onNavigateToSeeAllTvShows: (TvShowsCategory) -> Unit,
-    onNavigateToTvShowDetails: (HomeNavKey.TvShowDetailsNavKey) -> Unit
+    onNavigateToTvShowDetails: (HomeNavKey.TvShowDetailsNavKey) -> Unit,
+    onCastCrewSeeAllClick: (CreditsModel) -> Unit
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -84,7 +86,9 @@ fun TvShowDetailsBodyComp(
             DetailsCastCrewItemsComp(
                 preview = preview,
                 credits = tvShowDetails.credits!!,
-                onSeeAllClicked = {}
+                onSeeAllClicked = {
+                    onCastCrewSeeAllClick(tvShowDetails.credits)
+                }
             )
         if (tvShowDetails.isVideosPresent())
             YoutubeVideosComp(
@@ -165,6 +169,9 @@ private fun TvShowDetailsBodyCompPreview() {
 
                 },
                 onNavigateToTvShowDetails = {
+
+                },
+                onCastCrewSeeAllClick = {
 
                 }
             )

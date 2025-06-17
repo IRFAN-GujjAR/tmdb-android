@@ -27,6 +27,7 @@ fun MovieDetailsScreen(
     viewModel: MovieDetailsViewModel = hiltViewModel(),
     onNavigateToSeeAllMovies: (HomeNavKey.SeeAllMoviesNavKey) -> Unit,
     onNavigateToMovieDetails: (HomeNavKey.MovieDetailsNavKey) -> Unit,
+    onNavigateToCastCrewDetails: (HomeNavKey.CastCrewNavKey) -> Unit
 ) {
     viewModel.initialize(key = key)
 
@@ -71,7 +72,15 @@ fun MovieDetailsScreen(
                             )
                         )
                     },
-                    onNavigateToMovieDetails = onNavigateToMovieDetails
+                    onNavigateToMovieDetails = onNavigateToMovieDetails,
+                    onCastCrewSeeAllClick = {
+                        val argId = viewModel.saveCastCrewArgs(it)
+                        onNavigateToCastCrewDetails(
+                            HomeNavKey.CastCrewNavKey(
+                                argId = argId
+                            )
+                        )
+                    }
                 )
             }
         }

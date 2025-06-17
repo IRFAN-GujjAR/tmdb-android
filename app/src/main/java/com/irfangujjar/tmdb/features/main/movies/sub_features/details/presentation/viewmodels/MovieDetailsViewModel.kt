@@ -4,8 +4,10 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.irfangujjar.tmdb.core.api.ResultWrapper
 import com.irfangujjar.tmdb.core.api.safeApiCall
+import com.irfangujjar.tmdb.core.models.CreditsModel
 import com.irfangujjar.tmdb.core.navigation.nav_keys.HomeNavKey
 import com.irfangujjar.tmdb.core.viewmodels.ViewModelWithKey
+import com.irfangujjar.tmdb.features.main.cast_crew.presentation.nav_args_holder.CastCrewNavArgsHolder
 import com.irfangujjar.tmdb.features.main.movies.domain.models.MoviesListModel
 import com.irfangujjar.tmdb.features.main.movies.sub_features.details.domain.models.MovieDetailsModel
 import com.irfangujjar.tmdb.features.main.movies.sub_features.details.domain.usecases.MovieDetailsUseCaseLoad
@@ -22,7 +24,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MovieDetailsViewModel @Inject constructor(
     private val useCase: MovieDetailsUseCaseLoad,
-    private val seeAllMoviesNavArgsHolder: SeeAllMoviesNavArgsHolder
+    private val seeAllMoviesNavArgsHolder: SeeAllMoviesNavArgsHolder,
+    private val castCrewNavArgsHolder: CastCrewNavArgsHolder
 ) : ViewModelWithKey<HomeNavKey.MovieDetailsNavKey>() {
 
     private val _state = MutableStateFlow<MovieDetailsState>(MovieDetailsState.Loading)
@@ -62,5 +65,7 @@ class MovieDetailsViewModel @Inject constructor(
     fun saveSeeAllMoviesArg(moviesList: MoviesListModel): String =
         seeAllMoviesNavArgsHolder.saveArgData(moviesList)
 
+    fun saveCastCrewArgs(credits: CreditsModel): String =
+        castCrewNavArgsHolder.saveArgData(credits)
 
 }

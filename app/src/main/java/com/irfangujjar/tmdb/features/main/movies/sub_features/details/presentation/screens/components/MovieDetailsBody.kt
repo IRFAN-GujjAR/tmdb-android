@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.irfangujjar.tmdb.core.models.CreditsModel
 import com.irfangujjar.tmdb.core.navigation.nav_keys.HomeNavKey
 import com.irfangujjar.tmdb.core.ui.ScreenPadding
 import com.irfangujjar.tmdb.core.ui.components.CustomDivider
@@ -36,7 +37,8 @@ fun MovieDetailsBody(
     innerPadding: PaddingValues,
     movieDetails: MovieDetailsModel,
     onNavigateToSeeAllMovies: (MoviesCategory) -> Unit,
-    onNavigateToMovieDetails: (HomeNavKey.MovieDetailsNavKey) -> Unit
+    onNavigateToMovieDetails: (HomeNavKey.MovieDetailsNavKey) -> Unit,
+    onCastCrewSeeAllClick: (CreditsModel) -> Unit
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -78,7 +80,9 @@ fun MovieDetailsBody(
             DetailsCastCrewItemsComp(
                 preview = preview,
                 credits = movieDetails.credits!!,
-                onSeeAllClicked = {}
+                onSeeAllClicked = {
+                    onCastCrewSeeAllClick(movieDetails.credits)
+                }
             )
         if (movieDetails.isVideosPresent())
             YoutubeVideosComp(
@@ -167,7 +171,8 @@ private fun MovieDetailsBodyPreview() {
                 },
                 onNavigateToMovieDetails = {
 
-                }
+                },
+                onCastCrewSeeAllClick = {}
             )
         }
     }

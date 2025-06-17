@@ -9,6 +9,7 @@ import androidx.navigation3.runtime.entry
 import com.irfangujjar.tmdb.core.navigation.nav_keys.HomeNavKey
 import com.irfangujjar.tmdb.core.ui.theme.UserTheme
 import com.irfangujjar.tmdb.features.login.presentation.screens.LoginScreen
+import com.irfangujjar.tmdb.features.main.cast_crew.presentation.screens.CastCrewScreen
 import com.irfangujjar.tmdb.features.main.celebs.sub_features.details.presentation.screens.CelebDetailsScreen
 import com.irfangujjar.tmdb.features.main.celebs.sub_features.see_all.presentation.screens.SeeAllCelebsScreen
 import com.irfangujjar.tmdb.features.main.movies.sub_features.details.presentation.screens.MovieDetailsScreen
@@ -27,6 +28,7 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
     onNavigateToMovieDetails: (HomeNavKey.MovieDetailsNavKey) -> Unit,
     onNavigateToTvShowDetails: (HomeNavKey.TvShowDetailsNavKey) -> Unit,
     onNavigateToCelebDetails: (HomeNavKey.CelebDetailsNavKey) -> Unit,
+    onNavigateToCastCrew: (HomeNavKey.CastCrewNavKey) -> Unit,
     onNavigateToLogin: () -> Unit,
     onBackPressed: () -> Unit
 ) {
@@ -78,7 +80,8 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
             key = it,
             onBackStackPressed = onBackPressed,
             onNavigateToSeeAllMovies = onNavigateToSeeAllMovies,
-            onNavigateToMovieDetails = onNavigateToMovieDetails
+            onNavigateToMovieDetails = onNavigateToMovieDetails,
+            onNavigateToCastCrewDetails = onNavigateToCastCrew
         )
     }
 
@@ -89,7 +92,8 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
             key = it,
             onBackStackPressed = onBackPressed,
             onNavigateToSeeAllTvShows = onNavigateToSeeAllTvShows,
-            onNavigateToTvShowDetails = onNavigateToTvShowDetails
+            onNavigateToTvShowDetails = onNavigateToTvShowDetails,
+            onNavigateToCastCrew = onNavigateToCastCrew
         )
     }
 
@@ -101,6 +105,15 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
             onBackStackPressed = onBackPressed,
             onNavigateToMovieDetails = onNavigateToMovieDetails,
             onNavigateToTvShowDetails = onNavigateToTvShowDetails
+        )
+    }
+
+    entry<HomeNavKey.CastCrewNavKey> {
+        CastCrewScreen(
+            outerPadding = outerPadding,
+            key = it,
+            onBackStackPressed = onBackPressed,
+            onNavigateToCelebDetails = onNavigateToCelebDetails
         )
     }
 

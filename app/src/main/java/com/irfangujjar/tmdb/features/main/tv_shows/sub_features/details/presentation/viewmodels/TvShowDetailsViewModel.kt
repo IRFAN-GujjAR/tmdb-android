@@ -4,8 +4,10 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.irfangujjar.tmdb.core.api.ResultWrapper
 import com.irfangujjar.tmdb.core.api.safeApiCall
+import com.irfangujjar.tmdb.core.models.CreditsModel
 import com.irfangujjar.tmdb.core.navigation.nav_keys.HomeNavKey
 import com.irfangujjar.tmdb.core.viewmodels.ViewModelWithKey
+import com.irfangujjar.tmdb.features.main.cast_crew.presentation.nav_args_holder.CastCrewNavArgsHolder
 import com.irfangujjar.tmdb.features.main.tv_shows.domain.models.TvShowsListModel
 import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.details.domain.models.TvShowDetailsModel
 import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.details.domain.usecases.TvShowDetailsUseCaseLoad
@@ -22,7 +24,8 @@ import javax.inject.Inject
 @HiltViewModel
 class TvShowDetailsViewModel @Inject constructor(
     private val useCase: TvShowDetailsUseCaseLoad,
-    private val seeAllTvShowsNavArgsHolder: SeeAllTvShowsNavArgsHolder
+    private val seeAllTvShowsNavArgsHolder: SeeAllTvShowsNavArgsHolder,
+    private val castCrewNavArgsHolder: CastCrewNavArgsHolder
 ) : ViewModelWithKey<HomeNavKey.TvShowDetailsNavKey>() {
 
     override fun doInitial() = loadTvShowDetails()
@@ -61,6 +64,10 @@ class TvShowDetailsViewModel @Inject constructor(
 
     fun saveSeeAllTvShowsArg(tvShowsList: TvShowsListModel): String =
         seeAllTvShowsNavArgsHolder.saveArgData(tvShowsList)
+
+
+    fun saveCastCrewArgs(credits: CreditsModel): String =
+        castCrewNavArgsHolder.saveArgData(credits)
 
 
 }
