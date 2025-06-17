@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
@@ -130,7 +131,7 @@ private fun SearchDetailsBody(
         var selectedIndex by rememberSaveable { mutableIntStateOf(0) }
         val pagerState = rememberPagerState { tabItems.size }
         val listStateSize = if (searchDetails.isAllPresent()) tabItems.size - 1 else tabItems.size
-        val listStates = rememberSaveable { List(listStateSize) { LazyListState() } }
+        val listStates = List(listStateSize) { rememberLazyListState() }
 
         LaunchedEffect(selectedIndex) {
             pagerState.animateScrollToPage(selectedIndex)

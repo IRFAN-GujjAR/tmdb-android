@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
@@ -48,7 +48,8 @@ fun CastCrewBodyWithTabsComp(
             selectedIndex = pagerState.currentPage
     }
 
-    val listStates = rememberSaveable { List(2) { LazyListState() } }
+    val castListState = rememberLazyListState()
+    val crewListState = rememberLazyListState()
 
     Column(
         modifier = Modifier.padding(
@@ -93,7 +94,7 @@ fun CastCrewBodyWithTabsComp(
                             outerPadding.calculateBottomPadding()
                     ),
                     innerPadding = PaddingValues(bottom = innerPadding.calculateBottomPadding()),
-                    listState = listStates[0],
+                    listState = castListState,
                     cast = credits.cast,
                     onCastItemTapped = onItemTapped
                 )
@@ -105,7 +106,7 @@ fun CastCrewBodyWithTabsComp(
                             outerPadding.calculateBottomPadding()
                     ),
                     innerPadding = PaddingValues(bottom = innerPadding.calculateBottomPadding()),
-                    listState = listStates[1],
+                    listState = crewListState,
                     crew = credits.crew,
                     onCrewItemTapped = onItemTapped
                 )
