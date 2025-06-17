@@ -25,7 +25,8 @@ fun CollectionDetailsScreen(
     userTheme: UserTheme,
     onBackPressed: () -> Unit,
     key: HomeNavKey.CollectionDetailsNavKey,
-    viewModel: CollectionDetailsViewModel = hiltViewModel()
+    viewModel: CollectionDetailsViewModel = hiltViewModel(),
+    onNavigateToMovieDetails: (HomeNavKey.MovieDetailsNavKey) -> Unit
 ) {
     viewModel.initialize(key)
 
@@ -52,7 +53,17 @@ fun CollectionDetailsScreen(
                     preview = preview,
                     outerPadding = outerPadding,
                     innerPadding = innerPadding,
-                    collectionDetails = state.collectionDetails
+                    collectionDetails = state.collectionDetails,
+                    onMovieItemTapped = { id, title, posterPath, backdropPath ->
+                        onNavigateToMovieDetails(
+                            HomeNavKey.MovieDetailsNavKey(
+                                movieId = id,
+                                title = title,
+                                posterPath = posterPath,
+                                backdropPath = backdropPath
+                            )
+                        )
+                    }
                 )
             }
         }
