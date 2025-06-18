@@ -41,6 +41,7 @@ fun TvShowDetailsBodyComp(
     onNavigateToTvShowDetails: (HomeNavKey.TvShowDetailsNavKey) -> Unit,
     onCastCrewSeeAllClick: (CreditsModel) -> Unit,
     onNavigateToCelebDetails: (HomeNavKey.CelebDetailsNavKey) -> Unit,
+    onSeeAllSeasonsTapped: (List<SeasonModel>) -> Unit,
     onSeasonItemPressed: (SeasonModel) -> Unit
 ) {
     val scrollState = rememberScrollState()
@@ -77,7 +78,7 @@ fun TvShowDetailsBodyComp(
                 tvShowPosterPath = tvShowDetails.posterPath,
                 seasons = tvShowDetails.seasons,
                 onSeeAllPressed = {
-
+                    onSeeAllSeasonsTapped(tvShowDetails.seasons)
                 },
                 onSeasonItemPressed = onSeasonItemPressed
             )
@@ -181,7 +182,8 @@ private fun TvShowDetailsBodyCompPreview() {
 
                 },
                 onNavigateToCelebDetails = {},
-                onSeasonItemPressed = {}
+                onSeasonItemPressed = {},
+                onSeeAllSeasonsTapped = {}
             )
         }
     }

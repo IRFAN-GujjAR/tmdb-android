@@ -30,6 +30,7 @@ fun TvShowDetailsScreen(
     onNavigateToTvShowDetails: (HomeNavKey.TvShowDetailsNavKey) -> Unit,
     onNavigateToCastCrew: (HomeNavKey.CastCrewNavKey) -> Unit,
     onNavigateToCelebDetails: (HomeNavKey.CelebDetailsNavKey) -> Unit,
+    onNavigateToSeeAllSeasons: (HomeNavKey.SeeAllSeasonsNavKey) -> Unit,
     onNavigateToSeasonDetails: (HomeNavKey.SeasonDetailsNavKey) -> Unit
 ) {
 
@@ -93,6 +94,18 @@ fun TvShowDetailsScreen(
                                 tvShowName = key.name,
                                 seasonName = it.name,
                                 seasonNo = it.seasonNo,
+                                tvShowPosterPath = key.posterPath,
+                                episodeImagePlaceHolder = key.backdropPath
+                            )
+                        )
+                    },
+                    onSeeAllSeasonsTapped = {
+                        val argId = viewModel.saveSeeAllSeasons(it)
+                        onNavigateToSeeAllSeasons(
+                            HomeNavKey.SeeAllSeasonsNavKey(
+                                argId = argId,
+                                tvId = key.tvId,
+                                tvShowName = key.name,
                                 tvShowPosterPath = key.posterPath,
                                 episodeImagePlaceHolder = key.backdropPath
                             )

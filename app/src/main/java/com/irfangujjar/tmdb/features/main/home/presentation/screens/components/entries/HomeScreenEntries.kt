@@ -17,6 +17,7 @@ import com.irfangujjar.tmdb.features.main.movies.sub_features.details.presentati
 import com.irfangujjar.tmdb.features.main.movies.sub_features.see_all.presentation.screens.SeeAllMoviesScreen
 import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.details.presentation.screens.TvShowDetailsScreen
 import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.season.presentation.screens.SeasonDetailsScreen
+import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.season.presentation.screens.SeeAllSeasonsScreen
 import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.see_all.presentation.screens.SeeAllTvShowsScreen
 
 @Composable
@@ -31,6 +32,7 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
     onNavigateToTvShowDetails: (HomeNavKey.TvShowDetailsNavKey) -> Unit,
     onNavigateToCelebDetails: (HomeNavKey.CelebDetailsNavKey) -> Unit,
     onNavigateToCollectionDetails: (HomeNavKey.CollectionDetailsNavKey) -> Unit,
+    onNavigateToSeeAllSeasons: (HomeNavKey.SeeAllSeasonsNavKey) -> Unit,
     onNavigateToSeasonDetails: (HomeNavKey.SeasonDetailsNavKey) -> Unit,
     onNavigateToCastCrew: (HomeNavKey.CastCrewNavKey) -> Unit,
     onNavigateToLogin: () -> Unit,
@@ -101,6 +103,7 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
             onNavigateToTvShowDetails = onNavigateToTvShowDetails,
             onNavigateToCastCrew = onNavigateToCastCrew,
             onNavigateToCelebDetails = onNavigateToCelebDetails,
+            onNavigateToSeeAllSeasons = onNavigateToSeeAllSeasons,
             onNavigateToSeasonDetails = onNavigateToSeasonDetails
         )
     }
@@ -123,6 +126,15 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
             onBackPressed = onBackPressed,
             key = it,
             onNavigateToMovieDetails = onNavigateToMovieDetails
+        )
+    }
+
+    entry<HomeNavKey.SeeAllSeasonsNavKey> {
+        SeeAllSeasonsScreen(
+            outerPadding = outerPadding,
+            onBackPressed = onBackPressed,
+            key = it,
+            onNavigateToSeasonDetails = onNavigateToSeasonDetails
         )
     }
 

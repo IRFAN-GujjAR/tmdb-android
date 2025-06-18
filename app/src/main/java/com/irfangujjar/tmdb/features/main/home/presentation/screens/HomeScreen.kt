@@ -127,7 +127,8 @@ fun HomeScreen(
                     onNavigateToCelebDetails = { addToBackStack(it) },
                     onNavigateToCastCrew = { addToBackStack(it) },
                     onNavigateToCollectionDetails = { addToBackStack(it) },
-                    onNavigateToSeasonDetails = { addToBackStack(it) }
+                    onNavigateToSeasonDetails = { addToBackStack(it) },
+                    onNavigateToSeeAllSeasons = { addToBackStack(it) }
                 )
             }
         )
