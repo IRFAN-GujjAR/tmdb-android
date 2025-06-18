@@ -129,7 +129,8 @@ fun HomeScreen(
                     onNavigateToCollectionDetails = { addToBackStack(it) },
                     onNavigateToSeasonDetails = { addToBackStack(it) },
                     onNavigateToSeeAllSeasons = { addToBackStack(it) },
-                    onNavigateToTheme = { addToBackStack(HomeNavKey.ThemeNavKey) }
+                    onNavigateToTheme = { addToBackStack(HomeNavKey.ThemeNavKey) },
+                    onNavigateToAbout = { addToBackStack(HomeNavKey.AboutNavKey) }
                 )
             }
         )

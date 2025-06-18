@@ -41,6 +41,9 @@ sealed interface HomeNavKey : NavKey {
     data object LoginNavKey : HomeNavKey
 
     @Serializable
+    data object AboutNavKey : HomeNavKey
+
+    @Serializable
     data class SeeAllMoviesNavKey(
         override val argId: String, val category: MoviesCategory,
         val movieId: Int?

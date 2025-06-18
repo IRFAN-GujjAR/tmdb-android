@@ -49,7 +49,8 @@ fun TMDBScreen(
     snackbarHostState: SnackbarHostState?,
     viewModel: TMDBViewModel = hiltViewModel(),
     onNavigateToLogin: () -> Unit,
-    onNavigateToTheme: () -> Unit
+    onNavigateToTheme: () -> Unit,
+    onNavigateToAbout: () -> Unit
 ) {
     val state = viewModel.state.collectAsState().value
     Surface(
@@ -62,39 +63,28 @@ fun TMDBScreen(
                 CustomLoading()
             }
 
-            AccountDetailsState.Empty -> {
-                TMDbScreenBody(
-                    preview = preview,
-                    paddingValues = outerPadding,
-                    accountDetails = null,
-                    navigateToLogin = onNavigateToLogin,
-                    navigateToTheme = onNavigateToTheme
-                )
-            }
-
-            is AccountDetailsState.Loaded -> {
-                TMDbScreenBody(
-                    preview = preview,
-                    paddingValues = outerPadding,
-                    accountDetails = state.accountDetails,
-                    navigateToLogin = onNavigateToLogin,
-                    navigateToTheme = onNavigateToTheme
-                )
-            }
-
+            is AccountDetailsState.Empty, is AccountDetailsState.Loaded,
             is AccountDetailsState.ErrorWithCache -> {
-                if (viewModel.showAlert) {
-                    LaunchedEffect(Unit) {
-                        snackbarHostState?.showSnackbar(viewModel.alertMessage)
-                        viewModel.clearAlert()
+                if (state is AccountDetailsState.ErrorWithCache) {
+                    if (viewModel.showAlert) {
+                        LaunchedEffect(Unit) {
+                            snackbarHostState?.showSnackbar(viewModel.alertMessage)
+                            viewModel.clearAlert()
+                        }
                     }
                 }
+                var accountDetails: AccountDetailsWithoutIdEntity? = null
+                if (state is AccountDetailsState.Loaded)
+                    accountDetails = state.accountDetails
+                else if (state is AccountDetailsState.ErrorWithCache)
+                    accountDetails = state.accountDetails
                 TMDbScreenBody(
                     preview = preview,
                     paddingValues = outerPadding,
-                    accountDetails = state.accountDetails,
+                    accountDetails = accountDetails,
                     navigateToLogin = onNavigateToLogin,
-                    navigateToTheme = onNavigateToTheme
+                    navigateToTheme = onNavigateToTheme,
+                    onNavigateToAbout = onNavigateToAbout
                 )
             }
 
@@ -116,7 +106,8 @@ private fun TMDbScreenBody(
     paddingValues: PaddingValues,
     accountDetails: AccountDetailsWithoutIdEntity?,
     navigateToLogin: () -> Unit,
-    navigateToTheme: () -> Unit
+    navigateToTheme: () -> Unit,
+    onNavigateToAbout: () -> Unit
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -217,7 +208,7 @@ private fun TMDbScreenBody(
             })
         ListItem(
             modifier = Modifier
-                .clickable(onClick = {}),
+                .clickable(onClick = onNavigateToAbout),
             headlineContent = { Text("About") },
             supportingContent = { Text("Information about this app") },
             leadingContent = {
@@ -254,7 +245,8 @@ private fun TMDBScreenPreview() {
                 paddingValues = PaddingValues(),
                 accountDetails = null,
                 navigateToLogin = {},
-                navigateToTheme = {}
+                navigateToTheme = {},
+                onNavigateToAbout = {}
             )
         }
     }

@@ -9,6 +9,7 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entry
 import com.irfangujjar.tmdb.core.navigation.nav_keys.HomeNavKey
 import com.irfangujjar.tmdb.core.ui.theme.UserTheme
+import com.irfangujjar.tmdb.features.about.presentation.screens.AboutScreen
 import com.irfangujjar.tmdb.features.login.presentation.screens.LoginScreen
 import com.irfangujjar.tmdb.features.main.cast_crew.presentation.screens.CastCrewScreen
 import com.irfangujjar.tmdb.features.main.celebs.sub_features.details.presentation.screens.CelebDetailsScreen
@@ -38,6 +39,7 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
     onNavigateToCastCrew: (HomeNavKey.CastCrewNavKey) -> Unit,
     onNavigateToLogin: () -> Unit,
     onNavigateToTheme: () -> Unit,
+    onNavigateToAbout: () -> Unit,
     onBackPressed: () -> Unit
 ) {
     BottomNavEntries(
@@ -51,7 +53,8 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
         onNavigateToMovieDetails = onNavigateToMovieDetails,
         onNavigateToTvShowDetails = onNavigateToTvShowDetails,
         onNavigateToCelebDetails = onNavigateToCelebDetails,
-        onNavigateToTheme = onNavigateToTheme
+        onNavigateToTheme = onNavigateToTheme,
+        onNavigateToAbout = onNavigateToAbout
     )
     entry<HomeNavKey.SeeAllMoviesNavKey> {
         SeeAllMoviesScreen(
@@ -168,6 +171,13 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
             navigateToMainScreen = {
                 onBackPressed
             }
+        )
+    }
+
+    entry<HomeNavKey.AboutNavKey> {
+        AboutScreen(
+            outerPadding = outerPadding,
+            onBackStackPressed = onBackPressed
         )
     }
 
