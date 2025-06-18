@@ -5,7 +5,8 @@ import com.irfangujjar.tmdb.core.urls.URLS
 enum class MediaImageType {
     Movie,
     TvShow,
-    Celebrity
+    Celebrity,
+    Episode
 }
 
 fun MediaImageType.isMovie() = this == MediaImageType.Movie
@@ -24,7 +25,7 @@ enum class ProfileSizes {
     w45, w92, w185, h632, original
 }
 
-enum class StillSizes { w92, w185, w300, original }
+enum class StillSizes { w185 }
 
 fun PosterSizes.getUrl(posterPath: String) = URLS.IMAGE_BASE_URL + this.name + posterPath
 

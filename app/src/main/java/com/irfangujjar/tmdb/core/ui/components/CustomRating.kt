@@ -30,29 +30,35 @@ import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
 fun CustomRating(
     voteAverage: Double,
     voteCount: Int,
-    iconSize: Dp=15.dp,
-    fontSize: TextUnit=11.sp,
-    voteCountPadding: Dp=5.dp,
-    padding: PaddingValues= PaddingValues()
+    iconSize: Dp = 15.dp,
+    fontSize: TextUnit = 11.sp,
+    voteCountPadding: Dp = 5.dp,
+    padding: PaddingValues = PaddingValues(),
+    showVoteCount: Boolean = true
 ) {
-    val stars= getStars(voteAverage)
+    val stars = getStars(voteAverage)
 
     LazyRow(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.padding(padding)
     ) {
-        items(stars) {star->
-            Icon(imageVector = star,contentDescription = null,
+        items(stars) { star ->
+            Icon(
+                imageVector = star, contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(iconSize))
+                modifier = Modifier.size(iconSize)
+            )
         }
-        item {
-            Text(text = "( $voteCount )",
-                fontSize = fontSize,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary,
-                modifier =  Modifier.padding( start = voteCountPadding))
-        }
+        if (showVoteCount)
+            item {
+                Text(
+                    text = "( $voteCount )",
+                    fontSize = fontSize,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.padding(start = voteCountPadding)
+                )
+            }
     }
 }
 
@@ -77,7 +83,7 @@ private fun getStars(voteAverage: Double): List<ImageVector> {
 
 @Preview
 @Composable
-private fun CustomRatingPreview(){
+private fun CustomRatingPreview() {
     TMDbTheme {
         Surface {
             CustomRating(

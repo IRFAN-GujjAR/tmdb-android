@@ -67,4 +67,14 @@ sealed interface HomeNavKey : NavKey {
         val posterPath: String?,
         val backdropPath: String?
     ) : HomeNavKey
+
+    @Serializable
+    data class SeasonDetailsNavKey(
+        val tvId: Int,
+        val tvShowName: String,
+        val seasonName: String,
+        val seasonNo: Int,
+        val tvShowPosterPath: String?,
+        val episodeImagePlaceHolder: String?
+    ) : HomeNavKey
 }

@@ -28,6 +28,7 @@ import com.irfangujjar.tmdb.core.ui.util.BackdropSizes
 import com.irfangujjar.tmdb.core.ui.util.MediaImageType
 import com.irfangujjar.tmdb.core.ui.util.PosterSizes
 import com.irfangujjar.tmdb.core.ui.util.ProfileSizes
+import com.irfangujjar.tmdb.core.ui.util.StillSizes
 import com.irfangujjar.tmdb.core.ui.util.getUrl
 
 
@@ -46,7 +47,8 @@ fun CustomNetworkImage(
     celebrityPlaceHolderCircularShape: Boolean = false,
     posterSize: PosterSizes = PosterSizes.w185,
     backdropSize: BackdropSizes = BackdropSizes.w300,
-    profileSize: ProfileSizes = ProfileSizes.w185
+    profileSize: ProfileSizes = ProfileSizes.w185,
+    stillSize: StillSizes = StillSizes.w185
 ) {
     if (type == MediaImageType.Celebrity) {
         Celebrity(
@@ -85,16 +87,22 @@ fun CustomNetworkImage(
                 else
                     TvPosterPlaceholder(placeHolderSize)
             } else {
+                val url: String = if (type == MediaImageType.Episode) {
+                    stillSize.getUrl(imageUrl)
+                } else {
+                    if (isLandscape) backdropSize.getUrl(imageUrl) else posterSize.getUrl(
+                        imageUrl
+                    )
+                }
                 NetworkImage(
                     preview = preview,
                     mediaImageType = type,
-                    imagePath = if (isLandscape) backdropSize.getUrl(imageUrl) else posterSize.getUrl(
-                        imageUrl
-                    ),
+                    imagePath =url,
                     contentScale = contentScale,
                     isLandscape = isLandscape,
                     posterSize = posterSize,
-                    backdropSizes = backdropSize
+                    backdropSizes = backdropSize,
+                    stillSize = stillSize
                 )
             }
         }
@@ -156,7 +164,7 @@ private fun Celebrity(
                     preview = preview,
                     imagePath = profileSize.getUrl(imageUrl),
                     contentScale = contentScale,
-                    profileSize = profileSize
+                    profileSize = profileSize,
                 )
             }
         }
@@ -174,7 +182,8 @@ private fun NetworkImage(
     isLandscape: Boolean = false,
     posterSize: PosterSizes = PosterSizes.w185,
     backdropSizes: BackdropSizes = BackdropSizes.w300,
-    profileSize: ProfileSizes = ProfileSizes.w92
+    profileSize: ProfileSizes = ProfileSizes.w92,
+    stillSize: StillSizes = StillSizes.w185
 ) {
     AsyncImage(
         model = if (preview) dummyPreviewImage(
@@ -182,7 +191,8 @@ private fun NetworkImage(
             isLandscape,
             backdropSizes,
             posterSize,
-            profileSize
+            profileSize,
+            stillSize
         ) else ImageRequest.Builder(LocalContext.current)
             .data(imagePath)
             .crossfade(true)
@@ -198,7 +208,8 @@ private fun dummyPreviewImage(
     isLandscape: Boolean = false,
     backdropSizes: BackdropSizes,
     posterSize: PosterSizes,
-    profileSize: ProfileSizes
+    profileSize: ProfileSizes,
+    stillSize: StillSizes
 ): Int = when (mediaImageType) {
     MediaImageType.Movie -> {
         if (isLandscape) {
@@ -250,6 +261,12 @@ private fun dummyPreviewImage(
             ProfileSizes.w185 -> R.drawable.celebrity_profile_w185
             ProfileSizes.h632 -> R.drawable.celebrity_profile_h632
             ProfileSizes.original -> R.drawable.celebrity_profile_original
+        }
+    }
+
+    MediaImageType.Episode -> {
+        when (stillSize) {
+            StillSizes.w185 -> R.drawable.tv_backdrop_w300
         }
     }
 }

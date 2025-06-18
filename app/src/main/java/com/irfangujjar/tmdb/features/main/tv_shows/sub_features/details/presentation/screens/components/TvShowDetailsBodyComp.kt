@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.irfangujjar.tmdb.core.models.CreditsModel
+import com.irfangujjar.tmdb.core.models.SeasonModel
 import com.irfangujjar.tmdb.core.navigation.nav_keys.HomeNavKey
 import com.irfangujjar.tmdb.core.ui.ScreenPadding
 import com.irfangujjar.tmdb.core.ui.components.CustomDivider
@@ -27,7 +28,6 @@ import com.irfangujjar.tmdb.core.ui.components.list.values.MediaItemsHorizontalL
 import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
 import com.irfangujjar.tmdb.core.ui.util.MediaType
 import com.irfangujjar.tmdb.core.ui.util.TvShowsCategory
-import com.irfangujjar.tmdb.features.main.tv_shows.domain.models.TvShowModel
 import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.details.domain.models.TvShowDetailsModel
 
 
@@ -36,12 +36,12 @@ fun TvShowDetailsBodyComp(
     preview: Boolean,
     outerPadding: PaddingValues,
     innerPadding: PaddingValues,
-    tvId: Int,
     tvShowDetails: TvShowDetailsModel,
     onNavigateToSeeAllTvShows: (TvShowsCategory) -> Unit,
     onNavigateToTvShowDetails: (HomeNavKey.TvShowDetailsNavKey) -> Unit,
     onCastCrewSeeAllClick: (CreditsModel) -> Unit,
-    onNavigateToCelebDetails: (HomeNavKey.CelebDetailsNavKey) -> Unit
+    onNavigateToCelebDetails: (HomeNavKey.CelebDetailsNavKey) -> Unit,
+    onSeasonItemPressed: (SeasonModel) -> Unit
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -74,14 +74,12 @@ fun TvShowDetailsBodyComp(
         if (tvShowDetails.seasons.isNotEmpty())
             TvShowDetailsSeasonComp(
                 preview = preview,
-                tvId = tvId,
-                tvShowName = tvShowDetails.name,
                 tvShowPosterPath = tvShowDetails.posterPath,
-                episodeImagePlaceHolder = tvShowDetails.backdropPath,
                 seasons = tvShowDetails.seasons,
                 onSeeAllPressed = {
 
-                }
+                },
+                onSeasonItemPressed = onSeasonItemPressed
             )
         if (tvShowDetails.isCastCrewPresent())
             DetailsCastCrewItemsComp(
@@ -172,7 +170,6 @@ private fun TvShowDetailsBodyCompPreview() {
                 preview = true,
                 outerPadding = PaddingValues(0.dp),
                 innerPadding = PaddingValues(0.dp),
-                tvId = TvShowModel.dummyData().id,
                 tvShowDetails = TvShowDetailsModel.dummyData(),
                 onNavigateToSeeAllTvShows = {
 
@@ -183,7 +180,8 @@ private fun TvShowDetailsBodyCompPreview() {
                 onCastCrewSeeAllClick = {
 
                 },
-                onNavigateToCelebDetails = {}
+                onNavigateToCelebDetails = {},
+                onSeasonItemPressed = {}
             )
         }
     }

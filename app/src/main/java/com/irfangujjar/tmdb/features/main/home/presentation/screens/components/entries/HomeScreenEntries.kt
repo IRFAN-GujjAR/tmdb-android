@@ -16,6 +16,7 @@ import com.irfangujjar.tmdb.features.main.movies.sub_features.collection.present
 import com.irfangujjar.tmdb.features.main.movies.sub_features.details.presentation.screens.MovieDetailsScreen
 import com.irfangujjar.tmdb.features.main.movies.sub_features.see_all.presentation.screens.SeeAllMoviesScreen
 import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.details.presentation.screens.TvShowDetailsScreen
+import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.season.presentation.screens.SeasonDetailsScreen
 import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.see_all.presentation.screens.SeeAllTvShowsScreen
 
 @Composable
@@ -30,6 +31,7 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
     onNavigateToTvShowDetails: (HomeNavKey.TvShowDetailsNavKey) -> Unit,
     onNavigateToCelebDetails: (HomeNavKey.CelebDetailsNavKey) -> Unit,
     onNavigateToCollectionDetails: (HomeNavKey.CollectionDetailsNavKey) -> Unit,
+    onNavigateToSeasonDetails: (HomeNavKey.SeasonDetailsNavKey) -> Unit,
     onNavigateToCastCrew: (HomeNavKey.CastCrewNavKey) -> Unit,
     onNavigateToLogin: () -> Unit,
     onBackPressed: () -> Unit
@@ -98,7 +100,8 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
             onNavigateToSeeAllTvShows = onNavigateToSeeAllTvShows,
             onNavigateToTvShowDetails = onNavigateToTvShowDetails,
             onNavigateToCastCrew = onNavigateToCastCrew,
-            onNavigateToCelebDetails = onNavigateToCelebDetails
+            onNavigateToCelebDetails = onNavigateToCelebDetails,
+            onNavigateToSeasonDetails = onNavigateToSeasonDetails
         )
     }
 
@@ -120,6 +123,15 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
             onBackPressed = onBackPressed,
             key = it,
             onNavigateToMovieDetails = onNavigateToMovieDetails
+        )
+    }
+
+    entry<HomeNavKey.SeasonDetailsNavKey> {
+        SeasonDetailsScreen(
+            outerPadding = outerPadding,
+            userTheme = userTheme,
+            onBackPressed = onBackPressed,
+            key = it,
         )
     }
 

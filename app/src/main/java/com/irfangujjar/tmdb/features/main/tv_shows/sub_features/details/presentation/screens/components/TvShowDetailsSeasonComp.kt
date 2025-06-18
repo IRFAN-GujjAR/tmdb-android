@@ -1,5 +1,6 @@
 package com.irfangujjar.tmdb.features.main.tv_shows.sub_features.details.presentation.screens.components
 
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -8,6 +9,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,18 +27,15 @@ import com.irfangujjar.tmdb.core.ui.components.list.values.MediaItemsHorizontalL
 import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
 import com.irfangujjar.tmdb.core.ui.util.MediaImageType
 import com.irfangujjar.tmdb.core.ui.util.PosterSizes
-import com.irfangujjar.tmdb.features.main.tv_shows.domain.models.TvShowModel
 import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.details.domain.models.TvShowDetailsModel
 
 @Composable
 fun TvShowDetailsSeasonComp(
     preview: Boolean,
-    tvId: Int,
-    tvShowName: String,
     tvShowPosterPath: String?,
-    episodeImagePlaceHolder: String?,
     seasons: List<SeasonModel>,
-    onSeeAllPressed: () -> Unit
+    onSeeAllPressed: () -> Unit,
+    onSeasonItemPressed: (SeasonModel) -> Unit
 ) {
 
     val showSeeAll = seasons.size >= 5
@@ -52,13 +52,17 @@ fun TvShowDetailsSeasonComp(
             )
         ) {
             val config = MediaItemsHorizontalListConfigValues.fromDefault()
-            items(seasons) {
-                Column {
+            items(seasons) { season ->
+                Column(modifier = Modifier.pointerInput(Unit) {
+                    detectTapGestures(onTap = {
+                        onSeasonItemPressed(season)
+                    })
+                }) {
                     CustomNetworkImage(
                         preview = preview,
                         isLandscape = false,
                         type = MediaImageType.TvShow,
-                        imageUrl = it.posterPath,
+                        imageUrl = season.posterPath ?: tvShowPosterPath,
                         width = config.listItemWidth,
                         height = config.imageHeight,
                         contentScale = ContentScale.Crop,
@@ -66,7 +70,7 @@ fun TvShowDetailsSeasonComp(
                         posterSize = PosterSizes.w185,
                     )
                     Text(
-                        it.name,
+                        season.name,
                         fontSize = 13.sp,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
@@ -77,75 +81,6 @@ fun TvShowDetailsSeasonComp(
     }
 }
 
-//         Container(
-//           height: 165,
-//           child: ListView.separated(
-//             physics: const AlwaysScrollableScrollPhysics(),
-//             scrollDirection: Axis.horizontal,
-//             itemBuilder: (context, index) {
-//               String? posterPath = seasons[index].posterPath;
-//               if (posterPath != null) {
-//                 posterPath = URLS.posterImageUrl(
-//                   imageUrl: posterPath,
-//                   size: PosterSizes.w185,
-//                 );
-//               }
-//               return GestureDetector(
-//                 onTap: () {
-//                   appRouterConfig.push(
-//                     context,
-//                     location: AppRouterPaths.TV_SHOW_SEASON_DETAILS_LOCATION,
-//                     extra: TvShowSeasonDetailsPageExtra(
-//                       tvId: tvId,
-//                       tvShowName: tvShowName,
-//                       seasonName: seasons[index].name,
-//                       seasonNo: seasons[index].seasonNo,
-//                       tvShowPosterPath: tvShowPosterPath,
-//                       episodeImagePlaceHolder: episodeImagePlaceHolder,
-//                     ),
-//                   );
-//                 },
-//                 child: Container(
-//                   margin: const EdgeInsets.only(left: 10),
-//                   height: 180,
-//                   width: 100,
-//                   child: Column(
-//                     crossAxisAlignment: CrossAxisAlignment.start,
-//                     children: <Widget>[
-//                       CustomNetworkImageWidget(
-//                         type: MediaImageType.TvShow,
-//                         imageUrl: posterPath,
-//                         width: 92.5,
-//                         height: 139,
-//                         fit: BoxFit.fill,
-//                         borderRadius: 0,
-//                         placeHolderSize: 72,
-//                       ),
-//                       Padding(
-//                         padding: const EdgeInsets.only(top: 6.0),
-//                         child: Text(
-//                           seasons[index].name,
-//                           style: TextStyle(fontSize: 13),
-//                           maxLines: 1,
-//                           overflow: TextOverflow.ellipsis,
-//                         ),
-//                       ),
-//                     ],
-//                   ),
-//                 ),
-//               );
-//             },
-//             separatorBuilder: (context, index) {
-//               return SizedBox(width: 10);
-//             },
-//             itemCount: seasons.length,
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-// }
-
 
 @Preview
 @Composable
@@ -155,12 +90,10 @@ private fun TvShowDetailsSeasonCompPreview() {
             val tvShowDetails = TvShowDetailsModel.dummyData()
             TvShowDetailsSeasonComp(
                 preview = true,
-                tvId = TvShowModel.dummyData().id,
-                tvShowName = tvShowDetails.name,
                 tvShowPosterPath = tvShowDetails.posterPath,
-                episodeImagePlaceHolder = tvShowDetails.backdropPath,
                 seasons = tvShowDetails.seasons,
-                onSeeAllPressed = {}
+                onSeeAllPressed = {},
+                onSeasonItemPressed = {}
             )
         }
     }
