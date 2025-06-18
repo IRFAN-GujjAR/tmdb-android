@@ -35,7 +35,7 @@ sealed interface HomeNavKey : NavKey {
     data object SearchDetailsNavKey : HomeNavKey
 
     @Serializable
-    data object TMDBAppearancesNavKey : HomeNavKey
+    data object ThemeNavKey : HomeNavKey
 
     @Serializable
     data object LoginNavKey : HomeNavKey

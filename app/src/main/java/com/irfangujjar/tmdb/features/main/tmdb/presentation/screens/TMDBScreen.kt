@@ -48,8 +48,8 @@ fun TMDBScreen(
     userTheme: UserTheme,
     snackbarHostState: SnackbarHostState?,
     viewModel: TMDBViewModel = hiltViewModel(),
-    navigateToLogin: () -> Unit,
-    navigateToAppearances: () -> Unit
+    onNavigateToLogin: () -> Unit,
+    onNavigateToTheme: () -> Unit
 ) {
     val state = viewModel.state.collectAsState().value
     Surface(
@@ -67,8 +67,8 @@ fun TMDBScreen(
                     preview = preview,
                     paddingValues = outerPadding,
                     accountDetails = null,
-                    navigateToLogin = navigateToLogin,
-                    navigateToAppearances = navigateToAppearances
+                    navigateToLogin = onNavigateToLogin,
+                    navigateToTheme = onNavigateToTheme
                 )
             }
 
@@ -77,8 +77,8 @@ fun TMDBScreen(
                     preview = preview,
                     paddingValues = outerPadding,
                     accountDetails = state.accountDetails,
-                    navigateToLogin = navigateToLogin,
-                    navigateToAppearances = navigateToAppearances
+                    navigateToLogin = onNavigateToLogin,
+                    navigateToTheme = onNavigateToTheme
                 )
             }
 
@@ -93,8 +93,8 @@ fun TMDBScreen(
                     preview = preview,
                     paddingValues = outerPadding,
                     accountDetails = state.accountDetails,
-                    navigateToLogin = navigateToLogin,
-                    navigateToAppearances = navigateToAppearances
+                    navigateToLogin = onNavigateToLogin,
+                    navigateToTheme = onNavigateToTheme
                 )
             }
 
@@ -116,7 +116,7 @@ private fun TMDbScreenBody(
     paddingValues: PaddingValues,
     accountDetails: AccountDetailsWithoutIdEntity?,
     navigateToLogin: () -> Unit,
-    navigateToAppearances: () -> Unit
+    navigateToTheme: () -> Unit
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -200,7 +200,7 @@ private fun TMDbScreenBody(
             })
         ListItem(
             modifier = Modifier
-                .clickable(onClick = navigateToAppearances),
+                .clickable(onClick = navigateToTheme),
             headlineContent = { Text("Theme") },
             supportingContent = { Text("Set Light & Dark Theme") },
             leadingContent = {
@@ -254,7 +254,7 @@ private fun TMDBScreenPreview() {
                 paddingValues = PaddingValues(),
                 accountDetails = null,
                 navigateToLogin = {},
-                navigateToAppearances = {}
+                navigateToTheme = {}
             )
         }
     }

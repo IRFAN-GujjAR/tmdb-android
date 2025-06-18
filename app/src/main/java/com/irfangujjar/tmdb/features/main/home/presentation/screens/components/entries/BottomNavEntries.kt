@@ -26,7 +26,8 @@ fun EntryProviderBuilder<NavKey>.BottomNavEntries(
     onNavigateToMovieDetails: (HomeNavKey.MovieDetailsNavKey) -> Unit,
     onNavigateToTvShowDetails: (HomeNavKey.TvShowDetailsNavKey) -> Unit,
     onNavigateToCelebDetails: (HomeNavKey.CelebDetailsNavKey) -> Unit,
-    onNavigateToLogin: () -> Unit
+    onNavigateToLogin: () -> Unit,
+    onNavigateToTheme: () -> Unit
 ) {
     BottomNavKey.items.forEach { bottomNavKey ->
         when (bottomNavKey) {
@@ -76,10 +77,9 @@ fun EntryProviderBuilder<NavKey>.BottomNavEntries(
                     outerPadding = outerPadding,
                     userTheme = userTheme,
                     snackbarHostState = snackBarHostState,
-                    navigateToLogin = {
-                        onNavigateToLogin()
-                    }
-                ) { }
+                    onNavigateToLogin = onNavigateToLogin,
+                    onNavigateToTheme = onNavigateToTheme
+                )
             }
         }
     }

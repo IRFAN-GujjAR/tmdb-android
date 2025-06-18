@@ -1,5 +1,6 @@
 package com.irfangujjar.tmdb.features.main.home.presentation.screens.components.entries
 
+import ThemeScreen
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -36,6 +37,7 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
     onNavigateToSeasonDetails: (HomeNavKey.SeasonDetailsNavKey) -> Unit,
     onNavigateToCastCrew: (HomeNavKey.CastCrewNavKey) -> Unit,
     onNavigateToLogin: () -> Unit,
+    onNavigateToTheme: () -> Unit,
     onBackPressed: () -> Unit
 ) {
     BottomNavEntries(
@@ -48,7 +50,8 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
         onNavigateToLogin = onNavigateToLogin,
         onNavigateToMovieDetails = onNavigateToMovieDetails,
         onNavigateToTvShowDetails = onNavigateToTvShowDetails,
-        onNavigateToCelebDetails = onNavigateToCelebDetails
+        onNavigateToCelebDetails = onNavigateToCelebDetails,
+        onNavigateToTheme = onNavigateToTheme
     )
     entry<HomeNavKey.SeeAllMoviesNavKey> {
         SeeAllMoviesScreen(
@@ -165,6 +168,14 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
             navigateToMainScreen = {
                 onBackPressed
             }
+        )
+    }
+
+    entry<HomeNavKey.ThemeNavKey> {
+        ThemeScreen(
+            userTheme = userTheme,
+            outerPadding = outerPadding,
+            onBackStackPressed = onBackPressed,
         )
     }
 }

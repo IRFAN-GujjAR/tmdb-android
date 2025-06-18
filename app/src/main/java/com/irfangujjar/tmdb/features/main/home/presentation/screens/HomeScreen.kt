@@ -128,7 +128,8 @@ fun HomeScreen(
                     onNavigateToCastCrew = { addToBackStack(it) },
                     onNavigateToCollectionDetails = { addToBackStack(it) },
                     onNavigateToSeasonDetails = { addToBackStack(it) },
-                    onNavigateToSeeAllSeasons = { addToBackStack(it) }
+                    onNavigateToSeeAllSeasons = { addToBackStack(it) },
+                    onNavigateToTheme = { addToBackStack(HomeNavKey.ThemeNavKey) }
                 )
             }
         )
