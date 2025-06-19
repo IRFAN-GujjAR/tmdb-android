@@ -25,6 +25,8 @@ fun CelebDetailsScreen(
     onBackStackPressed: () -> Unit,
     onNavigateToMovieDetails: (HomeNavKey.MovieDetailsNavKey) -> Unit,
     onNavigateToTvShowDetails: (HomeNavKey.TvShowDetailsNavKey) -> Unit,
+    onNavigateToMovieCredits: (HomeNavKey.MovieCreditsNavKey) -> Unit,
+    onNavigateToTvShowCredits: (HomeNavKey.TvShowCreditsNavKey) -> Unit,
     viewModel: CelebDetailsViewModel = hiltViewModel(),
 ) {
     viewModel.initialize(key = key)
@@ -74,6 +76,14 @@ fun CelebDetailsScreen(
                                 backdropPath = backdropPath
                             )
                         )
+                    },
+                    onSeeAllMovieCredits = {
+                        val argId = viewModel.saveMovieCredits(it)
+                        onNavigateToMovieCredits(HomeNavKey.MovieCreditsNavKey(argId = argId))
+                    },
+                    onSeeAllTvShowCredits = {
+                        val argId = viewModel.saveTvShowCredits(it)
+                        onNavigateToTvShowCredits(HomeNavKey.TvShowCreditsNavKey(argId = argId))
                     }
                 )
             }

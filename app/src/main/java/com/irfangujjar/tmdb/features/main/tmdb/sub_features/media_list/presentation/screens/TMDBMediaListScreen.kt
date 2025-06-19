@@ -18,13 +18,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.irfangujjar.tmdb.core.navigation.nav_keys.HomeNavKey
 import com.irfangujjar.tmdb.core.ui.ScreenPadding
@@ -129,15 +130,15 @@ private fun MediaListBody(
         val moviesListState = rememberLazyListState()
         val tvShowsListState = rememberLazyListState()
         val pagerState = rememberPagerState { 2 }
-        val selectedIndex = rememberSaveable { mutableIntStateOf(0) }
+        var selectedIndex by rememberSaveable { mutableIntStateOf(0) }
 
         LaunchedEffect(selectedIndex) {
-            pagerState.animateScrollToPage(selectedIndex.intValue)
+            pagerState.animateScrollToPage(selectedIndex)
         }
 
         LaunchedEffect(pagerState.currentPage, pagerState.isScrollInProgress) {
             if (!pagerState.isScrollInProgress) {
-                selectedIndex.intValue = pagerState.currentPage
+                selectedIndex = pagerState.currentPage
             }
         }
 
@@ -151,19 +152,19 @@ private fun MediaListBody(
             )
         ) {
             TabRow(
-                selectedTabIndex = selectedIndex.intValue,
+                selectedTabIndex = selectedIndex,
                 containerColor = MaterialTheme.colorScheme.surfaceContainer
             ) {
                 Tab(
-                    selected = selectedIndex.intValue == 0, onClick = {
-                        selectedIndex.intValue = 0
+                    selected = selectedIndex == 0, onClick = {
+                        selectedIndex = 0
                     },
                     text = { Text("Movies") },
                     unselectedContentColor = Color.Gray
                 )
                 Tab(
-                    selected = selectedIndex.intValue == 1, onClick = {
-                        selectedIndex.intValue = 1
+                    selected = selectedIndex == 1, onClick = {
+                        selectedIndex = 1
                     }, text = { Text("Tv Shows") },
                     unselectedContentColor = Color.Gray
                 )
@@ -183,7 +184,6 @@ private fun MediaListBody(
                                 bottom = outerPadding.calculateBottomPadding()
                             ),
                             innerPadding = PaddingValues(
-                                top = 0.dp,
                                 bottom = innerPadding.calculateBottomPadding()
                             ),
                             moviesList = mediaLists.moviesList,
@@ -202,7 +202,6 @@ private fun MediaListBody(
                                 bottom = outerPadding.calculateBottomPadding()
                             ),
                             innerPadding = PaddingValues(
-                                top = 0.dp,
                                 bottom = innerPadding.calculateBottomPadding()
                             ),
                             tvShowsList = mediaLists.tvShowsList,

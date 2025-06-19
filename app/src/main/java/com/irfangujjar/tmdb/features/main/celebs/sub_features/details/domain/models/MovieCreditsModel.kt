@@ -6,6 +6,11 @@ data class MovieCreditsModel(
     val cast: List<MovieModel>,
     val crew: List<MovieModel>
 ) {
+    fun isBothNotEmpty(): Boolean = isCastNotEmpty() && isCrewNotEmpty()
+
+    fun isCastNotEmpty(): Boolean = !cast.isEmpty()
+    fun isCrewNotEmpty(): Boolean = !crew.isEmpty()
+
     companion object {
         fun dummyDate(): MovieCreditsModel =
             MovieCreditsModel(

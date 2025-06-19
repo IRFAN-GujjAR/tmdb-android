@@ -32,6 +32,17 @@ sealed interface HomeNavKey : NavKey {
         val name: String
     ) : HomeNavKey
 
+
+    @Serializable
+    data class MovieCreditsNavKey(
+        override val argId: String
+    ) : HomeNavKey, HasArgId
+
+    @Serializable
+    data class TvShowCreditsNavKey(
+        override val argId: String
+    ) : HomeNavKey, HasArgId
+
     @Serializable
     data object ThemeNavKey : HomeNavKey
 

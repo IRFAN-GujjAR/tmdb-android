@@ -30,6 +30,8 @@ import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
 import com.irfangujjar.tmdb.core.ui.util.MediaImageType
 import com.irfangujjar.tmdb.core.ui.util.ProfileSizes
 import com.irfangujjar.tmdb.features.main.celebs.sub_features.details.domain.models.CelebDetailsModel
+import com.irfangujjar.tmdb.features.main.celebs.sub_features.details.domain.models.MovieCreditsModel
+import com.irfangujjar.tmdb.features.main.celebs.sub_features.details.domain.models.TvShowCreditsModel
 
 
 @Composable
@@ -39,7 +41,9 @@ fun CelebDetailsBodyComp(
     innerPadding: PaddingValues,
     celebDetails: CelebDetailsModel,
     onMovieItemTapped: (Int, String, String?, String?) -> Unit,
-    onTvShowItemTapped: (Int, String, String?, String?) -> Unit
+    onTvShowItemTapped: (Int, String, String?, String?) -> Unit,
+    onSeeAllMovieCredits: (MovieCreditsModel) -> Unit,
+    onSeeAllTvShowCredits: (TvShowCreditsModel) -> Unit,
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -121,7 +125,7 @@ fun CelebDetailsBodyComp(
                     configValues = MediaItemsHorizontalListConfigValues.fromDefault()
                 ),
                 title = "Movies",
-                onSeeAllClick = {},
+                onSeeAllClick = { onSeeAllMovieCredits(celebDetails.movieCredits!!) },
                 onItemTapped = onMovieItemTapped
             )
         }
@@ -138,7 +142,7 @@ fun CelebDetailsBodyComp(
                     configValues = MediaItemsHorizontalListConfigValues.fromDefault()
                 ),
                 title = "Tv Shows",
-                onSeeAllClick = {},
+                onSeeAllClick = { onSeeAllTvShowCredits(celebDetails.tvCredits!!) },
                 onItemTapped = onTvShowItemTapped
             )
         }
@@ -167,7 +171,9 @@ private fun CelebDetailsBodyPreview() {
                 innerPadding = PaddingValues(),
                 celebDetails = CelebDetailsModel.dummyData(),
                 onMovieItemTapped = { _, _, _, _ -> },
-                onTvShowItemTapped = { _, _, _, _ -> }
+                onTvShowItemTapped = { _, _, _, _ -> },
+                onSeeAllMovieCredits = {},
+                onSeeAllTvShowCredits = {}
             )
         }
     }

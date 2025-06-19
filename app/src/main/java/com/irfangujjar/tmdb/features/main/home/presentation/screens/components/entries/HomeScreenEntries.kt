@@ -12,6 +12,8 @@ import com.irfangujjar.tmdb.core.ui.theme.UserTheme
 import com.irfangujjar.tmdb.features.about.presentation.screens.AboutScreen
 import com.irfangujjar.tmdb.features.login.presentation.screens.LoginScreen
 import com.irfangujjar.tmdb.features.main.cast_crew.presentation.screens.CastCrewScreen
+import com.irfangujjar.tmdb.features.main.celebs.sub_features.credits.presentation.screens.MovieCreditsScreen
+import com.irfangujjar.tmdb.features.main.celebs.sub_features.credits.presentation.screens.TvShowCreditsScreen
 import com.irfangujjar.tmdb.features.main.celebs.sub_features.details.presentation.screens.CelebDetailsScreen
 import com.irfangujjar.tmdb.features.main.celebs.sub_features.see_all.presentation.screens.SeeAllCelebsScreen
 import com.irfangujjar.tmdb.features.main.movies.sub_features.collection.presentation.screens.CollectionDetailsScreen
@@ -42,6 +44,8 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
     onNavigateToTheme: () -> Unit,
     onNavigateToAbout: () -> Unit,
     onNavigateToTMDBMediaList: (HomeNavKey.TMDBMediaListNavKey) -> Unit,
+    onNavigateToMovieCredits: (HomeNavKey.MovieCreditsNavKey) -> Unit,
+    onNavigateToTvShowCredits: (HomeNavKey.TvShowCreditsNavKey) -> Unit,
     onBackPressed: () -> Unit
 ) {
     BottomNavEntries(
@@ -124,9 +128,30 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
             key = it,
             onBackStackPressed = onBackPressed,
             onNavigateToMovieDetails = onNavigateToMovieDetails,
+            onNavigateToTvShowDetails = onNavigateToTvShowDetails,
+            onNavigateToMovieCredits = onNavigateToMovieCredits,
+            onNavigateToTvShowCredits = onNavigateToTvShowCredits
+        )
+    }
+
+    entry<HomeNavKey.MovieCreditsNavKey> {
+        MovieCreditsScreen(
+            outerPadding = outerPadding,
+            onBackPressed = onBackPressed,
+            key = it,
+            onNavigateToMovieDetails = onNavigateToMovieDetails
+        )
+    }
+
+    entry<HomeNavKey.TvShowCreditsNavKey> {
+        TvShowCreditsScreen(
+            outerPadding = outerPadding,
+            onBackPressed = onBackPressed,
+            key = it,
             onNavigateToTvShowDetails = onNavigateToTvShowDetails
         )
     }
+
 
     entry<HomeNavKey.CollectionDetailsNavKey> {
         CollectionDetailsScreen(

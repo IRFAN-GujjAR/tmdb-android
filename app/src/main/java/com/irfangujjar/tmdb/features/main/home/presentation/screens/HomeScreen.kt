@@ -132,6 +132,8 @@ fun HomeScreen(
                     onNavigateToTheme = { addToBackStack(HomeNavKey.ThemeNavKey) },
                     onNavigateToAbout = { addToBackStack(HomeNavKey.AboutNavKey) },
                     onNavigateToTMDBMediaList = { addToBackStack(it) },
+                    onNavigateToMovieCredits = { addToBackStack(it) },
+                    onNavigateToTvShowCredits = { addToBackStack(it) }
                 )
             }
         )

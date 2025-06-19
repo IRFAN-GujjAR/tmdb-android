@@ -7,7 +7,11 @@ import com.irfangujjar.tmdb.core.api.safeApiCall
 import com.irfangujjar.tmdb.core.navigation.nav_keys.HomeNavKey
 import com.irfangujjar.tmdb.core.viewmodels.ViewModelWithKey
 import com.irfangujjar.tmdb.features.main.celebs.domain.models.CelebsListModel
+import com.irfangujjar.tmdb.features.main.celebs.sub_features.credits.presentation.nav_args_holder.MovieCreditsNavArgsHolder
+import com.irfangujjar.tmdb.features.main.celebs.sub_features.credits.presentation.nav_args_holder.TvShowCreditsNavArgsHolder
 import com.irfangujjar.tmdb.features.main.celebs.sub_features.details.domain.models.CelebDetailsModel
+import com.irfangujjar.tmdb.features.main.celebs.sub_features.details.domain.models.MovieCreditsModel
+import com.irfangujjar.tmdb.features.main.celebs.sub_features.details.domain.models.TvShowCreditsModel
 import com.irfangujjar.tmdb.features.main.celebs.sub_features.details.domain.usecases.CelebDetailsUseCaseLoad
 import com.irfangujjar.tmdb.features.main.celebs.sub_features.details.domain.usecases.params.CelebDetailsUseCaseLoadPrams
 import com.irfangujjar.tmdb.features.main.celebs.sub_features.details.presentation.viewmodels.states.CelebDetailsState
@@ -22,7 +26,9 @@ import javax.inject.Inject
 @HiltViewModel
 class CelebDetailsViewModel @Inject constructor(
     private val useCase: CelebDetailsUseCaseLoad,
-    private val seeAllCelebsNavArgsHolder: SeeAllCelebsNavArgsHolder
+    private val seeAllCelebsNavArgsHolder: SeeAllCelebsNavArgsHolder,
+    private val movieCreditsNavArgsHolder: MovieCreditsNavArgsHolder,
+    private val tvShowCreditsNavArgsHolder: TvShowCreditsNavArgsHolder,
 ) : ViewModelWithKey<HomeNavKey.CelebDetailsNavKey>() {
 
 
@@ -64,4 +70,9 @@ class CelebDetailsViewModel @Inject constructor(
     fun saveSeeAllCelebsArg(celebsList: CelebsListModel): String =
         seeAllCelebsNavArgsHolder.saveArgData(celebsList)
 
+    fun saveMovieCredits(movieCredits: MovieCreditsModel): String =
+        movieCreditsNavArgsHolder.saveArgData(movieCredits)
+
+    fun saveTvShowCredits(tvShowCredits: TvShowCreditsModel): String =
+        tvShowCreditsNavArgsHolder.saveArgData(tvShowCredits)
 }
