@@ -5,6 +5,7 @@ import com.irfangujjar.tmdb.core.navigation.args_holder.HasArgId
 import com.irfangujjar.tmdb.core.ui.util.CelebsCategory
 import com.irfangujjar.tmdb.core.ui.util.MoviesCategory
 import com.irfangujjar.tmdb.core.ui.util.TvShowsCategory
+import com.irfangujjar.tmdb.features.main.tmdb.sub_features.media_list.data.data_sources.api.TMDBMediaListCategory
 import kotlinx.serialization.Serializable
 
 
@@ -30,9 +31,6 @@ sealed interface HomeNavKey : NavKey {
         val celebId: Int,
         val name: String
     ) : HomeNavKey
-
-    @Serializable
-    data object SearchDetailsNavKey : HomeNavKey
 
     @Serializable
     data object ThemeNavKey : HomeNavKey
@@ -89,4 +87,12 @@ sealed interface HomeNavKey : NavKey {
         val tvShowPosterPath: String?,
         val episodeImagePlaceHolder: String?
     ) : HomeNavKey, HasArgId
+
+    @Serializable
+    data class TMDBMediaListNavKey(
+        val category: TMDBMediaListCategory,
+    ) : HomeNavKey
+
+    @Serializable
+    data object NotSignedInDialogBoxNavKey : HomeNavKey
 }

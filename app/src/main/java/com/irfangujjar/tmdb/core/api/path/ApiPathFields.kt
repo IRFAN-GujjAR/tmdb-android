@@ -6,4 +6,5 @@ object ApiPathFields {
     const val CELEB_ID = "celeb_id"
     const val COLLECTION_ID = "collection_id"
     const val SEASON_NO = "season_no"
+    const val USER_ID = "user_id"
 }

@@ -1,5 +1,6 @@
 package com.irfangujjar.tmdb.features.main.tmdb.presentation.viewmodels
 
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -36,6 +37,16 @@ class TMDBViewModel @Inject constructor(
 
     private val firstEmissionDeferred = CompletableDeferred<Unit>()
 
+    private val _showNotSignedInMessage = mutableStateOf(false)
+    val showNotSignedInMessage: State<Boolean> = _showNotSignedInMessage
+
+    fun showNotSignedInMessage() {
+        _showNotSignedInMessage.value = true
+    }
+
+    fun hideNotSignedInMessage() {
+        _showNotSignedInMessage.value = false
+    }
 
     init {
         viewModelScope.launch(Dispatchers.IO) {

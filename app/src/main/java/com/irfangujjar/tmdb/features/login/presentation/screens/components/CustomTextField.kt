@@ -21,7 +21,8 @@ fun CustomTextField(
     visualTransformation: VisualTransformation = VisualTransformation.None,
     isError: Boolean = false,
     errorMsg: String,
-    enabled: Boolean
+    enabled: Boolean,
+    maxLines: Int = 1
 ) {
     Column {
         OutlinedTextField(
@@ -34,7 +35,8 @@ fun CustomTextField(
             onValueChange = onValueChanged,
             keyboardOptions = keyboardOptions,
             isError = isError,
-            enabled = enabled
+            enabled = enabled,
+            maxLines = maxLines
         )
         if (isError) {
             Text(

@@ -28,7 +28,8 @@ fun EntryProviderBuilder<NavKey>.BottomNavEntries(
     onNavigateToCelebDetails: (HomeNavKey.CelebDetailsNavKey) -> Unit,
     onNavigateToLogin: () -> Unit,
     onNavigateToTheme: () -> Unit,
-    onNavigateToAbout: () -> Unit
+    onNavigateToAbout: () -> Unit,
+    onNavigateToTMDBMediaList: (HomeNavKey.TMDBMediaListNavKey) -> Unit,
 ) {
     BottomNavKey.items.forEach { bottomNavKey ->
         when (bottomNavKey) {
@@ -80,7 +81,8 @@ fun EntryProviderBuilder<NavKey>.BottomNavEntries(
                     snackbarHostState = snackBarHostState,
                     onNavigateToLogin = onNavigateToLogin,
                     onNavigateToTheme = onNavigateToTheme,
-                    onNavigateToAbout = onNavigateToAbout
+                    onNavigateToAbout = onNavigateToAbout,
+                    onNavigateToTMDBMediaList = onNavigateToTMDBMediaList
                 )
             }
         }

@@ -1,7 +1,9 @@
 package com.irfangujjar.tmdb.features.main.cast_crew.presentation.screens.components
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -87,29 +89,33 @@ fun CastCrewBodyWithTabsComp(
                 .weight(1f)
         ) { index ->
             if (index == 0)
-                CastBodyComp(
-                    preview = preview,
-                    outerPadding = PaddingValues(
-                        top = ScreenPadding.getTopPadding(), bottom =
-                            outerPadding.calculateBottomPadding()
-                    ),
-                    innerPadding = PaddingValues(bottom = innerPadding.calculateBottomPadding()),
-                    listState = castListState,
-                    cast = credits.cast,
-                    onCastItemTapped = onItemTapped
-                )
+                Box(modifier = Modifier.fillMaxSize()) {
+                    CastBodyComp(
+                        preview = preview,
+                        outerPadding = PaddingValues(
+                            top = ScreenPadding.getTopPadding(), bottom =
+                                outerPadding.calculateBottomPadding()
+                        ),
+                        innerPadding = PaddingValues(bottom = innerPadding.calculateBottomPadding()),
+                        listState = castListState,
+                        cast = credits.cast,
+                        onCastItemTapped = onItemTapped
+                    )
+                }
             else
-                CrewBodyComp(
-                    preview = preview,
-                    outerPadding = PaddingValues(
-                        top = ScreenPadding.getTopPadding(), bottom =
-                            outerPadding.calculateBottomPadding()
-                    ),
-                    innerPadding = PaddingValues(bottom = innerPadding.calculateBottomPadding()),
-                    listState = crewListState,
-                    crew = credits.crew,
-                    onCrewItemTapped = onItemTapped
-                )
+                Box(modifier = Modifier.fillMaxSize()) {
+                    CrewBodyComp(
+                        preview = preview,
+                        outerPadding = PaddingValues(
+                            top = ScreenPadding.getTopPadding(), bottom =
+                                outerPadding.calculateBottomPadding()
+                        ),
+                        innerPadding = PaddingValues(bottom = innerPadding.calculateBottomPadding()),
+                        listState = crewListState,
+                        crew = credits.crew,
+                        onCrewItemTapped = onItemTapped
+                    )
+                }
         }
     }
 }

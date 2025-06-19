@@ -17,6 +17,7 @@ import com.irfangujjar.tmdb.features.main.celebs.sub_features.see_all.presentati
 import com.irfangujjar.tmdb.features.main.movies.sub_features.collection.presentation.screens.CollectionDetailsScreen
 import com.irfangujjar.tmdb.features.main.movies.sub_features.details.presentation.screens.MovieDetailsScreen
 import com.irfangujjar.tmdb.features.main.movies.sub_features.see_all.presentation.screens.SeeAllMoviesScreen
+import com.irfangujjar.tmdb.features.main.tmdb.sub_features.media_list.presentation.screens.TMDBMediaListScreen
 import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.details.presentation.screens.TvShowDetailsScreen
 import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.season.presentation.screens.SeasonDetailsScreen
 import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.season.presentation.screens.SeeAllSeasonsScreen
@@ -40,6 +41,7 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
     onNavigateToLogin: () -> Unit,
     onNavigateToTheme: () -> Unit,
     onNavigateToAbout: () -> Unit,
+    onNavigateToTMDBMediaList: (HomeNavKey.TMDBMediaListNavKey) -> Unit,
     onBackPressed: () -> Unit
 ) {
     BottomNavEntries(
@@ -54,7 +56,8 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
         onNavigateToTvShowDetails = onNavigateToTvShowDetails,
         onNavigateToCelebDetails = onNavigateToCelebDetails,
         onNavigateToTheme = onNavigateToTheme,
-        onNavigateToAbout = onNavigateToAbout
+        onNavigateToAbout = onNavigateToAbout,
+        onNavigateToTMDBMediaList = onNavigateToTMDBMediaList,
     )
     entry<HomeNavKey.SeeAllMoviesNavKey> {
         SeeAllMoviesScreen(
@@ -165,12 +168,8 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
     entry<HomeNavKey.LoginNavKey> {
         LoginScreen(
             showBackStack = true,
-            onBackStackPressed = {
-                onBackPressed
-            },
-            navigateToMainScreen = {
-                onBackPressed
-            }
+            onBackStackPressed = onBackPressed,
+            navigateToMainScreen = onBackPressed
         )
     }
 
@@ -178,6 +177,17 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
         AboutScreen(
             outerPadding = outerPadding,
             onBackStackPressed = onBackPressed
+        )
+    }
+
+    entry<HomeNavKey.TMDBMediaListNavKey> {
+        TMDBMediaListScreen(
+            outerPadding = outerPadding,
+            userTheme = userTheme,
+            onBackPressed = onBackPressed,
+            key = it,
+            onNavigateToMovieDetails = onNavigateToMovieDetails,
+            onNavigateToTvShowDetails = onNavigateToTvShowDetails
         )
     }
 

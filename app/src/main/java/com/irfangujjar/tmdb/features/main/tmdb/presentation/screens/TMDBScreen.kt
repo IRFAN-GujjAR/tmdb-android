@@ -3,7 +3,9 @@ package com.irfangujjar.tmdb.features.main.tmdb.presentation.screens
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
@@ -30,7 +32,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.irfangujjar.tmdb.core.navigation.nav_keys.HomeNavKey
 import com.irfangujjar.tmdb.core.ui.ScreenPadding
+import com.irfangujjar.tmdb.core.ui.components.CustomDialogBox
 import com.irfangujjar.tmdb.core.ui.components.CustomError
 import com.irfangujjar.tmdb.core.ui.components.CustomLoading
 import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
@@ -39,6 +43,7 @@ import com.irfangujjar.tmdb.features.main.tmdb.domain.entities.AccountDetailsWit
 import com.irfangujjar.tmdb.features.main.tmdb.presentation.screens.components.TMDBProfile
 import com.irfangujjar.tmdb.features.main.tmdb.presentation.viewmodels.TMDBViewModel
 import com.irfangujjar.tmdb.features.main.tmdb.presentation.viewmodels.state.AccountDetailsState
+import com.irfangujjar.tmdb.features.main.tmdb.sub_features.media_list.data.data_sources.api.TMDBMediaListCategory
 
 
 @Composable
@@ -50,7 +55,8 @@ fun TMDBScreen(
     viewModel: TMDBViewModel = hiltViewModel(),
     onNavigateToLogin: () -> Unit,
     onNavigateToTheme: () -> Unit,
-    onNavigateToAbout: () -> Unit
+    onNavigateToAbout: () -> Unit,
+    onNavigateToTMDBMediaList: (HomeNavKey.TMDBMediaListNavKey) -> Unit,
 ) {
     val state = viewModel.state.collectAsState().value
     Surface(
@@ -84,7 +90,13 @@ fun TMDBScreen(
                     accountDetails = accountDetails,
                     navigateToLogin = onNavigateToLogin,
                     navigateToTheme = onNavigateToTheme,
-                    onNavigateToAbout = onNavigateToAbout
+                    onNavigateToAbout = onNavigateToAbout,
+                    onNavigateToTMDBMediaList = {
+                        onNavigateToTMDBMediaList(HomeNavKey.TMDBMediaListNavKey(category = it))
+                    },
+                    onShowNotSignedInDialogBox = {
+                        viewModel.showNotSignedInMessage()
+                    }
                 )
             }
 
@@ -98,6 +110,14 @@ fun TMDBScreen(
             }
         }
     }
+
+    if (viewModel.showNotSignedInMessage.value)
+        CustomDialogBox(
+            title = "Not Signed In",
+            message = "You need to sign in for accessing this!"
+        ) {
+            viewModel.hideNotSignedInMessage()
+        }
 }
 
 @Composable
@@ -107,7 +127,9 @@ private fun TMDbScreenBody(
     accountDetails: AccountDetailsWithoutIdEntity?,
     navigateToLogin: () -> Unit,
     navigateToTheme: () -> Unit,
-    onNavigateToAbout: () -> Unit
+    onNavigateToAbout: () -> Unit,
+    onNavigateToTMDBMediaList: (TMDBMediaListCategory) -> Unit,
+    onShowNotSignedInDialogBox: () -> Unit
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -138,9 +160,17 @@ private fun TMDbScreenBody(
             ) {
                 Text("Sign In / Sign Up")
             }
+        else
+            Spacer(modifier = Modifier.height(24.dp))
         ListItem(
             modifier = Modifier
-                .clickable(onClick = {}),
+                .clickable(onClick = {
+                    if (accountDetails == null) {
+                        onShowNotSignedInDialogBox()
+                    } else {
+                        onNavigateToTMDBMediaList(TMDBMediaListCategory.Favorite)
+                    }
+                }),
             headlineContent = { Text("Favorite") },
             supportingContent = { Text("Your favorites Movies & Tv Shows") },
             leadingContent = {
@@ -157,7 +187,13 @@ private fun TMDbScreenBody(
             })
         ListItem(
             modifier = Modifier
-                .clickable(onClick = {}),
+                .clickable(onClick = {
+                    if (accountDetails == null) {
+                        onShowNotSignedInDialogBox()
+                    } else {
+                        onNavigateToTMDBMediaList(TMDBMediaListCategory.Watchlist)
+                    }
+                }),
             headlineContent = { Text("WatchList") },
             supportingContent = { Text("Movies and TvShows Added to watchlist") },
             leadingContent = {
@@ -174,7 +210,13 @@ private fun TMDbScreenBody(
             })
         ListItem(
             modifier = Modifier
-                .clickable(onClick = {}),
+                .clickable(onClick = {
+                    if (accountDetails == null) {
+                        onShowNotSignedInDialogBox()
+                    } else {
+                        onNavigateToTMDBMediaList(TMDBMediaListCategory.Rated)
+                    }
+                }),
             headlineContent = { Text("Ratings") },
             supportingContent = { Text("Rated Movies & Tv Shows") },
             leadingContent = {
@@ -246,7 +288,9 @@ private fun TMDBScreenPreview() {
                 accountDetails = null,
                 navigateToLogin = {},
                 navigateToTheme = {},
-                onNavigateToAbout = {}
+                onNavigateToAbout = {},
+                onNavigateToTMDBMediaList = {},
+                onShowNotSignedInDialogBox = {}
             )
         }
     }
