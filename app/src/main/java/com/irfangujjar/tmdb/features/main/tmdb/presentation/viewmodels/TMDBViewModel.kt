@@ -1,5 +1,6 @@
 package com.irfangujjar.tmdb.features.main.tmdb.presentation.viewmodels
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -13,6 +14,8 @@ import com.irfangujjar.tmdb.features.main.tmdb.domain.usecase.AccountDetailsUseC
 import com.irfangujjar.tmdb.features.main.tmdb.domain.usecase.AccountDetailsUseCaseWatch
 import com.irfangujjar.tmdb.features.main.tmdb.domain.usecase.params.AccountDetailsParams
 import com.irfangujjar.tmdb.features.main.tmdb.presentation.viewmodels.state.AccountDetailsState
+import com.irfangujjar.tmdb.features.signout.domain.usecases.SignOutUseCase
+import com.irfangujjar.tmdb.features.signout.domain.usecases.params.SignOutUseCaseParams
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +28,8 @@ import javax.inject.Inject
 class TMDBViewModel @Inject constructor(
     private val userSession: UserSession,
     private val accountDetailsUseCaseWatch: AccountDetailsUseCaseWatch,
-    private val accountDetailsUseCaseLoadWithoutId: AccountDetailsUseCaseLoadWithoutId
+    private val accountDetailsUseCaseLoadWithoutId: AccountDetailsUseCaseLoadWithoutId,
+    private val signOutUseCase: SignOutUseCase
 ) : ViewModelWithErrorAlerts() {
 
     private val _state: MutableStateFlow<AccountDetailsState> =
@@ -40,6 +44,14 @@ class TMDBViewModel @Inject constructor(
     private val _showNotSignedInMessage = mutableStateOf(false)
     val showNotSignedInMessage: State<Boolean> = _showNotSignedInMessage
 
+    var isSigningOut by mutableStateOf(false)
+        private set
+
+    var signOutErrorMsg = ""
+        private set
+    var isSignOutError by mutableStateOf(false)
+        private set
+
     fun showNotSignedInMessage() {
         _showNotSignedInMessage.value = true
     }
@@ -47,6 +59,7 @@ class TMDBViewModel @Inject constructor(
     fun hideNotSignedInMessage() {
         _showNotSignedInMessage.value = false
     }
+
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -107,5 +120,39 @@ class TMDBViewModel @Inject constructor(
                 loadAccountDetails(userSession.sessionId!!)
                 isRefreshing = false
             }
+    }
+
+    fun signOut(onSuccess: () -> Unit) {
+        if (!isSigningOut)
+            isSigningOut = true
+
+        if (isSignOutError) {
+            isSignOutError = false
+            signOutErrorMsg = ""
+        }
+
+        viewModelScope.launch {
+            val result = safeApiCall {
+                signOutUseCase.invoke(params = SignOutUseCaseParams(sessionId = userSession.sessionId!!))
+            }
+            when (result) {
+                is ResultWrapper.Error -> {
+                    Log.e("TMDBViewModel", "Error Signing Out: ${result.errorEntity.message} ")
+                    signOutErrorMsg = result.errorEntity.message
+                    isSignOutError = true
+                }
+
+                is ResultWrapper.Success<Unit> ->
+                    onSuccess()
+
+            }
+        }.invokeOnCompletion {
+            isSigningOut = false
+        }
+    }
+
+    fun resetSignOutError() {
+        isSignOutError = false
+        signOutErrorMsg = ""
     }
 }

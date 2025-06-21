@@ -28,6 +28,7 @@ import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
 import com.irfangujjar.tmdb.core.ui.util.MediaType
 import com.irfangujjar.tmdb.core.ui.util.MoviesCategory
 import com.irfangujjar.tmdb.features.main.movies.sub_features.details.domain.models.MovieDetailsModel
+import com.irfangujjar.tmdb.features.media_state.presentation.viewmodels.states.MediaStateState
 
 
 @Composable
@@ -40,9 +41,18 @@ fun MovieDetailsBody(
     onNavigateToMovieDetails: (HomeNavKey.MovieDetailsNavKey) -> Unit,
     onNavigateToCollectionDetails: (HomeNavKey.CollectionDetailsNavKey) -> Unit,
     onCastCrewSeeAllClick: (CreditsModel) -> Unit,
-    onNavigateToCelebDetails: (HomeNavKey.CelebDetailsNavKey) -> Unit
+    onNavigateToCelebDetails: (HomeNavKey.CelebDetailsNavKey) -> Unit,
+    mediaState: MediaStateState
 ) {
     val scrollState = rememberScrollState()
+    var showUserRating=false
+    var userRating=0.0
+    if (mediaState is MediaStateState.Loaded){
+        showUserRating= mediaState.mediaState.rated.value!=0.0
+        if (showUserRating){
+            userRating=mediaState.mediaState.rated.value
+        }
+    }
     Column(
         modifier = Modifier
             .verticalScroll(scrollState)
@@ -68,6 +78,8 @@ fun MovieDetailsBody(
             voteCount = movieDetails.voteCount,
             genres = movieDetails.genres,
             overview = movieDetails.overview,
+            showUserRating = showUserRating,
+            userRating =userRating
         )
         Spacer(modifier = Modifier.height(12.dp))
         if (movieDetails.collection != null)
@@ -194,7 +206,8 @@ private fun MovieDetailsBodyPreview() {
                 },
                 onCastCrewSeeAllClick = {},
                 onNavigateToCollectionDetails = {},
-                onNavigateToCelebDetails = {}
+                onNavigateToCelebDetails = {},
+                mediaState = MediaStateState.Idle
             )
         }
     }

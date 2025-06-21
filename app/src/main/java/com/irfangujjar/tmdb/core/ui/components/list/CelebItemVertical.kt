@@ -23,7 +23,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.irfangujjar.tmdb.core.ui.components.image.CustomNetworkImage
+import com.irfangujjar.tmdb.core.ui.components.image.network.CustomNetworkImage
 import com.irfangujjar.tmdb.core.ui.components.list.values.CelebItemVerticalValues
 import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
 import com.irfangujjar.tmdb.core.ui.util.MediaImageType
@@ -103,7 +103,7 @@ private fun CelebItemVerticalPreview() {
             CelebItemVertical(
                 preview = true,
                 values = CelebItemVerticalValues.dummyData(),
-                onItemTapped = {id,name->}
+                onItemTapped = { id, name -> }
             )
         }
     }

@@ -9,6 +9,7 @@ import androidx.navigation3.runtime.entry
 import com.irfangujjar.tmdb.core.navigation.nav_keys.BottomNavKey
 import com.irfangujjar.tmdb.core.navigation.nav_keys.HomeNavKey
 import com.irfangujjar.tmdb.core.ui.theme.UserTheme
+import com.irfangujjar.tmdb.core.viewmodels.SignInStatusViewModel
 import com.irfangujjar.tmdb.features.main.celebs.presentation.screens.CelebsScreen
 import com.irfangujjar.tmdb.features.main.movies.presentation.screens.MoviesScreen
 import com.irfangujjar.tmdb.features.main.search.presentation.screens.SearchScreen
@@ -30,6 +31,7 @@ fun EntryProviderBuilder<NavKey>.BottomNavEntries(
     onNavigateToTheme: () -> Unit,
     onNavigateToAbout: () -> Unit,
     onNavigateToTMDBMediaList: (HomeNavKey.TMDBMediaListNavKey) -> Unit,
+    viewModel: SignInStatusViewModel
 ) {
     BottomNavKey.items.forEach { bottomNavKey ->
         when (bottomNavKey) {
@@ -82,7 +84,8 @@ fun EntryProviderBuilder<NavKey>.BottomNavEntries(
                     onNavigateToLogin = onNavigateToLogin,
                     onNavigateToTheme = onNavigateToTheme,
                     onNavigateToAbout = onNavigateToAbout,
-                    onNavigateToTMDBMediaList = onNavigateToTMDBMediaList
+                    onNavigateToTMDBMediaList = onNavigateToTMDBMediaList,
+                    signInStatusViewModel= viewModel
                 )
             }
         }

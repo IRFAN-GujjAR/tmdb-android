@@ -28,7 +28,11 @@ import com.irfangujjar.tmdb.core.ui.components.list.values.MediaItemsHorizontalL
 import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
 import com.irfangujjar.tmdb.core.ui.util.MediaType
 import com.irfangujjar.tmdb.core.ui.util.TvShowsCategory
+import com.irfangujjar.tmdb.features.main.tv_shows.domain.models.TvShowModel
 import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.details.domain.models.TvShowDetailsModel
+import com.irfangujjar.tmdb.features.media_state.domain.models.MediaStateModel
+import com.irfangujjar.tmdb.features.media_state.domain.models.RatedModel
+import com.irfangujjar.tmdb.features.media_state.presentation.viewmodels.states.MediaStateState
 
 
 @Composable
@@ -42,9 +46,18 @@ fun TvShowDetailsBodyComp(
     onCastCrewSeeAllClick: (CreditsModel) -> Unit,
     onNavigateToCelebDetails: (HomeNavKey.CelebDetailsNavKey) -> Unit,
     onSeeAllSeasonsTapped: (List<SeasonModel>) -> Unit,
-    onSeasonItemPressed: (SeasonModel) -> Unit
+    onSeasonItemPressed: (SeasonModel) -> Unit,
+    mediaState: MediaStateState
 ) {
     val scrollState = rememberScrollState()
+    var showUserRating = false
+    var userRating = 0.0
+    if (mediaState is MediaStateState.Loaded) {
+        showUserRating = mediaState.mediaState.rated.value != 0.0
+        if (showUserRating) {
+            userRating = mediaState.mediaState.rated.value
+        }
+    }
     Column(
         modifier = Modifier
             .verticalScroll(scrollState)
@@ -70,6 +83,8 @@ fun TvShowDetailsBodyComp(
             voteCount = tvShowDetails.voteCount,
             genres = tvShowDetails.genres,
             overview = tvShowDetails.overview,
+            showUserRating = showUserRating,
+            userRating = userRating
         )
         Spacer(modifier = Modifier.height(12.dp))
         if (tvShowDetails.seasons.isNotEmpty())
@@ -183,7 +198,15 @@ private fun TvShowDetailsBodyCompPreview() {
                 },
                 onNavigateToCelebDetails = {},
                 onSeasonItemPressed = {},
-                onSeeAllSeasonsTapped = {}
+                onSeeAllSeasonsTapped = {},
+                mediaState = MediaStateState.Loaded(
+                    mediaState = MediaStateModel(
+                        id = TvShowModel.dummyData().id,
+                        favorite = true,
+                        rated = RatedModel(value = 8.6),
+                        watchlist = true
+                    )
+                )
             )
         }
     }

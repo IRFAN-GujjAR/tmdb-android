@@ -22,7 +22,7 @@ import com.irfangujjar.tmdb.core.ui.ScreenPadding
 import com.irfangujjar.tmdb.core.ui.components.CustomDivider
 import com.irfangujjar.tmdb.core.ui.components.DividerBottomPadding
 import com.irfangujjar.tmdb.core.ui.components.DividerTopPadding
-import com.irfangujjar.tmdb.core.ui.components.image.CustomNetworkImage
+import com.irfangujjar.tmdb.core.ui.components.image.network.CustomNetworkImage
 import com.irfangujjar.tmdb.core.ui.components.list.MediaItemsHorizontalList
 import com.irfangujjar.tmdb.core.ui.components.list.values.MediaItemsHorizontalListConfigValues
 import com.irfangujjar.tmdb.core.ui.components.list.values.MediaItemsHorizontalListValues

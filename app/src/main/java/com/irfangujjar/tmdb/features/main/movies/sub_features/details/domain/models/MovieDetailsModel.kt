@@ -43,7 +43,8 @@ data class MovieDetailsModel(
     val similarMovies: MoviesListModel?
 ) : MovieTvDetailsModel {
 
-    fun isInformationPresent(): Boolean = releaseDate != null || language != null || budget != 0L
+    fun isInformationPresent(): Boolean = !releaseDate.isNullOrBlank() ||
+            !language.isNullOrBlank() || budget != 0L
             || revenue != 0L || productionCompanies.isNotEmpty()
 
     override fun isCastCrewPresent(): Boolean = (credits != null && (credits.cast.isNotEmpty()

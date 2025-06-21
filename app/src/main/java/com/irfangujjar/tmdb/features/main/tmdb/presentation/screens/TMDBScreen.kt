@@ -1,6 +1,7 @@
 package com.irfangujjar.tmdb.features.main.tmdb.presentation.screens
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -34,11 +35,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.irfangujjar.tmdb.core.navigation.nav_keys.HomeNavKey
 import com.irfangujjar.tmdb.core.ui.ScreenPadding
-import com.irfangujjar.tmdb.core.ui.components.CustomDialogBox
 import com.irfangujjar.tmdb.core.ui.components.CustomError
 import com.irfangujjar.tmdb.core.ui.components.CustomLoading
+import com.irfangujjar.tmdb.core.ui.components.CustomMessageDialogBox
 import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
 import com.irfangujjar.tmdb.core.ui.theme.UserTheme
+import com.irfangujjar.tmdb.core.viewmodels.SignInStatusViewModel
 import com.irfangujjar.tmdb.features.main.tmdb.domain.entities.AccountDetailsWithoutIdEntity
 import com.irfangujjar.tmdb.features.main.tmdb.presentation.screens.components.TMDBProfile
 import com.irfangujjar.tmdb.features.main.tmdb.presentation.viewmodels.TMDBViewModel
@@ -57,6 +59,7 @@ fun TMDBScreen(
     onNavigateToTheme: () -> Unit,
     onNavigateToAbout: () -> Unit,
     onNavigateToTMDBMediaList: (HomeNavKey.TMDBMediaListNavKey) -> Unit,
+    signInStatusViewModel: SignInStatusViewModel
 ) {
     val state = viewModel.state.collectAsState().value
     Surface(
@@ -96,7 +99,13 @@ fun TMDBScreen(
                     },
                     onShowNotSignedInDialogBox = {
                         viewModel.showNotSignedInMessage()
-                    }
+                    },
+                    onSignOut = {
+                        viewModel.signOut(onSuccess = {
+                            signInStatusViewModel.changeStatusToSignedOut()
+                        })
+                    },
+                    isSigningOut = viewModel.isSigningOut
                 )
             }
 
@@ -112,12 +121,22 @@ fun TMDBScreen(
     }
 
     if (viewModel.showNotSignedInMessage.value)
-        CustomDialogBox(
+        CustomMessageDialogBox(
             title = "Not Signed In",
             message = "You need to sign in for accessing this!"
         ) {
             viewModel.hideNotSignedInMessage()
         }
+
+    if (viewModel.isSignOutError) {
+        CustomMessageDialogBox(
+            title = "SignOut Error",
+            message = viewModel.signOutErrorMsg,
+            onDismiss = {
+                viewModel.resetSignOutError()
+            }
+        )
+    }
 }
 
 @Composable
@@ -129,151 +148,158 @@ private fun TMDbScreenBody(
     navigateToTheme: () -> Unit,
     onNavigateToAbout: () -> Unit,
     onNavigateToTMDBMediaList: (TMDBMediaListCategory) -> Unit,
-    onShowNotSignedInDialogBox: () -> Unit
+    onShowNotSignedInDialogBox: () -> Unit,
+    onSignOut: () -> Unit,
+    isSigningOut: Boolean
 ) {
     val scrollState = rememberScrollState()
-    Column(
-        modifier = Modifier
-            .verticalScroll(scrollState)
-            .padding(
-                ScreenPadding.getPadding(
-                    outerPaddingValues = paddingValues,
-                    includeStartPadding = false,
-                    includeEndPadding = false
-                )
-            )
-    ) {
-        TMDBProfile(
-            preview = preview,
-            accountDetails = accountDetails
-        )
-        if (accountDetails == null)
-            FilledTonalButton(
-                onClick = navigateToLogin,
-                modifier = Modifier
-                    .padding(
-                        top = 24.dp, bottom = 12.dp,
-                        start = ScreenPadding.getStartPadding(),
-                        end = ScreenPadding.getEndPadding()
+    Box() {
+        Column(
+            modifier = Modifier
+                .verticalScroll(scrollState)
+                .padding(
+                    ScreenPadding.getPadding(
+                        outerPaddingValues = paddingValues,
+                        includeStartPadding = false,
+                        includeEndPadding = false
                     )
-                    .align(Alignment.CenterHorizontally)
-            ) {
-                Text("Sign In / Sign Up")
-            }
-        else
-            Spacer(modifier = Modifier.height(24.dp))
-        ListItem(
-            modifier = Modifier
-                .clickable(onClick = {
-                    if (accountDetails == null) {
-                        onShowNotSignedInDialogBox()
-                    } else {
-                        onNavigateToTMDBMediaList(TMDBMediaListCategory.Favorite)
-                    }
-                }),
-            headlineContent = { Text("Favorite") },
-            supportingContent = { Text("Your favorites Movies & Tv Shows") },
-            leadingContent = {
-                Icon(
-                    imageVector = Icons.Default.FavoriteBorder,
-                    contentDescription = "Favorite Icon"
                 )
-            },
-            trailingContent = {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Default.ArrowForwardIos,
-                    contentDescription = "Arrow Forward"
-                )
-            })
-        ListItem(
-            modifier = Modifier
-                .clickable(onClick = {
-                    if (accountDetails == null) {
-                        onShowNotSignedInDialogBox()
-                    } else {
-                        onNavigateToTMDBMediaList(TMDBMediaListCategory.Watchlist)
-                    }
-                }),
-            headlineContent = { Text("WatchList") },
-            supportingContent = { Text("Movies and TvShows Added to watchlist") },
-            leadingContent = {
-                Icon(
-                    imageVector = Icons.Default.BookmarkBorder,
-                    contentDescription = "Watchlist Icon"
-                )
-            },
-            trailingContent = {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Default.ArrowForwardIos,
-                    contentDescription = "Arrow Forward"
-                )
-            })
-        ListItem(
-            modifier = Modifier
-                .clickable(onClick = {
-                    if (accountDetails == null) {
-                        onShowNotSignedInDialogBox()
-                    } else {
-                        onNavigateToTMDBMediaList(TMDBMediaListCategory.Rated)
-                    }
-                }),
-            headlineContent = { Text("Ratings") },
-            supportingContent = { Text("Rated Movies & Tv Shows") },
-            leadingContent = {
-                Icon(
-                    imageVector = Icons.Default.StarOutline,
-                    contentDescription = "Rating Icon"
-                )
-            },
-            trailingContent = {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Default.ArrowForwardIos,
-                    contentDescription = "Arrow Forward"
-                )
-            })
-        ListItem(
-            modifier = Modifier
-                .clickable(onClick = navigateToTheme),
-            headlineContent = { Text("Theme") },
-            supportingContent = { Text("Set Light & Dark Theme") },
-            leadingContent = {
-                Icon(
-                    imageVector = Icons.Default.Settings,
-                    contentDescription = "Theme Icon"
-                )
-            },
-            trailingContent = {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Default.ArrowForwardIos,
-                    contentDescription = "Arrow Forward"
-                )
-            })
-        ListItem(
-            modifier = Modifier
-                .clickable(onClick = onNavigateToAbout),
-            headlineContent = { Text("About") },
-            supportingContent = { Text("Information about this app") },
-            leadingContent = {
-                Icon(
-                    imageVector = Icons.Default.Info,
-                    contentDescription = "Appearances Icon"
-                )
-            },
-            trailingContent = {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Default.ArrowForwardIos,
-                    contentDescription = "Arrow Forward"
-                )
-            })
-        if (accountDetails != null)
-            Button(
-                onClick = {},
+        ) {
+            TMDBProfile(
+                preview = preview,
+                accountDetails = accountDetails
+            )
+            if (accountDetails == null)
+                FilledTonalButton(
+                    onClick = navigateToLogin,
+                    modifier = Modifier
+                        .padding(
+                            top = 24.dp, bottom = 12.dp,
+                            start = ScreenPadding.getStartPadding(),
+                            end = ScreenPadding.getEndPadding()
+                        )
+                        .align(Alignment.CenterHorizontally)
+                ) {
+                    Text("Sign In / Sign Up")
+                }
+            else
+                Spacer(modifier = Modifier.height(24.dp))
+            ListItem(
                 modifier = Modifier
-                    .padding(top = 24.dp)
-                    .align(alignment = Alignment.CenterHorizontally)
-            ) {
-                Text("Sign Out")
-            }
+                    .clickable(enabled = !isSigningOut, onClick = {
+                        if (accountDetails == null) {
+                            onShowNotSignedInDialogBox()
+                        } else {
+                            onNavigateToTMDBMediaList(TMDBMediaListCategory.Favorite)
+                        }
+                    }),
+                headlineContent = { Text("Favorite") },
+                supportingContent = { Text("Your favorites Movies & Tv Shows") },
+                leadingContent = {
+                    Icon(
+                        imageVector = Icons.Default.FavoriteBorder,
+                        contentDescription = "Favorite Icon"
+                    )
+                },
+                trailingContent = {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Default.ArrowForwardIos,
+                        contentDescription = "Arrow Forward"
+                    )
+                })
+            ListItem(
+                modifier = Modifier
+                    .clickable(enabled = !isSigningOut, onClick = {
+                        if (accountDetails == null) {
+                            onShowNotSignedInDialogBox()
+                        } else {
+                            onNavigateToTMDBMediaList(TMDBMediaListCategory.Watchlist)
+                        }
+                    }),
+                headlineContent = { Text("WatchList") },
+                supportingContent = { Text("Movies and TvShows Added to watchlist") },
+                leadingContent = {
+                    Icon(
+                        imageVector = Icons.Default.BookmarkBorder,
+                        contentDescription = "Watchlist Icon"
+                    )
+                },
+                trailingContent = {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Default.ArrowForwardIos,
+                        contentDescription = "Arrow Forward"
+                    )
+                })
+            ListItem(
+                modifier = Modifier
+                    .clickable(enabled = !isSigningOut, onClick = {
+                        if (accountDetails == null) {
+                            onShowNotSignedInDialogBox()
+                        } else {
+                            onNavigateToTMDBMediaList(TMDBMediaListCategory.Rated)
+                        }
+                    }),
+                headlineContent = { Text("Ratings") },
+                supportingContent = { Text("Rated Movies & Tv Shows") },
+                leadingContent = {
+                    Icon(
+                        imageVector = Icons.Default.StarOutline,
+                        contentDescription = "Rating Icon"
+                    )
+                },
+                trailingContent = {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Default.ArrowForwardIos,
+                        contentDescription = "Arrow Forward"
+                    )
+                })
+            ListItem(
+                modifier = Modifier
+                    .clickable(enabled = !isSigningOut, onClick = navigateToTheme),
+                headlineContent = { Text("Theme") },
+                supportingContent = { Text("Set Light & Dark Theme") },
+                leadingContent = {
+                    Icon(
+                        imageVector = Icons.Default.Settings,
+                        contentDescription = "Theme Icon"
+                    )
+                },
+                trailingContent = {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Default.ArrowForwardIos,
+                        contentDescription = "Arrow Forward"
+                    )
+                })
+            ListItem(
+                modifier = Modifier
+                    .clickable(enabled = !isSigningOut, onClick = onNavigateToAbout),
+                headlineContent = { Text("About") },
+                supportingContent = { Text("Information about this app") },
+                leadingContent = {
+                    Icon(
+                        imageVector = Icons.Default.Info,
+                        contentDescription = "Appearances Icon"
+                    )
+                },
+                trailingContent = {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Default.ArrowForwardIos,
+                        contentDescription = "Arrow Forward"
+                    )
+                })
+            if (accountDetails != null)
+                Button(
+                    enabled = !isSigningOut,
+                    onClick = onSignOut,
+                    modifier = Modifier
+                        .padding(top = 24.dp)
+                        .align(alignment = Alignment.CenterHorizontally)
+                ) {
+                    Text("Sign Out")
+                }
+        }
+        if (isSigningOut)
+            CustomLoading()
     }
 }
 
@@ -290,7 +316,9 @@ private fun TMDBScreenPreview() {
                 navigateToTheme = {},
                 onNavigateToAbout = {},
                 onNavigateToTMDBMediaList = {},
-                onShowNotSignedInDialogBox = {}
+                onShowNotSignedInDialogBox = {},
+                onSignOut = {},
+                isSigningOut = false,
             )
         }
     }

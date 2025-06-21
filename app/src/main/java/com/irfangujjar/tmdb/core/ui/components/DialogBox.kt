@@ -6,10 +6,10 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 
 @Composable
-fun CustomDialogBox(
+fun CustomMessageDialogBox(
     title: String,
     message: String,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -23,6 +23,6 @@ fun CustomDialogBox(
             TextButton(onClick = onDismiss) {
                 Text("OK")
             }
-        }
+        },
     )
 }

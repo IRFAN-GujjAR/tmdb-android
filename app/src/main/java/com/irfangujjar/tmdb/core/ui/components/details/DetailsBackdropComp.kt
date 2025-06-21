@@ -1,5 +1,6 @@
 package com.irfangujjar.tmdb.core.ui.components.details
 
+import android.icu.text.DecimalFormat
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -7,9 +8,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -26,7 +33,7 @@ import androidx.compose.ui.unit.sp
 import com.irfangujjar.tmdb.core.models.GenreModel
 import com.irfangujjar.tmdb.core.ui.ScreenPadding
 import com.irfangujjar.tmdb.core.ui.components.CustomRating
-import com.irfangujjar.tmdb.core.ui.components.image.CustomNetworkImage
+import com.irfangujjar.tmdb.core.ui.components.image.network.CustomNetworkImage
 import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
 import com.irfangujjar.tmdb.core.ui.util.BackdropSizes
 import com.irfangujjar.tmdb.core.ui.util.MediaType
@@ -48,7 +55,9 @@ fun DetailsBackdropComp(
     voteAverage: Double?,
     voteCount: Int?,
     genres: List<GenreModel>,
-    overview: String?
+    overview: String?,
+    showUserRating: Boolean = false,
+    userRating: Double = 0.0
 ) {
     Box {
         Box {
@@ -117,7 +126,9 @@ fun DetailsBackdropComp(
                 voteAverage = voteAverage,
                 voteCount = voteCount,
                 genres = genres,
-                overview = overview
+                overview = overview,
+                showUserRating = showUserRating,
+                userRating = userRating
             )
         }
     }
@@ -131,8 +142,12 @@ private fun InformationComp(
     voteAverage: Double?,
     voteCount: Int?,
     genres: List<GenreModel>,
-    overview: String?
+    overview: String?,
+    showUserRating: Boolean = false,
+    userRating: Double = 0.0
 ) {
+    val isRatingPresent = voteAverage != null && voteCount != null
+    val showRatingRow = isRatingPresent || showUserRating
     Column(
         modifier = Modifier.padding(start = 8.dp, top = 2.dp, end = ScreenPadding.getEndPadding())
     ) {
@@ -142,11 +157,43 @@ private fun InformationComp(
             fontWeight = FontWeight.W500,
             modifier = Modifier.padding(end = ScreenPadding.getEndPadding())
         )
-        if (voteAverage != null && voteCount != null)
-            CustomRating(
-                voteAverage = voteAverage,
-                voteCount = voteCount,
-            )
+        if (showRatingRow)
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                if (isRatingPresent) {
+                    CustomRating(
+                        voteAverage = voteAverage,
+                        voteCount = voteCount,
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                    Text(
+                        DecimalFormat("#.#").format(voteAverage),
+                        modifier = Modifier.padding(horizontal = 12.dp),
+                        color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.W500,
+                        fontSize = 14.sp
+                    )
+                }
+                if (showUserRating) {
+                    if (isRatingPresent)
+                        Spacer(modifier = Modifier.weight(1f))
+                    Icon(
+                        imageVector = Icons.Default.Person, contentDescription = "User Rating",
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(18.dp)
+                    )
+                    Text(
+                        DecimalFormat("#.#").format(userRating),
+                        modifier = Modifier.padding(start = 4.dp, end = 28.dp),
+                        color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.W500,
+                        fontSize = 14.sp
+                    )
+                } else {
+                    Spacer(modifier = Modifier.weight(1f))
+                }
+            }
         if (genres.isNotEmpty())
             FlowRow(
                 modifier = Modifier.padding(vertical = 8.dp),
@@ -197,6 +244,8 @@ private fun BackdropDetailsCompPreview() {
                 voteCount = movieDetails.voteCount,
                 genres = movieDetails.genres,
                 overview = movieDetails.overview,
+                showUserRating = true,
+                userRating = 8.6
             )
         }
     }

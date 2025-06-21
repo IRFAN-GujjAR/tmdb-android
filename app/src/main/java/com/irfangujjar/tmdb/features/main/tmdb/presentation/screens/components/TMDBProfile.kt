@@ -21,7 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.irfangujjar.tmdb.core.ui.ScreenPadding
-import com.irfangujjar.tmdb.core.ui.components.image.CustomNetworkImage
+import com.irfangujjar.tmdb.core.ui.components.image.network.CustomNetworkImage
 import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
 import com.irfangujjar.tmdb.core.ui.util.MediaImageType
 import com.irfangujjar.tmdb.core.ui.util.ProfileSizes
@@ -30,8 +30,12 @@ import com.irfangujjar.tmdb.features.main.tmdb.domain.entities.AccountDetailsWit
 @Composable
 fun TMDBProfile(preview: Boolean, accountDetails: AccountDetailsWithoutIdEntity?) {
     if (accountDetails == null)
-        Box(contentAlignment = Alignment.Center,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = ScreenPadding.getHorizontalPadding())) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = ScreenPadding.getHorizontalPadding())
+        ) {
             Icon(
                 imageVector = Icons.Default.AccountCircle, contentDescription = "Account Avatar",
                 modifier = Modifier.size(60.dp)

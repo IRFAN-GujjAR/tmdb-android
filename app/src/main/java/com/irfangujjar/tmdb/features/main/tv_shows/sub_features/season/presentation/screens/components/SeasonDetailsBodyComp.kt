@@ -24,7 +24,7 @@ import com.irfangujjar.tmdb.core.ui.components.CustomRating
 import com.irfangujjar.tmdb.core.ui.components.DividerBottomPadding
 import com.irfangujjar.tmdb.core.ui.components.DividerTopPadding
 import com.irfangujjar.tmdb.core.ui.components.TextRow
-import com.irfangujjar.tmdb.core.ui.components.image.CustomNetworkImage
+import com.irfangujjar.tmdb.core.ui.components.image.network.CustomNetworkImage
 import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
 import com.irfangujjar.tmdb.core.ui.util.MediaImageType
 import com.irfangujjar.tmdb.core.ui.util.PosterSizes

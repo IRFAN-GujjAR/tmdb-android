@@ -42,9 +42,9 @@ fun MovieDetailsInformationComp(
                 horizontalAlignment = Alignment.End,
                 modifier = Modifier.weight(1f)
             ) {
-                if (releaseDate != null)
+                if (!releaseDate.isNullOrBlank())
                     InformationItemTitle("Release Date : ")
-                if (language != null)
+                if (!language.isNullOrBlank())
                     InformationItemTitle("Language : ")
                 if (budget != 0L)
                     InformationItemTitle("Budget : ")
@@ -57,9 +57,9 @@ fun MovieDetailsInformationComp(
                 horizontalAlignment = Alignment.Start,
                 modifier = Modifier.weight(1f)
             ) {
-                if (releaseDate != null)
+                if (!releaseDate.isNullOrBlank())
                     InformationItemData(releaseDate)
-                if (language != null)
+                if (!language.isNullOrBlank())
                     InformationItemData(LanguageCode.fromCode(language))
                 if (budget != 0L)
                     InformationItemData(formatDollarAmount(budget))

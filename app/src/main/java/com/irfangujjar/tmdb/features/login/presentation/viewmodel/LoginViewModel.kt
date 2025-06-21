@@ -84,6 +84,7 @@ class LoginViewModel @Inject constructor(
         if (!userNameError && !passwordError) {
             viewModelScope.launch {
                 _loginState.value = LoginState.LoggingIn
+                showPassword = false
                 withContext(Dispatchers.IO) {
                     val result = safeApiCall<SessionEntity> {
                         loginUseCase.invoke(LoginParams(username, password))

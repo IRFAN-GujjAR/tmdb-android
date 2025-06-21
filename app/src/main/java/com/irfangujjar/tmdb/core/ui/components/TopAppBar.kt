@@ -12,6 +12,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
 
 
@@ -22,7 +23,8 @@ fun CustomTopAppBar(
     actions: @Composable RowScope.() -> Unit = {},
     showBackStack: Boolean = false,
     onBackStackPressed: () -> Unit = {},
-    matchSurfaceColor: Boolean = false
+    matchSurfaceColor: Boolean = false,
+    navigationIcon: ImageVector? = null
 ) {
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
@@ -34,7 +36,7 @@ fun CustomTopAppBar(
             if (showBackStack)
                 IconButton(onClick = onBackStackPressed) {
                     Icon(
-                        imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                        imageVector = navigationIcon ?: Icons.AutoMirrored.Default.ArrowBack,
                         contentDescription = "BackStack Arrow"
                     )
                 }

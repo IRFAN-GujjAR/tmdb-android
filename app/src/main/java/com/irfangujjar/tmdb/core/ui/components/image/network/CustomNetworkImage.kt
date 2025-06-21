@@ -1,8 +1,8 @@
-package com.irfangujjar.tmdb.core.ui.components.image
+package com.irfangujjar.tmdb.core.ui.components.image.network
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -17,13 +17,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
-import coil3.request.ImageRequest
-import coil3.request.crossfade
-import com.irfangujjar.tmdb.R
+import com.irfangujjar.tmdb.core.ui.components.image.CelebrityProfilePlaceholder
+import com.irfangujjar.tmdb.core.ui.components.image.MoviePosterPlaceholder
+import com.irfangujjar.tmdb.core.ui.components.image.TvPosterPlaceholder
 import com.irfangujjar.tmdb.core.ui.util.BackdropSizes
 import com.irfangujjar.tmdb.core.ui.util.MediaImageType
 import com.irfangujjar.tmdb.core.ui.util.PosterSizes
@@ -45,6 +43,7 @@ fun CustomNetworkImage(
     movieTvBorderDecoration: Boolean = true,
     placeHolderSize: Dp,
     celebrityPlaceHolderCircularShape: Boolean = false,
+    backgroundTransparency: Float? = null,
     posterSize: PosterSizes = PosterSizes.w185,
     backdropSize: BackdropSizes = BackdropSizes.w300,
     profileSize: ProfileSizes = ProfileSizes.w185,
@@ -62,10 +61,14 @@ fun CustomNetworkImage(
             borderRadius = borderRadius,
             contentScale = contentScale,
             profileSize = profileSize,
+            backgroundTransparency = backgroundTransparency
         )
     } else {
-        var modifier = Modifier
-            .height(height = height)
+        var modifier = if (height == 0.dp) {
+            Modifier.fillMaxHeight()
+        } else {
+            Modifier.height(height)
+        }
         modifier = if (width == 0.dp) {
             modifier.fillMaxWidth()
         } else {
@@ -94,15 +97,16 @@ fun CustomNetworkImage(
                         imageUrl
                     )
                 }
-                NetworkImage(
+                NetworkImageComp(
                     preview = preview,
                     mediaImageType = type,
-                    imagePath =url,
+                    imagePath = url,
                     contentScale = contentScale,
                     isLandscape = isLandscape,
                     posterSize = posterSize,
                     backdropSizes = backdropSize,
-                    stillSize = stillSize
+                    stillSize = stillSize,
+                    backgroundTransparency = backgroundTransparency
                 )
             }
         }
@@ -121,7 +125,8 @@ private fun Celebrity(
     placeHolderSize: Dp,
     borderRadius: Dp,
     contentScale: ContentScale,
-    profileSize: ProfileSizes
+    profileSize: ProfileSizes,
+    backgroundTransparency: Float?
 ) {
     if (imageUrl == null && celebrityPlaceHolderCircularShape) {
         Box(
@@ -159,12 +164,13 @@ private fun Celebrity(
             if (imageUrl == null) {
                 CelebrityProfilePlaceholder(size = placeHolderSize)
             } else {
-                NetworkImage(
+                NetworkImageComp(
                     mediaImageType = type,
                     preview = preview,
                     imagePath = profileSize.getUrl(imageUrl),
                     contentScale = contentScale,
                     profileSize = profileSize,
+                    backgroundTransparency = backgroundTransparency
                 )
             }
         }
@@ -172,101 +178,6 @@ private fun Celebrity(
 }
 
 
-@Composable
-private fun NetworkImage(
-    mediaImageType: MediaImageType,
-    modifier: Modifier = Modifier,
-    preview: Boolean = false,
-    imagePath: String,
-    contentScale: ContentScale = ContentScale.Crop,
-    isLandscape: Boolean = false,
-    posterSize: PosterSizes = PosterSizes.w185,
-    backdropSizes: BackdropSizes = BackdropSizes.w300,
-    profileSize: ProfileSizes = ProfileSizes.w92,
-    stillSize: StillSizes = StillSizes.w185
-) {
-    AsyncImage(
-        model = if (preview) dummyPreviewImage(
-            mediaImageType,
-            isLandscape,
-            backdropSizes,
-            posterSize,
-            profileSize,
-            stillSize
-        ) else ImageRequest.Builder(LocalContext.current)
-            .data(imagePath)
-            .crossfade(true)
-            .build(),
-        contentDescription = "Image",
-        contentScale = contentScale,
-        modifier = modifier.fillMaxSize()
-    )
-}
 
-private fun dummyPreviewImage(
-    mediaImageType: MediaImageType,
-    isLandscape: Boolean = false,
-    backdropSizes: BackdropSizes,
-    posterSize: PosterSizes,
-    profileSize: ProfileSizes,
-    stillSize: StillSizes
-): Int = when (mediaImageType) {
-    MediaImageType.Movie -> {
-        if (isLandscape) {
-            when (backdropSizes) {
-                BackdropSizes.w300 -> R.drawable.movie_backdrop_w300
-                BackdropSizes.w780 -> R.drawable.movie_backdrop_w780
-                BackdropSizes.w1280 -> R.drawable.movie_backdrop_w1280
-                BackdropSizes.original -> R.drawable.movie_backdrop_original
-            }
-        } else {
-            when (posterSize) {
-                PosterSizes.w92 -> R.drawable.movie_poster_w92
-                PosterSizes.w154 -> R.drawable.movie_poster_w154
-                PosterSizes.w185 -> R.drawable.movie_poster_w185
-                PosterSizes.w342 -> R.drawable.movie_poster_w342
-                PosterSizes.w500 -> R.drawable.movie_poster_w500
-                PosterSizes.w780 -> R.drawable.movie_poster_w780
-                PosterSizes.original -> R.drawable.movie_poster_original
-            }
-        }
 
-    }
 
-    MediaImageType.TvShow -> {
-        if (isLandscape) {
-            when (backdropSizes) {
-                BackdropSizes.w300 -> R.drawable.tv_backdrop_w300
-                BackdropSizes.w780 -> R.drawable.tv_backdrop_w780
-                BackdropSizes.w1280 -> R.drawable.tv_backdrop_w1280
-                BackdropSizes.original -> R.drawable.tv_backdrop_original
-            }
-        } else {
-            when (posterSize) {
-                PosterSizes.w92 -> R.drawable.tv_poster_w92
-                PosterSizes.w154 -> R.drawable.tv_poster_w154
-                PosterSizes.w185 -> R.drawable.tv_poster_w185
-                PosterSizes.w342 -> R.drawable.tv_poster_w342
-                PosterSizes.w500 -> R.drawable.tv_poster_w500
-                PosterSizes.w780 -> R.drawable.tv_poster_w780
-                PosterSizes.original -> R.drawable.tv_poster_original
-            }
-        }
-    }
-
-    MediaImageType.Celebrity -> {
-        when (profileSize) {
-            ProfileSizes.w45 -> R.drawable.celebrity_profile_w45
-            ProfileSizes.w92 -> R.drawable.celebrity_profile_w92
-            ProfileSizes.w185 -> R.drawable.celebrity_profile_w185
-            ProfileSizes.h632 -> R.drawable.celebrity_profile_h632
-            ProfileSizes.original -> R.drawable.celebrity_profile_original
-        }
-    }
-
-    MediaImageType.Episode -> {
-        when (stillSize) {
-            StillSizes.w185 -> R.drawable.tv_backdrop_w300
-        }
-    }
-}

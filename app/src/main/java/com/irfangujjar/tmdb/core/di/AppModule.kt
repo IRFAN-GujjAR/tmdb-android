@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.room.Room
+import com.google.gson.GsonBuilder
 import com.irfangujjar.tmdb.BuildConfig
 import com.irfangujjar.tmdb.core.data_store.DataStoreUtil
 import com.irfangujjar.tmdb.core.db.AppDatabase
@@ -16,6 +17,8 @@ import com.irfangujjar.tmdb.features.main.celebs.data.data_sources.remote.api.Ce
 import com.irfangujjar.tmdb.features.main.movies.data.data_sources.remote.api.MovieApi
 import com.irfangujjar.tmdb.features.main.search.data.data_sources.remote.api.SearchApi
 import com.irfangujjar.tmdb.features.main.tv_shows.data.data_sources.remote.api.TvShowApi
+import com.irfangujjar.tmdb.features.media_state.domain.models.RatedModel
+import com.irfangujjar.tmdb.features.media_state.domain.models.deserializer.RatedModelDeserializer
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -50,10 +53,14 @@ object AppModule {
                     return chain.proceed(request)
                 }
             })
+        val gson = GsonBuilder().registerTypeAdapter(
+            RatedModel::class.java,
+            RatedModelDeserializer()
+        ).create()
         return Retrofit.Builder()
             .baseUrl(URLS.BASE_URL)
             .client(client.build())
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }
 

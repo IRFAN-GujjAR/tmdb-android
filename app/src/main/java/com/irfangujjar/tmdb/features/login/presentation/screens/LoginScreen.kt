@@ -44,7 +44,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.irfangujjar.tmdb.R
 import com.irfangujjar.tmdb.core.ui.ScreenPadding
-import com.irfangujjar.tmdb.core.ui.components.CustomDialogBox
+import com.irfangujjar.tmdb.core.ui.components.CustomMessageDialogBox
 import com.irfangujjar.tmdb.core.ui.components.CustomTopAppBar
 import com.irfangujjar.tmdb.features.login.presentation.screens.components.CustomTextField
 import com.irfangujjar.tmdb.features.login.presentation.viewmodel.LoginViewModel
@@ -108,7 +108,7 @@ fun LoginScreen(
         )
     if (loginState.value is LoginState.Error) {
         val loginStateValue = loginState.value as LoginState.Error
-        CustomDialogBox(
+        CustomMessageDialogBox(
             title = "Error",
             message = loginStateValue.error.message,
         ) {

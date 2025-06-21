@@ -19,7 +19,7 @@ suspend fun <T> safeApiCall(
         val response = apiCall()
         ResultWrapper.Success(response)
     } catch (e: Exception) {
-        Log.d("ApiUtil", "Exception :${e}")
+        Log.e("SafeApiCall", "Exception :${e}")
         when (e) {
             is TimeoutException, is SocketTimeoutException,
             is UnknownHostException -> {

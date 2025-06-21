@@ -12,7 +12,9 @@ import com.irfangujjar.tmdb.core.navigation.nav_keys.HomeNavKey
 import com.irfangujjar.tmdb.core.ui.components.CustomError
 import com.irfangujjar.tmdb.core.ui.components.CustomLoading
 import com.irfangujjar.tmdb.core.ui.components.CustomTopAppBar
+import com.irfangujjar.tmdb.core.ui.components.ShareIconButton
 import com.irfangujjar.tmdb.core.ui.theme.UserTheme
+import com.irfangujjar.tmdb.core.urls.URLS
 import com.irfangujjar.tmdb.features.main.celebs.sub_features.details.presentation.screens.components.CelebDetailsBodyComp
 import com.irfangujjar.tmdb.features.main.celebs.sub_features.details.presentation.viewmodels.CelebDetailsViewModel
 import com.irfangujjar.tmdb.features.main.celebs.sub_features.details.presentation.viewmodels.states.CelebDetailsState
@@ -37,7 +39,15 @@ fun CelebDetailsScreen(
             CustomTopAppBar(
                 title = key.name,
                 showBackStack = true,
-                onBackStackPressed = onBackStackPressed
+                onBackStackPressed = onBackStackPressed,
+                actions = {
+                    ShareIconButton(
+                        url = URLS.celebrityShareUrl(
+                            celebId = key.celebId,
+                            name = key.name
+                        )
+                    )
+                }
             )
         }
     ) { innerPadding ->

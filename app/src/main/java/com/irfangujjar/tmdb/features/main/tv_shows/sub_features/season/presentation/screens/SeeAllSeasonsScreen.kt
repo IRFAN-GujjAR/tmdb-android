@@ -18,7 +18,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,7 +35,7 @@ import com.irfangujjar.tmdb.core.ui.ScreenPadding
 import com.irfangujjar.tmdb.core.ui.components.CustomDivider
 import com.irfangujjar.tmdb.core.ui.components.CustomLoading
 import com.irfangujjar.tmdb.core.ui.components.CustomTopAppBar
-import com.irfangujjar.tmdb.core.ui.components.image.CustomNetworkImage
+import com.irfangujjar.tmdb.core.ui.components.image.network.CustomNetworkImage
 import com.irfangujjar.tmdb.core.ui.theme.TMDbTheme
 import com.irfangujjar.tmdb.core.ui.util.MediaImageType
 import com.irfangujjar.tmdb.core.ui.util.PosterSizes
@@ -51,7 +50,7 @@ fun SeeAllSeasonsScreen(
     onBackPressed: () -> Unit,
     key: HomeNavKey.SeeAllSeasonsNavKey,
     viewModel: SeeAllSeasonsViewModel = hiltViewModel(),
-    onNavigateToSeasonDetails:(HomeNavKey.SeasonDetailsNavKey)-> Unit
+    onNavigateToSeasonDetails: (HomeNavKey.SeasonDetailsNavKey) -> Unit
 ) {
     viewModel.initialize(key)
 
@@ -89,7 +88,7 @@ private fun SeeAllSeasonsBody(
     innerPadding: PaddingValues,
     key: HomeNavKey.SeeAllSeasonsNavKey,
     seasons: List<SeasonModel>,
-    onNavigateToSeasonDetails:(HomeNavKey.SeasonDetailsNavKey)-> Unit
+    onNavigateToSeasonDetails: (HomeNavKey.SeasonDetailsNavKey) -> Unit
 ) {
     LazyColumn(
         contentPadding = ScreenPadding.getPadding(
@@ -105,16 +104,16 @@ private fun SeeAllSeasonsBody(
                     modifier = Modifier
                         .pointerInput(Unit) {
                             detectTapGestures(onTap = {
-                               onNavigateToSeasonDetails(
-                                   HomeNavKey.SeasonDetailsNavKey(
-                                       tvId = key.tvId,
-                                       tvShowName = key.tvShowName,
-                                       seasonName = season.name,
-                                       seasonNo = season.seasonNo,
-                                       tvShowPosterPath =  key.tvShowPosterPath,
-                                       episodeImagePlaceHolder = key.episodeImagePlaceHolder
-                                   )
-                               )
+                                onNavigateToSeasonDetails(
+                                    HomeNavKey.SeasonDetailsNavKey(
+                                        tvId = key.tvId,
+                                        tvShowName = key.tvShowName,
+                                        seasonName = season.name,
+                                        seasonNo = season.seasonNo,
+                                        tvShowPosterPath = key.tvShowPosterPath,
+                                        episodeImagePlaceHolder = key.episodeImagePlaceHolder
+                                    )
+                                )
                             })
                         }
                         .padding(horizontal = ScreenPadding.getHorizontalPadding())

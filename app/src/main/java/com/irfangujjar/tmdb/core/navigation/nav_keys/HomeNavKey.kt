@@ -1,6 +1,7 @@
 package com.irfangujjar.tmdb.core.navigation.nav_keys
 
 import androidx.navigation3.runtime.NavKey
+import com.irfangujjar.tmdb.core.api.MediaStateType
 import com.irfangujjar.tmdb.core.navigation.args_holder.HasArgId
 import com.irfangujjar.tmdb.core.ui.util.CelebsCategory
 import com.irfangujjar.tmdb.core.ui.util.MoviesCategory
@@ -106,4 +107,14 @@ sealed interface HomeNavKey : NavKey {
 
     @Serializable
     data object NotSignedInDialogBoxNavKey : HomeNavKey
+
+    @Serializable
+    data class RateMediaNavKey(
+        val mediaStateType: MediaStateType,
+        val mediaId: Int,
+        val title: String,
+        val posterPath: String?,
+        val rating: Double,
+    ) : HomeNavKey
+
 }

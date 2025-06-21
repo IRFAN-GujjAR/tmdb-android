@@ -60,7 +60,7 @@ fun CustomNavBar(
 }
 
 private fun showBottomNavBar(currentTopKey: NavKey): Boolean {
-    return currentTopKey !is HomeNavKey.LoginNavKey
+    return currentTopKey !is HomeNavKey.LoginNavKey && currentTopKey !is HomeNavKey.RateMediaNavKey
 }
 
 

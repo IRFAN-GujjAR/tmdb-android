@@ -4,11 +4,13 @@ import ThemeScreen
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation3.runtime.EntryProviderBuilder
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entry
 import com.irfangujjar.tmdb.core.navigation.nav_keys.HomeNavKey
 import com.irfangujjar.tmdb.core.ui.theme.UserTheme
+import com.irfangujjar.tmdb.core.viewmodels.SignInStatusViewModel
 import com.irfangujjar.tmdb.features.about.presentation.screens.AboutScreen
 import com.irfangujjar.tmdb.features.login.presentation.screens.LoginScreen
 import com.irfangujjar.tmdb.features.main.cast_crew.presentation.screens.CastCrewScreen
@@ -24,6 +26,8 @@ import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.details.presenta
 import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.season.presentation.screens.SeasonDetailsScreen
 import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.season.presentation.screens.SeeAllSeasonsScreen
 import com.irfangujjar.tmdb.features.main.tv_shows.sub_features.see_all.presentation.screens.SeeAllTvShowsScreen
+import com.irfangujjar.tmdb.features.media_action.presentation.screens.RateMediaScreen
+import com.irfangujjar.tmdb.features.media_state.presentation.viewmodels.MediaStateChangeListenerViewModel
 
 @Composable
 fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
@@ -46,7 +50,10 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
     onNavigateToTMDBMediaList: (HomeNavKey.TMDBMediaListNavKey) -> Unit,
     onNavigateToMovieCredits: (HomeNavKey.MovieCreditsNavKey) -> Unit,
     onNavigateToTvShowCredits: (HomeNavKey.TvShowCreditsNavKey) -> Unit,
-    onBackPressed: () -> Unit
+    onNavigateToRateMedia: (HomeNavKey.RateMediaNavKey) -> Unit,
+    onBackPressed: () -> Unit,
+    signInStatusViewModel: SignInStatusViewModel = hiltViewModel(),
+    mediaStateChangeListenerViewModel: MediaStateChangeListenerViewModel = hiltViewModel()
 ) {
     BottomNavEntries(
         outerPadding = outerPadding,
@@ -62,6 +69,7 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
         onNavigateToTheme = onNavigateToTheme,
         onNavigateToAbout = onNavigateToAbout,
         onNavigateToTMDBMediaList = onNavigateToTMDBMediaList,
+        viewModel = signInStatusViewModel
     )
     entry<HomeNavKey.SeeAllMoviesNavKey> {
         SeeAllMoviesScreen(
@@ -97,12 +105,16 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
             outerPadding = outerPadding,
             userTheme = userTheme,
             key = it,
+            snackBarHostState = snackBarHostState,
             onBackStackPressed = onBackPressed,
             onNavigateToSeeAllMovies = onNavigateToSeeAllMovies,
             onNavigateToMovieDetails = onNavigateToMovieDetails,
             onNavigateToCastCrewDetails = onNavigateToCastCrew,
             onNavigateToCollectionDetails = onNavigateToCollectionDetails,
-            onNavigateToCelebDetails = onNavigateToCelebDetails
+            onNavigateToCelebDetails = onNavigateToCelebDetails,
+            signInStatusViewModel = signInStatusViewModel,
+            onNavigateToRateMedia = onNavigateToRateMedia,
+            mediaStateChangeListenerViewModel = mediaStateChangeListenerViewModel
         )
     }
 
@@ -111,13 +123,34 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
             outerPadding = outerPadding,
             userTheme = userTheme,
             key = it,
+            snackBarHostState = snackBarHostState,
             onBackStackPressed = onBackPressed,
             onNavigateToSeeAllTvShows = onNavigateToSeeAllTvShows,
             onNavigateToTvShowDetails = onNavigateToTvShowDetails,
             onNavigateToCastCrew = onNavigateToCastCrew,
             onNavigateToCelebDetails = onNavigateToCelebDetails,
             onNavigateToSeeAllSeasons = onNavigateToSeeAllSeasons,
-            onNavigateToSeasonDetails = onNavigateToSeasonDetails
+            onNavigateToSeasonDetails = onNavigateToSeasonDetails,
+            signInStatusViewModel = signInStatusViewModel,
+            onNavigateToRateMedia = onNavigateToRateMedia,
+            mediaStateChangeListenerViewModel = mediaStateChangeListenerViewModel
+        )
+    }
+
+    entry<HomeNavKey.RateMediaNavKey> {
+        RateMediaScreen(
+            outerPadding = outerPadding,
+            onBackStackPressed = onBackPressed,
+            key = it,
+            onRatingUpdated = { mediaStateType, mediaId, rating, isRated ->
+                mediaStateChangeListenerViewModel.updateState(
+                    mediaStateType = mediaStateType,
+                    mediaId = mediaId,
+                    rating = rating,
+                    isRated = isRated
+                )
+                onBackPressed()
+            }
         )
     }
 
@@ -194,7 +227,10 @@ fun EntryProviderBuilder<NavKey>.HomeScreenEntries(
         LoginScreen(
             showBackStack = true,
             onBackStackPressed = onBackPressed,
-            navigateToMainScreen = onBackPressed
+            navigateToMainScreen = {
+                signInStatusViewModel.changeStatusToSingedIn()
+                onBackPressed()
+            },
         )
     }
 
