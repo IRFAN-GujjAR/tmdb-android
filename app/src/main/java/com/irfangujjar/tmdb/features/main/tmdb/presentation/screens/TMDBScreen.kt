@@ -19,7 +19,7 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.StarOutline
 import androidx.compose.material3.Button
-import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.SnackbarHostState
@@ -30,6 +30,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -170,7 +171,7 @@ private fun TMDbScreenBody(
                 accountDetails = accountDetails
             )
             if (accountDetails == null)
-                FilledTonalButton(
+                Button(
                     onClick = navigateToLogin,
                     modifier = Modifier
                         .padding(
@@ -180,7 +181,7 @@ private fun TMDbScreenBody(
                         )
                         .align(Alignment.CenterHorizontally)
                 ) {
-                    Text("Sign In / Sign Up")
+                    Text("Sign In / Sign Up", color = Color.White.copy(0.8f))
                 }
             else
                 Spacer(modifier = Modifier.height(24.dp))
@@ -293,9 +294,10 @@ private fun TMDbScreenBody(
                     onClick = onSignOut,
                     modifier = Modifier
                         .padding(top = 24.dp)
-                        .align(alignment = Alignment.CenterHorizontally)
+                        .align(alignment = Alignment.CenterHorizontally),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Red.copy(0.8f))
                 ) {
-                    Text("Sign Out")
+                    Text("Sign Out", color = Color.White.copy(0.7f))
                 }
         }
         if (isSigningOut)
