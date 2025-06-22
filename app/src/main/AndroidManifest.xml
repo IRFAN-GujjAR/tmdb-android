@@ -27,5 +27,12 @@
             </intent-filter>
         </activity>
     </application>
-
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data
+                android:host="youtube.com"
+                android:scheme="https" />
+        </intent>
+    </queries>
 </manifest>
