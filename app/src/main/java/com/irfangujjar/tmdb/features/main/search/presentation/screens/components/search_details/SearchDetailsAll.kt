@@ -11,6 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.irfangujjar.tmdb.core.ui.components.CustomDivider
+import com.irfangujjar.tmdb.core.ui.components.DividerBottomPadding
 import com.irfangujjar.tmdb.core.ui.components.DividerTopPadding
 import com.irfangujjar.tmdb.core.ui.components.list.CelebItemsHorizontalList
 import com.irfangujjar.tmdb.core.ui.components.list.MediaItemsHorizontalList
@@ -62,7 +63,11 @@ fun SearchDetailsAll(
             onSeeAllClick = onSeeAllMoviesClick,
             onItemTapped = onMovieItemTapped
         )
-        CustomDivider()
+        CustomDivider(
+            topPadding = DividerTopPadding.OneAndHalf,
+            bottomPadding = if (tvShowsList.tvShows.size > 4) DividerBottomPadding.Half
+            else DividerBottomPadding.OneAndHalf
+        )
         MediaItemsHorizontalList(
             preview = preview,
             values = MediaItemsHorizontalListValues.fromTvShows(
@@ -76,7 +81,11 @@ fun SearchDetailsAll(
             onSeeAllClick = onSeeAllTvShowsClick,
             onItemTapped = onTvShowItemTapped
         )
-        CustomDivider(topPadding = DividerTopPadding.Double)
+        CustomDivider(
+            topPadding = DividerTopPadding.OneAndHalf,
+            bottomPadding = if (celebsList.celebrities.size > 4) DividerBottomPadding.Half
+            else DividerBottomPadding.OneAndHalf
+        )
         CelebItemsHorizontalList(
             preview = preview,
             values = CelebItemsHorizontalListValues.fromListValues(

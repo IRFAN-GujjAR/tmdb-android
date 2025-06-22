@@ -45,12 +45,12 @@ fun MovieDetailsBody(
     mediaState: MediaStateState
 ) {
     val scrollState = rememberScrollState()
-    var showUserRating=false
-    var userRating=0.0
-    if (mediaState is MediaStateState.Loaded){
-        showUserRating= mediaState.mediaState.rated.value!=0.0
-        if (showUserRating){
-            userRating=mediaState.mediaState.rated.value
+    var showUserRating = false
+    var userRating = 0.0
+    if (mediaState is MediaStateState.Loaded) {
+        showUserRating = mediaState.mediaState.rated.value != 0.0
+        if (showUserRating) {
+            userRating = mediaState.mediaState.rated.value
         }
     }
     Column(
@@ -79,7 +79,7 @@ fun MovieDetailsBody(
             genres = movieDetails.genres,
             overview = movieDetails.overview,
             showUserRating = showUserRating,
-            userRating =userRating
+            userRating = userRating
         )
         Spacer(modifier = Modifier.height(12.dp))
         if (movieDetails.collection != null)
@@ -132,12 +132,13 @@ fun MovieDetailsBody(
         if (movieDetails.isRecommendationsPresent()) {
             CustomDivider(
                 topPadding = DividerTopPadding.OneAndHalf,
-                bottomPadding = DividerBottomPadding.Half
+                bottomPadding = if (movieDetails.recommendedMovies!!.movies.size > 4)
+                    DividerBottomPadding.Half else DividerBottomPadding.OneAndHalf
             )
             MediaItemsHorizontalList(
                 preview = preview,
                 values = MediaItemsHorizontalListValues.fromMovies(
-                    movies = movieDetails.recommendedMovies!!.movies,
+                    movies = movieDetails.recommendedMovies.movies,
                     isLandscape = false,
                     configValues = MediaItemsHorizontalListConfigValues.movieConfig(
                         category = MoviesCategory.DetailsRecommended
@@ -160,12 +161,13 @@ fun MovieDetailsBody(
         if (movieDetails.isSimilarPresent()) {
             CustomDivider(
                 topPadding = DividerTopPadding.OneAndHalf,
-                bottomPadding = DividerBottomPadding.Half
+                bottomPadding = if (movieDetails.similarMovies!!.movies.size > 4)
+                    DividerBottomPadding.Half else DividerBottomPadding.OneAndHalf
             )
             MediaItemsHorizontalList(
                 preview = preview,
                 values = MediaItemsHorizontalListValues.fromMovies(
-                    movies = movieDetails.similarMovies!!.movies,
+                    movies = movieDetails.similarMovies.movies,
                     isLandscape = false,
                     configValues = MediaItemsHorizontalListConfigValues.movieConfig(
                         category = MoviesCategory.DetailsSimilar

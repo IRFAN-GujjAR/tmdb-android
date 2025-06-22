@@ -22,12 +22,12 @@ fun CustomConfirmDialogBox(
                 onConfirm()
                 onDismiss()
             }) {
-                Text("Confirm")
+                Text("Confirm", color = Color.Red)
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel", color = Color.Red)
+                Text("Cancel")
             }
         }
     )

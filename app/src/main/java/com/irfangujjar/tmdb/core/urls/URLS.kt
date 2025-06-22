@@ -2,7 +2,6 @@ package com.irfangujjar.tmdb.core.urls
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.util.Log
 import androidx.core.net.toUri
 import com.irfangujjar.tmdb.core.ui.util.ThumbnailQuality
@@ -17,12 +16,12 @@ object URLS {
         "https://i.ytimg.com/vi/$videoId/${ThumbnailQuality.MEDIUM}"
 
     fun openYoutubeVideo(context: Context, videoId: String) {
-        openUrl(context, "https://www.youtube.com/watch?v=$videoId".toUri())
+        openUrl(context, "https://www.youtube.com/watch?v=$videoId")
     }
 
-    fun openUrl(context: Context, url: Uri) {
+    fun openUrl(context: Context, url: String) {
         try {
-            val intent = Intent(Intent.ACTION_VIEW, url)
+            val intent = Intent(Intent.ACTION_VIEW, url.toUri())
             context.startActivity(intent)
         } catch (e: Exception) {
             Log.d("URLS", "Error opening $url  $e")
@@ -32,14 +31,27 @@ object URLS {
     private fun convertTxtToShareableFormat(text: String): String =
         text.replace(" ", "-").lowercase()
 
-    fun movieShareUrl(movieId: Int, title: String): Uri =
-        "$SHARE_BASE_URL/movie/$movieId-${convertTxtToShareableFormat(title)}".toUri()
+    fun movieShareUrl(movieId: Int, title: String): String =
+        "$SHARE_BASE_URL/movie/$movieId-${convertTxtToShareableFormat(title)}"
 
-    fun tvShowShareUrl(tvId: Int, name: String): Uri =
-        "$SHARE_BASE_URL/tv/$tvId-${convertTxtToShareableFormat(name)}".toUri()
+    fun tvShowShareUrl(tvId: Int, name: String): String =
+        "$SHARE_BASE_URL/tv/$tvId-${convertTxtToShareableFormat(name)}"
 
-    fun celebrityShareUrl(celebId: Int, name: String): Uri =
-        "$SHARE_BASE_URL/person/$celebId-${convertTxtToShareableFormat(name)}".toUri()
+    fun celebrityShareUrl(celebId: Int, name: String): String =
+        "$SHARE_BASE_URL/person/$celebId-${convertTxtToShareableFormat(name)}"
+
+    fun shareUrl(context: Context, url: String) {
+        try {
+            val sendIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, url)
+            }
+            val shareIntent = Intent.createChooser(sendIntent, null)
+            context.startActivity(shareIntent)
+        } catch (e: Exception) {
+            Log.d("URLS", "Error Sharing $url  $e")
+        }
+    }
 
 
 }

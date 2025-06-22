@@ -34,6 +34,18 @@ class RateMediaViewModel @Inject constructor(
     var isLoading by mutableStateOf(false)
         private set
 
+    var showUnRateConfirmationDialog by mutableStateOf(false)
+        private set
+
+    fun showUnRateConfirmationDialog() {
+        this.showUnRateConfirmationDialog = true
+    }
+
+    fun hideUnRateConfirmationDialog() {
+        this.showUnRateConfirmationDialog = false
+    }
+
+
     override fun doInitial() {
         currentRating = key!!.rating.toInt()
     }

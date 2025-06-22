@@ -26,7 +26,10 @@ fun MediaItemsHorizontalList(
     onItemTapped: (Int, String, String?, String?) -> Unit
 ) {
     Column {
-        TextRow(title = title, onSeeAllTapped = onSeeAllClick)
+        TextRow(
+            title = title,
+            onSeeAllTapped = if (values.mediaIds.size > 4) onSeeAllClick else null
+        )
         LazyRow(
             modifier = Modifier
                 .padding(top = 4.dp)

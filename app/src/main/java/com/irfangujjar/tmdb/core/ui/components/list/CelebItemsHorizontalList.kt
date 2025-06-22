@@ -24,7 +24,7 @@ fun CelebItemsHorizontalList(
     onSeeAllClick: (() -> Unit)? = null,
     onItemTapped: (Int, String) -> Unit
 ) {
-    if (title != null && onSeeAllClick != null)
+    if (title != null && onSeeAllClick != null && values.celebIds.size > 4)
         Column {
             TextRow(title = title, onSeeAllTapped = onSeeAllClick)
             HorizontalRow(values, preview, onItemTapped)
@@ -73,7 +73,7 @@ private fun CelebItemsHorizontalPreview() {
                 values = CelebItemsHorizontalListValues.dummyData(),
                 title = "Popular",
                 onSeeAllClick = {},
-                onItemTapped = {_,_->}
+                onItemTapped = { _, _ -> }
             )
         }
     }

@@ -1,6 +1,5 @@
 package com.irfangujjar.tmdb.core.ui.components
 
-import android.net.Uri
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Icon
@@ -12,10 +11,10 @@ import com.irfangujjar.tmdb.core.urls.URLS
 
 
 @Composable
-fun ShareIconButton(url: Uri) {
+fun ShareIconButton(url: String) {
     val context = LocalContext.current
     IconButton(onClick = {
-        URLS.openUrl(context = context, url = url)
+        URLS.shareUrl(context = context, url = url)
     }) {
         Icon(
             imageVector = Icons.Default.Share,

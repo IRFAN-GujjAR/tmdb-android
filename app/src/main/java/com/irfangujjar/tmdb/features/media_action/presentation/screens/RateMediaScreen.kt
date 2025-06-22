@@ -38,6 +38,7 @@ import com.irfangujjar.tmdb.core.api.MediaStateType
 import com.irfangujjar.tmdb.core.api.mediaImageType
 import com.irfangujjar.tmdb.core.navigation.nav_keys.HomeNavKey
 import com.irfangujjar.tmdb.core.ui.ScreenPadding
+import com.irfangujjar.tmdb.core.ui.components.CustomConfirmDialogBox
 import com.irfangujjar.tmdb.core.ui.components.CustomLoading
 import com.irfangujjar.tmdb.core.ui.components.CustomMessageDialogBox
 import com.irfangujjar.tmdb.core.ui.components.CustomTopAppBar
@@ -90,14 +91,7 @@ fun RateMediaScreen(
                     }
                 },
                 onUnRate = {
-                    viewModel.unRate {
-                        onRatingUpdated(
-                            key.mediaStateType,
-                            key.mediaId,
-                            viewModel.currentRating,
-                            false
-                        )
-                    }
+                    viewModel.showUnRateConfirmationDialog()
                 }
 
             )
@@ -112,6 +106,24 @@ fun RateMediaScreen(
                 viewModel.clearAlert()
             }
         )
+    }
+
+    if (viewModel.showUnRateConfirmationDialog) {
+        CustomConfirmDialogBox(
+            message = "Do you really want to remove rating?",
+            onDismiss = {
+                viewModel.hideUnRateConfirmationDialog()
+            },
+            onConfirm = {
+                viewModel.unRate {
+                    onRatingUpdated(
+                        key.mediaStateType,
+                        key.mediaId,
+                        viewModel.currentRating,
+                        false
+                    )
+                }
+            })
     }
 }
 

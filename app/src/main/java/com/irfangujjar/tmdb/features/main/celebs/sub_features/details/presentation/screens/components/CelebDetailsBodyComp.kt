@@ -115,7 +115,8 @@ fun CelebDetailsBodyComp(
         if (celebDetails.isMovieCreditsPresent()) {
             CustomDivider(
                 topPadding = DividerTopPadding.OneAndHalf,
-                bottomPadding = DividerBottomPadding.Half
+                bottomPadding = if (celebDetails.movieCreditsMovies().size > 4)
+                    DividerBottomPadding.Half else DividerBottomPadding.OneAndHalf
             )
             MediaItemsHorizontalList(
                 preview = preview,
@@ -132,7 +133,8 @@ fun CelebDetailsBodyComp(
         if (celebDetails.isTvCreditsPresent()) {
             CustomDivider(
                 topPadding = DividerTopPadding.OneAndHalf,
-                bottomPadding = DividerBottomPadding.Half
+                bottomPadding = if (celebDetails.tvCreditsTvShows().size > 4)
+                    DividerBottomPadding.Half else DividerBottomPadding.OneAndHalf
             )
             MediaItemsHorizontalList(
                 preview = preview,

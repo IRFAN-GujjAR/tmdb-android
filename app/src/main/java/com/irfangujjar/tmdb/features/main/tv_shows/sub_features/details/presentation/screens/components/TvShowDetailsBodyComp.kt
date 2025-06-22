@@ -121,12 +121,13 @@ fun TvShowDetailsBodyComp(
         if (tvShowDetails.isRecommendationsPresent()) {
             CustomDivider(
                 topPadding = DividerTopPadding.OneAndHalf,
-                bottomPadding = DividerBottomPadding.Half
+                bottomPadding = if (tvShowDetails.recommendedTvShows!!.tvShows.size > 4)
+                    DividerBottomPadding.Half else DividerBottomPadding.OneAndHalf
             )
             MediaItemsHorizontalList(
                 preview = preview,
                 values = MediaItemsHorizontalListValues.fromTvShows(
-                    tvShows = tvShowDetails.recommendedTvShows!!.tvShows,
+                    tvShows = tvShowDetails.recommendedTvShows.tvShows,
                     isLandscape = false,
                     configValues = MediaItemsHorizontalListConfigValues.tvConfig(
                         category = TvShowsCategory.DetailsRecommended
@@ -149,12 +150,13 @@ fun TvShowDetailsBodyComp(
         if (tvShowDetails.isSimilarPresent()) {
             CustomDivider(
                 topPadding = DividerTopPadding.OneAndHalf,
-                bottomPadding = DividerBottomPadding.Half
+                bottomPadding = if (tvShowDetails.similarTvShows!!.tvShows.size > 4)
+                    DividerBottomPadding.Half else DividerBottomPadding.OneAndHalf
             )
             MediaItemsHorizontalList(
                 preview = preview,
                 values = MediaItemsHorizontalListValues.fromTvShows(
-                    tvShows = tvShowDetails.similarTvShows!!.tvShows,
+                    tvShows = tvShowDetails.similarTvShows.tvShows,
                     isLandscape = false,
                     configValues = MediaItemsHorizontalListConfigValues.tvConfig(
                         category = TvShowsCategory.DetailsSimilar
