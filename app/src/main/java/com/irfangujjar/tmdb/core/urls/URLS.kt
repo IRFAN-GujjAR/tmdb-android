@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.core.net.toUri
 import com.irfangujjar.tmdb.core.ui.util.ThumbnailQuality
 
+
 object URLS {
     const val BASE_URL = "https://api.themoviedb.org/3/"
     const val SIGN_UP_URL = "https://www.themoviedb.org/signup"
