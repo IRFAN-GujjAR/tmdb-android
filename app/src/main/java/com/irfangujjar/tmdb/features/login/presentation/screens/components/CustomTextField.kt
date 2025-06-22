@@ -8,6 +8,9 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.autofill.ContentType
+import androidx.compose.ui.semantics.contentType
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.VisualTransformation
 
 @Composable
@@ -22,11 +25,16 @@ fun CustomTextField(
     isError: Boolean = false,
     errorMsg: String,
     enabled: Boolean,
-    maxLines: Int = 1
+    maxLines: Int = 1,
+    contentType: ContentType
 ) {
     Column {
         OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .semantics {
+                    this.contentType = contentType
+                },
             value = value,
             label = { Text(label) },
             leadingIcon = leadingIcon,

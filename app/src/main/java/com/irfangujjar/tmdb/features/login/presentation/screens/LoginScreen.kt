@@ -34,6 +34,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.autofill.ContentType
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -282,6 +283,10 @@ private fun UsernameTextField(
                 contentDescription = "Username Leading Icon"
             )
         },
+        contentType = ContentType.Username,
+        keyboardOptions = KeyboardOptions.Default.copy(
+            keyboardType = KeyboardType.Text
+        ),
         trailingIcon = {
             if (username.isNotEmpty()) {
                 IconButton(onClick = onClearIconClick) {
@@ -317,6 +322,7 @@ private fun PasswordTextField(
                 contentDescription = "Password Icon"
             )
         },
+        contentType = ContentType.Password,
         keyboardOptions = KeyboardOptions.Default.copy(
             keyboardType = KeyboardType.Password
         ),
