@@ -1,20 +1,26 @@
 # TMDb App
 
-TMDb is a native android application developed using Kotlin that uses the https://www.themoviedb.org
-API
-to fetch information on movies, TV shows, celebrities, etc.
+TMDb is a native Android application developed using Kotlin that uses the https://www.themoviedb.org
+API to retrieve information on movies, TV shows, celebrities, and more.
 
-I have also developed this app using Flutter framework: https://github.com/IRFAN-GujjAR/tmdb
+I have also developed this app using the Flutter framework: https://github.com/IRFAN-GujjAR/tmdb
 
 ***Playstore Link***: https://play.google.com/store/apps/details?id=com.irfangujjar.tmdb&hl=en
 
 ***Code Structure***
-
 - Clean Architecture
 
-***Cache***
+***UI***
+- Jetpack Compose for UI
 
-- Room library is used for caching data on Movies, TV Shows, Celebrities, Search, and TMDb pages.
+***Network Requests***
+- Retrofit Library for API requests
+
+***Cache***
+- The room library is used for caching data on Movies, TV Shows, Celebrities, Search, and TMDb pages.
+
+***Navigation***
+- Navigation 3 library for navigation
 
 **App ScreenShots**
 
