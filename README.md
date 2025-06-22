@@ -18,16 +18,11 @@ I have also developed this app using Flutter framework: https://github.com/IRFAN
 
 **App ScreenShots**
 
-<img src="Images/1.png" width="217">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="Images/2.png" width="217">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="Images/3.png" width="217">
+<img src="Images/1.png" width="217">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="Images/2.png" width="217">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="Images/3.png" width="217">
 
-<img src="Images/4.png" width="217">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="Images/5.png" width="217">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="Images/6.png" width="217">
+<img src="Images/4.png" width="217">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="Images/5.png" width="217">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="Images/6.png" width="217">
 
-<img src="Images/7.png" width="217">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="Images/8.png" width="217">
+<img src="Images/7.png" width="217">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="Images/8.png" width="217">
 
 # License
 
