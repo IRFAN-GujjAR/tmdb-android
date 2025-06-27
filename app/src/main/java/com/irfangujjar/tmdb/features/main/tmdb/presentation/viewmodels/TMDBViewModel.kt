@@ -142,8 +142,10 @@ class TMDBViewModel @Inject constructor(
                     isSignOutError = true
                 }
 
-                is ResultWrapper.Success<Unit> ->
+                is ResultWrapper.Success<Unit> -> {
+                    userSession.clearSession()
                     onSuccess()
+                }
 
             }
         }.invokeOnCompletion {
